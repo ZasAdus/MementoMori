@@ -10,6 +10,7 @@ module com.example.mementomori {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.desktop;
 
     opens com.example.mementomori to javafx.fxml;
     exports com.example.mementomori;

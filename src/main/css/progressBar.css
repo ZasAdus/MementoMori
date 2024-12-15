@@ -1,0 +1,19 @@
+.circular-progress-bar {
+    -fx-background-color: transparent;
+    -fx-background-radius: 50%;
+    -fx-padding: 10px;
+}
+
+.circular-progress-bar .bar {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 50%, #87CEEB, #66FF66);
+    -fx-background-radius: 50%;
+    -fx-stroke-width: 10px;
+    -fx-stroke: #e0e0e0;
+    -fx-fill: transparent;
+}
+
+.circular-progress-bar .percentage {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
