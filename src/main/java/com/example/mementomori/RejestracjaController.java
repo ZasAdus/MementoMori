@@ -21,7 +21,7 @@ public class RejestracjaController {
     public Button Cofnij;
     public Button GuzikUtworzKonto;
 
-    private String login;
+    public static String login;
 
     public void RejestracjaLekarz(ActionEvent actionEvent) {
         //Do zrobienia
@@ -61,6 +61,7 @@ public class RejestracjaController {
             return;
         }
         BazaRejestracja.insertDaneOsobowe(login, Imie.getText(), Nazwisko.getText(), NrTelefonu.getText(), Email.getText());
+        System.out.println("dodano dane osobowe " + login + Imie.getText() + " " + Nazwisko.getText() + " " + NrTelefonu.getText() + " " + Email.getText());
         MementoMori.navigateTo("Logowanie.fxml");
     }
 

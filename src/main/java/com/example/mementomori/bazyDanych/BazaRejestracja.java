@@ -3,7 +3,7 @@ package com.example.mementomori.bazyDanych;
 import java.sql.*;
 
 public class BazaRejestracja {
-    private static final String DB_PATH = "C:\\Users\\dawid\\IdeaProjects\\MementoMori\\src\\main\\java\\com\\example\\mementomori\\bazyDanych\\uzytkownicy.db";
+    private static final String DB_PATH = "src\\main\\java\\com\\example\\mementomori\\bazyDanych\\uzytkownicy.db";
     private static final String URL = "jdbc:sqlite:" + DB_PATH;
 
     public static Connection connect() {
@@ -88,5 +88,10 @@ public class BazaRejestracja {
             System.out.println("Błąd podczas dodawania danych osobowych.");
             e.printStackTrace();
         }
+
+    }
+    public static void main(String[] args) {
+        BazaRejestracja.connect();
+        BazaRejestracja.insertDaneOsobowe("admin", "Jan", "Kowalski", "jan.kowalski@example.com", "123456789");
     }
 }
