@@ -9,21 +9,11 @@ public class LekiController {
 
     @FXML
     public void goHome() {
-        try {
-            MementoMori.returnHome();
-        }
-        catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        MementoMori.returnHome();
     }
 
     @FXML
     public void checkAvailability() {
-        try {
-            MementoMori.navigateTo(LekiDostepnoscController.MAIN_PATH);
-        }
-        catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        MementoMori.navigateTo(LekiDostepnoscController.MAIN_PATH);
     }
 }

@@ -34,7 +34,7 @@ public class MementoMori extends Application {
     /**
      * Przełącza na scenę strony głównej
      */
-    public static void returnHome() throws IOException {
+    public static void returnHome() {
         navigateTo(HOME_PATH);
     }
 
@@ -42,8 +42,13 @@ public class MementoMori extends Application {
      * Zmienia scenę
      * @param path nazwa pliku fxml
      */
-    public static void navigateTo(String path) throws IOException {
-        main_stage.setScene(load(path));
+    public static void navigateTo(String path) {
+        try {
+            main_stage.setScene(load(path));
+        }
+        catch(IOException e) {
+            System.err.println("nie udało się załadować " + e + ": " + e.toString());
+        }
     }
 
 

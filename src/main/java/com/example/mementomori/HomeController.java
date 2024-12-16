@@ -6,13 +6,8 @@ import java.io.IOException;
 public class HomeController {
     @FXML
     protected void goHome() {
-        System.out.println("domeeek");
-        try {
-            MementoMori.returnHome();
-        }
-        catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        System.out.println("ten guzik jest useless XD");
+        MementoMori.returnHome();
     }
 
     @FXML
@@ -32,12 +27,7 @@ public class HomeController {
 
     @FXML
     protected void goLeki() {
-        try {
-            MementoMori.navigateTo(LekiController.MAIN_PATH);
-        }
-        catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        MementoMori.navigateTo(LekiController.MAIN_PATH);
     }
 
     @FXML
