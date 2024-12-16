@@ -27,7 +27,7 @@ public class MementoMori extends Application {
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> System.exit(0));
 
-        stage.setScene(load(HOME_PATH));
+        stage.setScene(load("Logowanie.fxml"));
         stage.show();
     }
 
