@@ -22,8 +22,8 @@ public class MementoMori extends Application {
         main_stage = stage;
 
         stage.setTitle("Memento mori");
-        stage.setMinWidth(428);
-        stage.setMinHeight(926);
+        stage.setMaxWidth(428);
+        stage.setMaxHeight(926);
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> System.exit(0));
 
