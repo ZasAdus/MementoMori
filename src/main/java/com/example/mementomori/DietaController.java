@@ -27,15 +27,8 @@ public class DietaController {
 
 
     public void initialize() {
-        DietaZmienCel.setShape(new Circle(150));
-        DietaZmienCel.setPrefSize(150, 150);
-        DietaStatystyki.setShape(new Circle(150));
-        DietaStatystyki.setPrefSize(150, 150);
-        DietaDodajRecznie.setShape(new Circle(150));
-        DietaDodajRecznie.setPrefSize(150, 150);
         DietaProgres.setProgress((double) liczbaKalori / cel);
         DietaKalorieCel.setText(liczbaKalori + "/" + cel + " kcal");
-
     }
 
     public void DietaZmienCel(ActionEvent actionEvent) {
