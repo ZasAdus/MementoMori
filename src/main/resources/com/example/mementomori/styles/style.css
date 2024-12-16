@@ -7,4 +7,5 @@
     -fx-font-size: 22px;
     -fx-wrap-text: true;
     -fx-text-alignment: center;
+    -fx-focus-traversable: false
 }
