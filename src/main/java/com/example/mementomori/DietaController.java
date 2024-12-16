@@ -1,5 +1,6 @@
 package com.example.mementomori;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,6 +14,8 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class DietaController {
+    public static final String PATH = "Dieta.fxml";
+
     public Button DietaZmienCel;
     public Button DietaStatystyki;
     public Button DietaDodajRecznie;
@@ -23,7 +26,7 @@ public class DietaController {
     public Text DietaKalorieCel;
 
 
-    void init() {
+    public void initialize() {
         DietaZmienCel.setShape(new Circle(150));
         DietaZmienCel.setPrefSize(150, 150);
         DietaStatystyki.setShape(new Circle(150));
@@ -177,8 +180,9 @@ public class DietaController {
 
 
 
-
-    public void ReturnHome(ActionEvent actionEvent) {
+    @FXML
+    public void ReturnHome() {
+        MementoMori.returnHome();
     }
 
 }

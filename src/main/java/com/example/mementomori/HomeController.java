@@ -17,7 +17,7 @@ public class HomeController {
 
     @FXML
     protected void goDieta() {
-        System.out.println("dieta");
+        MementoMori.navigateTo(DietaController.PATH);
     }
 
     @FXML

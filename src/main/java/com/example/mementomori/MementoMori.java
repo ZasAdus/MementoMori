@@ -25,6 +25,7 @@ public class MementoMori extends Application {
         stage.setMaxWidth(428);
         stage.setMaxHeight(926);
         stage.setResizable(false);
+        stage.setOnCloseRequest(e -> System.exit(0));
 
         stage.setScene(load(HOME_PATH));
         stage.show();
@@ -60,7 +61,7 @@ public class MementoMori extends Application {
     public static Scene forceReload(String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(path));
         Scene result =  new Scene(loader.load());
-        result.getStylesheets().add(MementoMori.class.getResource("style.css").toExternalForm()); // ładowanie globalnych styli
+        result.getStylesheets().add(MementoMori.class.getResource("styles/style.css").toExternalForm()); // ładowanie globalnych styli
 
         loadedScenes.put(path, result);
         return result;
