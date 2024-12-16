@@ -22,7 +22,7 @@ public class HomeController {
 
     @FXML
     protected void goSpanko() {
-        System.out.println("spanko");
+        MementoMori.navigateTo(SenController.PATH);
     }
 
     @FXML
