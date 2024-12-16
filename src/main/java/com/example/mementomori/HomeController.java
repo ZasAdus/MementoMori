@@ -4,8 +4,6 @@ import javafx.fxml.FXML;
 import java.io.IOException;
 
 public class HomeController {
-    //public void initialize()
-
     @FXML
     protected void goHome() {
         System.out.println("domeeek");
@@ -34,7 +32,12 @@ public class HomeController {
 
     @FXML
     protected void goLeki() {
-        System.out.println("leki");
+        try {
+            MementoMori.navigateTo(LekiController.MAIN_PATH);
+        }
+        catch (IOException e) {
+            System.out.println(e.toString());
+        }
     }
 
     @FXML

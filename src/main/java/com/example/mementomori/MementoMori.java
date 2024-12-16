@@ -25,7 +25,7 @@ public class MementoMori extends Application {
         stage.setMaxHeight(926);
         stage.setResizable(false);
 
-        stage.setScene(preload(HOME_PATH));
+        stage.setScene(load(HOME_PATH));
         stage.show();
     }
 
@@ -43,25 +43,33 @@ public class MementoMori extends Application {
      * @param path nazwa pliku fxml
      */
     public static void navigateTo(String path) throws IOException {
-        Scene target = loadedScenes.get(path);
-        if(target == null) {
-            target = preload(path);
-        }
-
-        main_stage.setScene(target);
+        main_stage.setScene(load(path));
     }
 
+
     /**
-     * Ładuje wstępnie scenę, zanim będzie jeszcze potrzebna
+     * Aktualizuje zapamiętaną scenę i zwraca nową wersję
      * @param path nazwa pliku fxml
      */
-
-    public static Scene preload(String path) throws IOException {
+    public static Scene forceReload(String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(path));
         Scene result =  new Scene(loader.load());
 
         loadedScenes.put(path, result);
         return result;
+    }
+
+    /**
+     * Ładuje scenę. Zwraca zapamiętaną, jeśli już raz była załadowana
+     * @param path nazwa pliku fxml
+     */
+    public static Scene load(String path) throws IOException {
+        Scene target = loadedScenes.get(path);
+        if(target == null) {
+            target = forceReload(path);
+        }
+
+        return target;
     }
 
     public static void main(String[] args) {
