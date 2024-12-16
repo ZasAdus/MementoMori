@@ -8,8 +8,6 @@ module com.example.mementomori {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
-    requires com.almasb.fxgl.all;
     requires java.desktop;
 
     opens com.example.mementomori to javafx.fxml;

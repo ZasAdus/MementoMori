@@ -1,0 +1,10 @@
+.round-btn {
+    -fx-background-radius: 50%;
+    -fx-min-width: 150px;
+    -fx-min-height: 150px;
+    -fx-max-width: 150px;
+    -fx-max-height: 150px;
+    -fx-font-size: 22px;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
