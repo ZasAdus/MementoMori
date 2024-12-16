@@ -61,7 +61,7 @@
             </ScrollPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <Button mnemonicParsing="false" onAction="#checkAvailability" text="Sprwadź dostępność" />
+                  <Button styleClass="round-btn" mnemonicParsing="false" onAction="#checkAvailability" text="Sprwadź dostępność" />
                </children>
             </HBox>
          </children>

@@ -1,6 +1,7 @@
 package com.example.mementomori;
 
 import javafx.application.Application;
+import javafx.css.Style;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -59,6 +60,7 @@ public class MementoMori extends Application {
     public static Scene forceReload(String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(path));
         Scene result =  new Scene(loader.load());
+        result.getStylesheets().add(MementoMori.class.getResource("style.css").toExternalForm()); // ładowanie globalnych styli
 
         loadedScenes.put(path, result);
         return result;
