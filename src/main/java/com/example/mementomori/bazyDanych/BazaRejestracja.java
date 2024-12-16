@@ -2,7 +2,7 @@ package com.example.mementomori.bazyDanych;
 
 import java.sql.*;
 
-public class BazaLogowania {
+public class BazaRejestracja {
     private static final String DB_PATH = "C:\\Users\\dawid\\IdeaProjects\\MementoMori\\src\\main\\java\\com\\example\\mementomori\\bazyDanych\\uzytkownicy.db";
     private static final String URL = "jdbc:sqlite:" + DB_PATH;
 
@@ -16,21 +16,6 @@ public class BazaLogowania {
             e.printStackTrace();
         }
         return conn;
-    }
-
-    public static void createTable() {
-        String sql = "CREATE TABLE IF NOT EXISTS uzytkownicy (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "login TEXT UNIQUE NOT NULL, " +
-                "haslo TEXT NOT NULL);";
-        try (Connection conn = connect();
-             Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-            System.out.println("Tabela 'uzytkownicy' została utworzona lub już istnieje.");
-        } catch (SQLException e) {
-            System.out.println("Błąd podczas tworzenia tabeli.");
-            e.printStackTrace();
-        }
     }
 
     public static boolean userExists(String login) {
@@ -69,7 +54,7 @@ public class BazaLogowania {
     }
 
 
-    public static void insertUser(String login, String haslo) {
+    public static void insertLoginHaslo(String login, String haslo) {
         if (userExists(login)) {
             System.out.println("Użytkownik o loginie '" + login + "' już istnieje w bazie danych.");
             return;
@@ -84,6 +69,23 @@ public class BazaLogowania {
             System.out.println("Użytkownik '" + login + "' został dodany do bazy danych.");
         } catch (SQLException e) {
             System.out.println("Błąd podczas dodawania użytkownika.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void insertDaneOsobowe(String login, String imie, String nazwisko, String email, String telefon) {
+        String sql = "INSERT INTO dane_uzytkownikow (login, imie, nazwisko, email, nrTelefonu) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, login);
+            pstmt.setString(2, imie);
+            pstmt.setString(3, nazwisko);
+            pstmt.setString(4, email);
+            pstmt.setString(5, telefon);
+            pstmt.executeUpdate();
+            System.out.println("Użytkownikowi '" + login + "' zostały dodany dane osobowe do bazy danych.");
+        } catch (SQLException e) {
+            System.out.println("Błąd podczas dodawania danych osobowych.");
             e.printStackTrace();
         }
     }

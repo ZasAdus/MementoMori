@@ -1,6 +1,6 @@
 package com.example.mementomori;
 
-import com.example.mementomori.bazyDanych.BazaLogowania;
+import com.example.mementomori.bazyDanych.BazaRejestracja;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -27,12 +27,12 @@ public class LogowanieController {
 
     @FXML
     public void stworzKonto(ActionEvent actionEvent) {
-        //Trzeba dorobić rejestrację
+        MementoMori.navigateTo("Rejestracja/RejestracjaTypKonta.fxml");
     }
 
     @FXML
     public void zaloguj(ActionEvent actionEvent) {
-        if (BazaLogowania.userExists(Login.getText()) && BazaLogowania.isPasswordCorrect(Login.getText(), haslo.getText())) {
+        if (BazaRejestracja.userExists(Login.getText()) && BazaRejestracja.isPasswordCorrect(Login.getText(), haslo.getText())) {
             MementoMori.returnHome();
         } else {
             //Zaimplementować, że hasło złe
