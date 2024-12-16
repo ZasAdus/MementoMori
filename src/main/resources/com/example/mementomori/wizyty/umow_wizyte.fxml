@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ComboBox?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.ListView?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.mementomori.UmowWizyteController">
+    <top>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Umawianie Wizyty">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Text>
+            </children>
+        </HBox>
+    </top>
+    <bottom>
+        <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button mnemonicParsing="false" onAction="#goWizyty" text="← Wizyty" />
+                <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
+            </children>
+            <BorderPane.margin>
+                <Insets bottom="10.0" />
+            </BorderPane.margin>
+        </HBox>
+    </bottom>
+    <center>
+        <VBox spacing="10" alignment="TOP_CENTER" fillWidth="true">
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Miasto" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" prefWidth="100" />
+                <ComboBox fx:id="cityComboBox" promptText="Wybierz miasto" HBox.hgrow="ALWAYS">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Warszawa" />
+                            <String fx:value="Kraków" />
+                            <String fx:value="Wrocław" />
+                            <String fx:value="Gdańsk" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </HBox>
+
+            <!-- Drugi zestaw: Specjalista -->
+            <HBox spacing="10" alignment="CENTER">
+                <Label text="Specjalista" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" prefWidth="100"/>
+                <ComboBox fx:id="specialistComboBox" promptText="Wybierz specjalistę" HBox.hgrow="ALWAYS">
+                    <items>
+                        <FXCollections fx:factory="observableArrayList">
+                            <String fx:value="Lekarz rodzinny" />
+                            <String fx:value="Dermatolog" />
+                            <String fx:value="Kardiolog" />
+                            <String fx:value="Psychiatra" />
+                        </FXCollections>
+                    </items>
+                </ComboBox>
+            </HBox>
+
+            <Button text="Szukaj" onAction="#searchAppointments"/>
+
+            <ListView fx:id="doctorListView" prefHeight="200" maxHeight="200" VBox.vgrow="ALWAYS">
+            </ListView>
+
+            <Label fx:id="selectedDoctorLabel" text="Wybierz lekarza, aby kontynuować."/>
+        </VBox>
+    </center>
+</BorderPane>

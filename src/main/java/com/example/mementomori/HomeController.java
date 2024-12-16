@@ -11,9 +11,7 @@ public class HomeController {
     }
 
     @FXML
-    protected void goKroki() {
-        System.out.println("kroki");
-    }
+    protected void goKroki() { MementoMori.navigateTo(KrokiController.PATH); }
 
     @FXML
     protected void goDieta() {
@@ -31,7 +29,5 @@ public class HomeController {
     }
 
     @FXML
-    protected void goWizyty() {
-        System.out.println("wizyty");
-    }
+    protected void goWizyty() { MementoMori.navigateTo(WizytyController.PATH); }
 }
