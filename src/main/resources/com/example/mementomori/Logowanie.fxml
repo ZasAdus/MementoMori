@@ -16,7 +16,7 @@
          <children>
             <ImageView fitHeight="171.0" fitWidth="200.0" layoutX="114.0" layoutY="7.0">
                <image>
-                  <Image url="@../../../../../../images/ikona_aplikacji.png" />
+                  <Image url="file:images/ikona_aplikacji.png" />
                </image>
             </ImageView>
             <Text layoutX="165.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" wrappingWidth="98.443359375">
