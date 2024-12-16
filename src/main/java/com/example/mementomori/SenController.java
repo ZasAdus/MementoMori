@@ -9,4 +9,9 @@ public class SenController {
     public void goHome() {
         MementoMori.returnHome();
     }
+
+    @FXML
+    public void generateRaport() {
+        MementoMori.navigateTo(SenRaportController.PATH);
+    }
 }
