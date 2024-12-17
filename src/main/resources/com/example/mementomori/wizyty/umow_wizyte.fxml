@@ -74,6 +74,8 @@
             </ListView>
 
             <Label fx:id="selectedDoctorLabel" text="Wybierz lekarza, aby kontynuować."/>
+
+
         </VBox>
     </center>
 </BorderPane>

@@ -36,7 +36,7 @@ public class RejestracjaController {
     }
 
     public void PowrotDoTypuKonta(ActionEvent actionEvent) {
-        MementoMori.navigateTo("RejestracjaTypKonta.fxml");
+        MementoMori.navigateTo("Rejestracja/RejestracjaTypKonta.fxml");
     }
 
     public void KontynujRejestrację(ActionEvent actionEvent) {

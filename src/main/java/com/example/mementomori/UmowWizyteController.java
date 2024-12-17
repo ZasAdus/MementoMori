@@ -5,7 +5,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,17 +34,19 @@ public class UmowWizyteController {
         doctorListView.setOnMouseClicked(this::onDoctorSelected);
     }
 
+    @FXML
+    public void scheduleAppointment() {
+        MementoMori.navigateTo(TerminWizytyController.PATH);
+    }
 
     @FXML
     public void searchAppointments() {
-        // Pobierz wybrane miasto i specjalistę
         String selectedCity = cityComboBox.getValue();
         String selectedSpecialist = specialistComboBox.getValue();
 
         if (selectedCity != null && selectedSpecialist != null) {
             List<String> doctors = new ArrayList<>();
 
-            // Logika uzależniona od miasta i specjalisty
             if (selectedCity.equals("Warszawa") && selectedSpecialist.equals("Lekarz rodzinny")) {
                 doctors.addAll(doctorsInWarsawFamilyDoctor);
             } else if (selectedCity.equals("Kraków") && selectedSpecialist.equals("Lekarz rodzinny")) {
@@ -54,30 +55,26 @@ public class UmowWizyteController {
                 doctors.addAll(doctorsInWroclawDermatologist);
             }
 
-            // Wyczyść poprzednie wyniki
             doctorListView.getItems().clear();
 
-            // Dodaj dostępnych lekarzy do ListView
             doctorListView.getItems().addAll(doctors);
 
             if (doctors.isEmpty()) {
-                // Jeśli brak wyników, wyświetl informację
                 doctorListView.getItems().add("Brak dostępnych lekarzy.");
             }
         } else {
-            // Jeśli nie wybrano miasta lub specjalisty, poinformuj użytkownika
             doctorListView.getItems().clear();
             doctorListView.getItems().add("Wybierz miasto i specjalistę przed wyszukaniem.");
         }
     }
 
-    // Obsługuje kliknięcie na lekarza w ListView
     private void onDoctorSelected(MouseEvent event) {
         String selectedDoctor = doctorListView.getSelectionModel().getSelectedItem();
         if (selectedDoctor != null) {
-            selectedDoctorLabel.setText("Wybrany lekarz: " + selectedDoctor);
-            // Możesz zapisać wybranego lekarza do dalszego procesu umawiania wizyty
+            TerminWizytyController.setSelectedDoctor(selectedDoctor);
+            scheduleAppointment();
         }
+
     }
 
     @FXML
