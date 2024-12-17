@@ -11,7 +11,7 @@ public class SenRaportController {
     }
 
     @FXML
-    public void goLeki() {
-        MementoMori.navigateTo(LekiController.MAIN_PATH);
+    public void goSpanko() {
+        MementoMori.navigateTo(SenController.PATH);
     }
 }
