@@ -1,5 +1,6 @@
 package com.example.mementomori;
 
+import com.example.mementomori.bazyDanych.BazaLeki;
 import javafx.application.Application;
 import javafx.css.Style;
 import javafx.fxml.FXMLLoader;
@@ -26,6 +27,8 @@ public class MementoMori extends Application {
         stage.setMinHeight(926);
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> System.exit(0));
+
+        BazaLeki.initTable();
 
         stage.setScene(load("Logowanie.fxml"));
         stage.show();
