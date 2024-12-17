@@ -9,4 +9,9 @@ public class SenRaportController {
     public void goHome() {
         MementoMori.returnHome();
     }
+
+    @FXML
+    public void goLeki() {
+        MementoMori.navigateTo(LekiController.MAIN_PATH);
+    }
 }
