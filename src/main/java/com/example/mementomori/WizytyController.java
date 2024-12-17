@@ -79,4 +79,6 @@ public class WizytyController {
         calendarScrollPane.setFitToWidth(true);
         calendarScrollPane.setFitToHeight(true);
     }
+
+
 }
