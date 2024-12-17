@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +29,11 @@ public class MementoMori extends Application {
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> System.exit(0));
 
+        // bez tego folderu się rzeczy wywalają
+        // z mojej winy więc później może to naprawię XD
+        new File("data").mkdirs();
+
+        // vv to potrzebuje folder data vv
         BazaLeki.initTable();
 
         stage.setScene(load("Logowanie.fxml"));
