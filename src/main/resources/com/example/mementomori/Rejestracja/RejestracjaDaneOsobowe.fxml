@@ -51,7 +51,7 @@
                </font>
             </Text>
             <TextField fx:id="NrTelefonu" layoutX="34.0" layoutY="355.0" prefHeight="25.0" prefWidth="226.0" />
-            <Button fx:id="Cofnij" layoutX="180.0" layoutY="608.0" mnemonicParsing="false" onAction="#CofanieDoDanychKonta" text="Typ konta" />
+            <Button fx:id="Cofnij" layoutX="180.0" layoutY="608.0" mnemonicParsing="false" onAction="#CofanieDoDanychKonta" text="Cofnij" />
             <Button fx:id="GuzikUtworzKonto" layoutX="182.0" layoutY="438.0" mnemonicParsing="false" onAction="#Zarejestruj" text="Utwórz konto" />
          </children>
         </AnchorPane>

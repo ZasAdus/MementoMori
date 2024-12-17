@@ -6,7 +6,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 926; -fx-pref-width: 428;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.RejestracjaController">
    <top>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -22,13 +21,13 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Text layoutX="118.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybierz typ konta">
+            <Text layoutX="118.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wybierz typ konta:">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button fx:id="GuzikLekarz" layoutX="189.0" layoutY="188.0" mnemonicParsing="false" onAction="#RejestracjaLekarz" text="Lekarz" />
-            <Button fx:id="GuzikPacjent" layoutX="187.0" layoutY="286.0" mnemonicParsing="false" onAction="#RejestracjaPacjent" text="Pacjent" />
+            <Button fx:id="GuzikLekarz" layoutX="140.0" layoutY="150.0" mnemonicParsing="false" onAction="#RejestracjaLekarz" styleClass="round-btn" text="Lekarz" />
+            <Button fx:id="GuzikPacjent" layoutX="140.0" layoutY="348.0" mnemonicParsing="false" onAction="#RejestracjaPacjent" styleClass="round-btn" text="Pacjent" />
             <Button fx:id="GuzikLogowanie" layoutX="177.0" layoutY="652.0" mnemonicParsing="false" onAction="#PowrotDoEkranuLogowania" text="Logowanie" />
          </children>
       </AnchorPane>
