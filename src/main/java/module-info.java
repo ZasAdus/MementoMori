@@ -10,6 +10,7 @@ module com.example.mementomori {
     requires org.kordamp.bootstrapfx.core;
     requires java.desktop;
     requires java.sql;
+    requires org.xerial.sqlitejdbc;
 
     opens com.example.mementomori to javafx.fxml;
     exports com.example.mementomori;
