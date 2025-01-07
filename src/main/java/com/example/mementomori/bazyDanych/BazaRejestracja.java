@@ -3,7 +3,7 @@ package com.example.mementomori.bazyDanych;
 import java.sql.*;
 
 public class BazaRejestracja {
-    private static final String DB_PATH = "src\\main\\java\\com\\example\\mementomori\\bazyDanych\\uzytkownicy.db";
+    private static final String DB_PATH = "data\\uzytkownicy.db";
     private static final String URL = "jdbc:sqlite:" + DB_PATH;
 
     public static Connection connect() {
