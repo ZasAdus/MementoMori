@@ -116,9 +116,8 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>com.example.mementomori/com.example.mementomori.MementoMori</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <launcher>MementoMori</launcher>
+                            <jlinkImageName>MementoMori</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
