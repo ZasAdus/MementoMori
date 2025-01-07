@@ -1,6 +1,7 @@
 package com.example.mementomori;
 
 import com.example.mementomori.bazyDanych.BazaLeki;
+import com.example.mementomori.bazyDanych.BazaRejestracja;
 import javafx.application.Application;
 import javafx.css.Style;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,7 @@ public class MementoMori extends Application {
 
         // vv to potrzebuje folder data vv
         BazaLeki.initTable();
+        BazaRejestracja.initTable();
 
         stage.setScene(load("Logowanie.fxml"));
         stage.show();

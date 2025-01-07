@@ -18,6 +18,28 @@ public class BazaRejestracja {
         return conn;
     }
 
+    public static void initTable() {
+        try(Connection conn = connect()) {
+            PreparedStatement stmt = conn.prepareStatement("""
+                CREATE TABLE IF NOT EXISTS uzytkownicy (id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT UNIQUE NOT NULL, haslo TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS dane_uzytkownikow (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    login TEXT UNIQUE NOT NULL,
+                    imie TEXT,
+                    nazwisko TEXT,
+                    email TEXT,
+                    nrTelefonu TEXT,
+                    FOREIGN KEY (login) REFERENCES uzytkownicy(login)
+                );
+            """);
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.err.println("błąd przygotowania tabeli leków: ");
+            e.printStackTrace();
+        }
+    }
+
     public static boolean userExists(String login) {
         String sql = "SELECT login FROM uzytkownicy WHERE login = ?";
         try (Connection conn = connect();
