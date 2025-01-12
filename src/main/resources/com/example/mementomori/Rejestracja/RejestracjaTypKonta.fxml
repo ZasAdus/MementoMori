@@ -27,7 +27,7 @@
                </font>
             </Text>
             <Button fx:id="GuzikLekarz" layoutX="140.0" layoutY="150.0" mnemonicParsing="false" onAction="#RejestracjaLekarz" styleClass="round-btn" text="Lekarz" />
-            <Button fx:id="GuzikPacjent" layoutX="140.0" layoutY="348.0" mnemonicParsing="false" onAction="#RejestracjaPacjent" styleClass="round-btn" text="Pacjent" />
+            <Button fx:id="GuzikPacjent" layoutX="140.0" layoutY="348.0" mnemonicParsing="false" onAction="#RejestracjaDaneOsobowe" styleClass="round-btn" text="Pacjent" />
             <Button fx:id="GuzikLogowanie" layoutX="177.0" layoutY="652.0" mnemonicParsing="false" onAction="#PowrotDoEkranuLogowania" text="Logowanie" />
          </children>
       </AnchorPane>

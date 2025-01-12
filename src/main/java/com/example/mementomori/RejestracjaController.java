@@ -2,10 +2,17 @@ package com.example.mementomori;
 
 import com.example.mementomori.bazyDanych.BazaRejestracja;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class RejestracjaController {
+public class RejestracjaController implements Initializable {
     public TextField Imie;
     public Button GuzikLekarz;
     public Button GuzikPacjent;
@@ -22,14 +29,65 @@ public class RejestracjaController {
     public Button GuzikUtworzKonto;
 
     public static String login;
+    public Button cofnijDoTypKontaButton;
+    public Button przejdzDoOsobowychButton;
+
+    @FXML
+    public ChoiceBox<String> specjalizcjaChoice;
+
+    @FXML
+    public TextField adresField;
+
+    @FXML
+    public Button mapButton;
+
+    private final String[] specjalizacje = {
+            "Alergolog",
+            "Dermatolog",
+            "Kardiolog",
+            "Okulista",
+            "Psychiatra",
+            "Reumatolog",
+            "Stomatolog"
+    };
+
+    public static boolean isDoctor = false;
+    public static String tempSpecjalizacja;
+    public static String tempAdres;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        if (specjalizcjaChoice != null) {
+            specjalizcjaChoice.getItems().addAll(specjalizacje);
+            specjalizcjaChoice.setValue(specjalizacje[0]); // Set default value
+        }
+    }
 
     public void RejestracjaLekarz(ActionEvent actionEvent) {
-        //Do zrobienia
+        isDoctor = true;
+        MementoMori.navigateTo("Rejestracja/RejestracjaDaneZawodowe.fxml");
     }
 
-    public void RejestracjaPacjent(ActionEvent actionEvent) {
+    public void RejestracjaDaneOsobowe(ActionEvent actionEvent) {
+        if (!isDoctor) {
+            MementoMori.navigateTo("Rejestracja/RejestracjaDaneKonta.fxml");
+        }
+        String specjalizacja = specjalizcjaChoice.getValue();
+        String adres = adresField.getText();
+
+        System.out.println(specjalizacja);
+        System.out.println(adres);
+
+        if (specjalizacja == null || adres.isEmpty()) {
+            System.out.println("Proszę wypełnić wszystkie pola");
+            return;
+        }
+        tempSpecjalizacja = specjalizacja;
+        tempAdres = adres;
+
         MementoMori.navigateTo("Rejestracja/RejestracjaDaneKonta.fxml");
     }
+
 
     public void PowrotDoEkranuLogowania(ActionEvent actionEvent) {
         MementoMori.navigateTo("Logowanie.fxml");
@@ -41,22 +99,29 @@ public class RejestracjaController {
 
     public void KontynujRejestrację(ActionEvent actionEvent) {
         if(NazwaUzytkownika.getText().isEmpty() || Haslo.getText().isEmpty() || PowtorzoneHaslo.getText().isEmpty()){
-            //dodać jakiś błąd
             System.out.println("uzupełnij wszystkie pola");
             return;
         }else if(!Haslo.getText().equals(PowtorzoneHaslo.getText())){
-            //dodać jakiś błąd
             System.out.println("hasła nie są takie same");
             return;
         }
         login = NazwaUzytkownika.getText();
-        BazaRejestracja.insertLoginHaslo(NazwaUzytkownika.getText(), Haslo.getText());
+        if(isDoctor){
+            System.out.println(tempSpecjalizacja);
+            System.out.println(tempAdres);
+            BazaRejestracja.insertLoginHaslo(login, Haslo.getText());
+            BazaRejestracja.insertDaneZawodowe(login, tempSpecjalizacja, tempAdres);
+            isDoctor = false;
+            tempAdres = "";
+            tempSpecjalizacja = "";
+        }else {
+            BazaRejestracja.insertLoginHaslo(login, Haslo.getText());
+        }
         MementoMori.navigateTo("Rejestracja/RejestracjaDaneOsobowe.fxml");
     }
 
     public void Zarejestruj(ActionEvent actionEvent) {
         if(Imie.getText().isEmpty() || Nazwisko.getText().isEmpty() || NrTelefonu.getText().isEmpty() || Email.getText().isEmpty()){
-            //dodać jakiś błąd
             System.out.println("uzupełnij wszystkie pola");
             return;
         }
@@ -67,5 +132,14 @@ public class RejestracjaController {
 
     public void CofanieDoDanychKonta(ActionEvent actionEvent) {
         MementoMori.navigateTo("Rejestracja/RejestracjaDaneKonta.fxml");
+    }
+
+    public void MapaZWyborem(ActionEvent actionEvent) {
+        try {
+            Desktop.getDesktop().browse(new URI("https://www.google.com/maps"));
+            //można skopiować i dodać do adresField
+        } catch (Exception e) {
+            System.err.println("Nie udało się otworzyć Map Google: " + e.getMessage());
+        }
     }
 }

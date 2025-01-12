@@ -19,6 +19,10 @@ public class MementoMori extends Application {
 
     private static Map<String, Scene> loadedScenes;
 
+    public static String currentUser;
+    public static boolean isDoctor;
+
+
     @Override
     public void start(Stage stage) throws IOException {
         loadedScenes = new HashMap<>();
@@ -37,6 +41,7 @@ public class MementoMori extends Application {
         // vv to potrzebuje folder data vv
         BazaLeki.initTable();
         BazaRejestracja.initTable();
+
 
         stage.setScene(load("Logowanie.fxml"));
         stage.show();

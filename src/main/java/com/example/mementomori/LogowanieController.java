@@ -31,12 +31,18 @@ public class LogowanieController {
         MementoMori.navigateTo("Rejestracja/RejestracjaTypKonta.fxml");
     }
 
-    @FXML
     public void zaloguj(ActionEvent actionEvent) {
-        if (BazaRejestracja.userExists(Login.getText()) && BazaRejestracja.isPasswordCorrect(Login.getText(), haslo.getText())) {
-            MementoMori.returnHome();
+        String loginText = Login.getText();
+        if (BazaRejestracja.userExists(loginText) && BazaRejestracja.isPasswordCorrect(loginText, haslo.getText())) {
+            MementoMori.currentUser = loginText;
+            MementoMori.isDoctor = BazaRejestracja.isDoctor(loginText);
+            if (MementoMori.isDoctor) {
+                MementoMori.navigateTo("Lekarz/PanelLekarzaMain.fxml");
+            } else {
+                MementoMori.returnHome();
+            }
         } else {
-            //Zaimplementować, że hasło złe
+            System.out.println("Nieprawidłowy login lub hasło");
         }
     }
 }
