@@ -3,7 +3,7 @@ package com.example.mementomori.bazyDanych;
 import java.sql.*;
 
 public class BazaRejestracja {
-    private static final String DB_PATH = "src\\main\\java\\com\\example\\mementomori\\bazyDanych\\uzytkownicy.db";
+    private static final String DB_PATH = "data\\uzytkownicy.db";
     private static final String URL = "jdbc:sqlite:" + DB_PATH;
 
     public static Connection connect() {
@@ -16,6 +16,28 @@ public class BazaRejestracja {
             e.printStackTrace();
         }
         return conn;
+    }
+
+    public static void initTable() {
+        try(Connection conn = connect()) {
+            PreparedStatement stmt = conn.prepareStatement("""
+                CREATE TABLE IF NOT EXISTS uzytkownicy (id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT UNIQUE NOT NULL, haslo TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS dane_uzytkownikow (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    login TEXT UNIQUE NOT NULL,
+                    imie TEXT,
+                    nazwisko TEXT,
+                    email TEXT,
+                    nrTelefonu TEXT,
+                    FOREIGN KEY (login) REFERENCES uzytkownicy(login)
+                );
+            """);
+            stmt.execute();
+        }
+        catch (SQLException e) {
+            System.err.println("błąd przygotowania tabeli leków: ");
+            e.printStackTrace();
+        }
     }
 
     public static boolean userExists(String login) {
