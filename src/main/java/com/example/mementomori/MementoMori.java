@@ -19,6 +19,10 @@ public class MementoMori extends Application {
 
     private static Map<String, Scene> loadedScenes;
 
+    public static String currentUser;
+    public static boolean isDoctor;
+
+
     @Override
     public void start(Stage stage) throws IOException {
         loadedScenes = new HashMap<>();

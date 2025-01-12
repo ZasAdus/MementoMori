@@ -142,4 +142,18 @@ public class BazaRejestracja {
             e.printStackTrace();
         }
     }
+
+    public static boolean isDoctor(String login) {
+        String sql = "SELECT login FROM doctors WHERE login = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, login);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // jeśli znaleziono wpis w tabeli doctors, to jest to lekarz
+        } catch (SQLException e) {
+            System.out.println("Błąd podczas sprawdzania typu użytkownika.");
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
