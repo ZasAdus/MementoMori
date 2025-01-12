@@ -19,23 +19,34 @@ public class BazaRejestracja {
     }
 
     public static void initTable() {
-        try(Connection conn = connect()) {
-            PreparedStatement stmt = conn.prepareStatement("""
-                CREATE TABLE IF NOT EXISTS uzytkownicy (id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT UNIQUE NOT NULL, haslo TEXT NOT NULL);
-                CREATE TABLE IF NOT EXISTS dane_uzytkownikow (
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    login TEXT UNIQUE NOT NULL,
-                    imie TEXT,
-                    nazwisko TEXT,
-                    email TEXT,
-                    nrTelefonu TEXT,
-                    FOREIGN KEY (login) REFERENCES uzytkownicy(login)
-                );
-            """);
-            stmt.execute();
-        }
-        catch (SQLException e) {
-            System.err.println("błąd przygotowania tabeli leków: ");
+        String[] createTableStatements = {
+                "CREATE TABLE IF NOT EXISTS uzytkownicy (id INTEGER PRIMARY KEY AUTOINCREMENT, login TEXT UNIQUE NOT NULL, haslo TEXT NOT NULL)",
+
+                "CREATE TABLE IF NOT EXISTS dane_uzytkownikow (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "login TEXT UNIQUE NOT NULL, " +
+                        "imie TEXT, " +
+                        "nazwisko TEXT, " +
+                        "email TEXT, " +
+                        "nrTelefonu TEXT, " +
+                        "FOREIGN KEY (login) REFERENCES uzytkownicy(login))",
+
+                "CREATE TABLE IF NOT EXISTS doctors (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "login TEXT UNIQUE NOT NULL, " +
+                        "specjalizacja TEXT NOT NULL, " +
+                        "adresPrzychodni TEXT NOT NULL, " +
+                        "FOREIGN KEY (login) REFERENCES uzytkownicy(login))"
+        };
+
+        try (Connection conn = connect()) {
+            Statement stmt = conn.createStatement();
+            for (String createStatement : createTableStatements) {
+                stmt.execute(createStatement);
+            }
+            System.out.println("Tabele zostały utworzone pomyślnie.");
+        } catch (SQLException e) {
+            System.err.println("Błąd podczas tworzenia tabel: ");
             e.printStackTrace();
         }
     }
@@ -115,5 +126,20 @@ public class BazaRejestracja {
     public static void main(String[] args) {
         BazaRejestracja.connect();
         BazaRejestracja.insertDaneOsobowe("admin", "Jan", "Kowalski", "jan.kowalski@example.com", "123456789");
+    }
+
+    public static void insertDaneZawodowe(String login, String specjalizacja, String adresPrzychodni) {
+        String sql = "INSERT INTO doctors (login, specjalizacja, adresPrzychodni) VALUES (?, ?, ?)";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, login);
+            pstmt.setString(2, specjalizacja);
+            pstmt.setString(3, adresPrzychodni);
+            pstmt.executeUpdate();
+            System.out.println("Dane zawodowe zostały dodane dla użytkownika '" + login + "'");
+        } catch (SQLException e) {
+            System.out.println("Błąd podczas dodawania danych zawodowych.");
+            e.printStackTrace();
+        }
     }
 }

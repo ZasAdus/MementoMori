@@ -38,6 +38,7 @@ public class MementoMori extends Application {
         BazaLeki.initTable();
         BazaRejestracja.initTable();
 
+
         stage.setScene(load("Logowanie.fxml"));
         stage.show();
     }
