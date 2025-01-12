@@ -10,6 +10,7 @@
 <?import javafx.scene.text.Text?>
 
 
+<?import javafx.scene.control.PasswordField?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 926; -fx-pref-width: 428;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.LogowanieController">
    <top>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -36,7 +37,7 @@
                </font>
             </Text>
             <TextField fx:id="Login" layoutX="102.0" layoutY="173.0" onAction="#clearLogin" prefHeight="25.0" prefWidth="215.0" />
-            <TextField fx:id="haslo" layoutX="103.0" layoutY="238.0" onAction="#clearHaslo" prefHeight="25.0" prefWidth="215.0" />
+            <PasswordField fx:id="haslo" layoutX="103.0" layoutY="238.0" onAction="#clearHaslo" prefHeight="25.0" prefWidth="215.0" />
             <Button fx:id="guzikUtworzKonto" layoutX="170.0" layoutY="423.0" mnemonicParsing="false" onAction="#stworzKonto" stylesheets="@styles/style.css" text="Utwórz konto" />
             <Button fx:id="goMenu" layoutX="186.0" layoutY="339.0" mnemonicParsing="false" onAction="#zaloguj" stylesheets="@styles/style.css" text="Zaloguj" />
             <Text layoutX="101.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hasło:">

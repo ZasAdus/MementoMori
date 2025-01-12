@@ -22,9 +22,6 @@ public class UmowWizyteController {
     @FXML
     private ListView<String> doctorListView;
 
-    @FXML
-    private Label selectedDoctorLabel;
-
     private List<String> doctorsInWarsawFamilyDoctor = List.of("Dr. Jan Kowalski", "Dr. Anna Nowak");
     private List<String> doctorsInKrakowFamilyDoctor = List.of("Dr. Piotr Wiśniewski");
     private List<String> doctorsInWroclawDermatologist = List.of("Dr. Monika Zielińska");

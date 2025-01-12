@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ public class TerminWizytyController {
     static {
         doctorAppointments.put("Dr. Jan Kowalski", List.of("2024-12-17 08:00", "2024-12-17 10:00", "2024-12-18 14:00"));
         doctorAppointments.put("Dr. Anna Nowak", List.of("2024-12-17 09:00", "2024-12-19 11:00", "2024-12-20 13:00"));
-        doctorAppointments.put("Dr. Piotr Wiśniewski", List.of("2024-12-18 08:30", "2024-12-18 12:30", "2024-12-19 15:00"));
+        doctorAppointments.put("Dr. Piotr Wiśniewski", List.of("2025-01-10 08:30", "2024-12-18 12:30", "2024-12-19 15:00"));
     }
 
     public static void setSelectedDoctor(String doctor) {
@@ -60,11 +61,21 @@ public class TerminWizytyController {
             appointmentListView.getItems().add("Brak dostępnych terminów.");
         }
 
+        appointmentListView.setOnMouseClicked(this::onAppointmentSelected);
     }
 
     @FXML
-    private void onAppointmentSelected() {
+    private void onAppointmentSelected(MouseEvent event) {
+        String selectedAppointment = appointmentListView.getSelectionModel().getSelectedItem();
+        if (selectedAppointment != null) {
+            WizytyController.setSelectedAppointment(selectedAppointment);
+            scheduleAppointment();
+        }
+    }
 
+    @FXML
+    public void scheduleAppointment() {
+        MementoMori.navigateTo(WizytyController.PATH);
     }
 
 }

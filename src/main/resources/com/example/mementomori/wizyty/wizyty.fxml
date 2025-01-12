@@ -14,13 +14,11 @@
             fx:controller="com.example.mementomori.WizytyController">
     <top>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wizyty">
-                    <font>
-                        <Font size="36.0" />
-                    </font>
-                </Text>
-            </children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wizyty">
+                <font>
+                    <Font size="36.0"/>
+                </font>
+            </Text>
         </HBox>
     </top>
     <bottom>
@@ -54,7 +52,7 @@
                         </ScrollPane>
                         <HBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="SOMETIMES">
                             <children>
-                                <Button styleClass="round-btn" mnemonicParsing="false" onAction="#scheduleAppointment" text="Sprawdź dostępność" />
+                                <Button styleClass="round-btn" mnemonicParsing="false" onAction="#scheduleAppointment" text="Umów wizytę" />
                             </children>
                         </HBox>
                     </children>
