@@ -25,6 +25,7 @@
         <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
             <children>
                 <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
+                <Button mnemonicParsing="false" onAction="#goHome" text="Twoje wizyty" />
             </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" />
@@ -44,9 +45,9 @@
                 </HBox>
                 <VBox BorderPane.alignment="CENTER">
                     <children>
-                        <ScrollPane fx:id="calendarScrollPane" fitToWidth="true" prefHeight="450.0" fitToHeight="false" vbarPolicy="AS_NEEDED">
+                        <ScrollPane fx:id="calendarScrollPane" fitToWidth="true" prefHeight="350.0" fitToHeight="false" vbarPolicy="AS_NEEDED">
                             <content>
-                                <GridPane fx:id="calendarGrid" style="-fx-background-color: #dff9fb;" hgap="25" vgap="20" alignment="CENTER">
+                                <GridPane fx:id="calendarGrid" style="-fx-background-color: #dff9fb;" hgap="20" vgap="20" alignment="CENTER">
                                 </GridPane>
                             </content>
                         </ScrollPane>

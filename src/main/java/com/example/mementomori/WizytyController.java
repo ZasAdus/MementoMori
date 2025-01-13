@@ -81,30 +81,35 @@ public class WizytyController {
             calendarGrid.add(dayText, i + 1, 0);
         }
 
-        for (int i = 0; i < 24; i++) {
+        for (int i = 6; i <= 20; i += 2) {
             String time = String.format("%02d:00", i);
-            calendarGrid.add(new Text(time), 0, i + 1);
+            int row = (i - 6) / 2 + 1;
+            calendarGrid.add(new Text(time), 0, row);
         }
-
-        System.out.println("czy weszło");
 
         if (selectedAppointment != null) {
             LocalDateTime appointmentDateTime = parseAppointment(selectedAppointment);
-            System.out.println(appointmentDateTime);
             if (!appointmentDateTime.toLocalDate().isBefore(startOfWeek) && !appointmentDateTime.toLocalDate().isAfter(endOfWeek)) {
 
                 int dayColumn = appointmentDateTime.getDayOfWeek().getValue() % 7;
-                int hourRow = appointmentDateTime.getHour() + 1;
+
+                int startHour = 6;
+                int step = 2;
+                int hour = appointmentDateTime.getHour();
+                int minutes = appointmentDateTime.getMinute();
+
+                double row = (hour - startHour) / (double) step + 1;
+                row += (minutes / 60.0) / step;
 
                 Button button = new Button();
                 button.setStyle(
                         "-fx-background-color: #27ae60; " +
                                 "-fx-background-radius: 50%; " +
-                                "-fx-min-width: 15px; " +
-                                "-fx-min-height: 15px; "
+                                "-fx-min-width: 25px; " +
+                                "-fx-min-height: 25px; "
                 );
                 button.setOnAction(event -> showAppointmentDetails(selectedAppointment));
-                calendarGrid.add(button, dayColumn + 1, hourRow);
+                calendarGrid.add(button, dayColumn + 1, (int) row);
             }
         }
 
