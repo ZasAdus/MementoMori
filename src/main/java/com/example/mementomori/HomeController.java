@@ -11,6 +11,9 @@ public class HomeController {
     }
 
     @FXML
+    protected void goKonto() { MementoMori.navigateTo(MojeKontoController.PATH); }
+
+    @FXML
     protected void goKroki() { MementoMori.navigateTo(KrokiController.PATH); }
 
     @FXML

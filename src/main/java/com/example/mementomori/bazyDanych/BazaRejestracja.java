@@ -176,4 +176,17 @@ public class BazaRejestracja {
         return -1; // Zwraca -1 w przypadku błędu
     }
 
+    public static void updatePassword(String login, String newPassword) {
+        String sql = "UPDATE uzytkownicy SET haslo = ? WHERE login = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, login);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

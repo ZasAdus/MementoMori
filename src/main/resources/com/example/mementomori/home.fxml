@@ -68,9 +68,10 @@
       </VBox>
    </center>
    <bottom>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
          <children>
             <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
+            <Button mnemonicParsing="false" onAction="#goKonto" text="Moje konto" />
          </children>
          <BorderPane.margin>
             <Insets bottom="10.0" />
