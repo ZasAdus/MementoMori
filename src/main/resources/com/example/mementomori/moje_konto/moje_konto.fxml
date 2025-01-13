@@ -22,13 +22,14 @@
         </HBox>
     </top>
     <bottom>
-        <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
+        <HBox styleClass="bottom-bar">
             <children>
-                <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
+                <Button mnemonicParsing="false" onAction="#goHome" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
             </children>
-            <BorderPane.margin>
-                <Insets bottom="10.0" />
-            </BorderPane.margin>
         </HBox>
     </bottom>
     <center>
