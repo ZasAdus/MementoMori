@@ -30,6 +30,8 @@ public class PanelLekarzaZarzadzanieWizytamiController {
     @FXML
     private AnchorPane pendingAnchorPane;
 
+    private ScrollPane confirmedScrollPane;
+    private ScrollPane pendingScrollPane;
     private VBox confirmedAppointmentsBox;
     private VBox pendingAppointmentsBox;
     private BazaWizyty bazaWizyty;
@@ -38,18 +40,28 @@ public class PanelLekarzaZarzadzanieWizytamiController {
     public void initialize() {
         try {
             bazaWizyty = new BazaWizyty();
+
+            // Initialize VBoxes
             confirmedAppointmentsBox = new VBox(10);
             pendingAppointmentsBox = new VBox(10);
-
             confirmedAppointmentsBox.setPadding(new Insets(10));
             pendingAppointmentsBox.setPadding(new Insets(10));
 
-            if (confirmedAnchorPane != null && pendingAnchorPane != null) {
-                confirmedAnchorPane.getChildren().add(confirmedAppointmentsBox);
-                pendingAnchorPane.getChildren().add(pendingAppointmentsBox);
+            // Initialize ScrollPanes
+            confirmedScrollPane = new ScrollPane(confirmedAppointmentsBox);
+            pendingScrollPane = new ScrollPane(pendingAppointmentsBox);
 
-                confirmedAppointmentsBox.setPrefWidth(300);
-                pendingAppointmentsBox.setPrefWidth(300);
+            // Configure ScrollPanes
+            configureScrollPane(confirmedScrollPane);
+            configureScrollPane(pendingScrollPane);
+
+            if (confirmedAnchorPane != null && pendingAnchorPane != null) {
+                // Add ScrollPanes to AnchorPanes with proper anchoring
+                setAnchorConstraints(confirmedScrollPane);
+                setAnchorConstraints(pendingScrollPane);
+
+                confirmedAnchorPane.getChildren().add(confirmedScrollPane);
+                pendingAnchorPane.getChildren().add(pendingScrollPane);
 
                 loadAppointments();
 
@@ -63,6 +75,19 @@ public class PanelLekarzaZarzadzanieWizytamiController {
             System.out.println("Error during initialization: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void configureScrollPane(ScrollPane scrollPane) {
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    }
+
+    private void setAnchorConstraints(ScrollPane scrollPane) {
+        AnchorPane.setTopAnchor(scrollPane, 0.0);
+        AnchorPane.setBottomAnchor(scrollPane, 0.0);
+        AnchorPane.setLeftAnchor(scrollPane, 0.0);
+        AnchorPane.setRightAnchor(scrollPane, 0.0);
     }
 
     private void loadAppointments() {
