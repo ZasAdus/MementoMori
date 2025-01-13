@@ -35,9 +35,9 @@ public class TerminWizytyController {
     private static final Map<String, List<String>> doctorAppointments = new HashMap<>();
 
     static {
-        doctorAppointments.put("Dr. Jan Kowalski", List.of("2024-12-17 08:00", "2024-12-17 10:00", "2024-12-18 14:00"));
-        doctorAppointments.put("Dr. Anna Nowak", List.of("2024-12-17 09:00", "2024-12-19 11:00", "2024-12-20 13:00"));
-        doctorAppointments.put("Dr. Piotr Wiśniewski", List.of("2025-01-10 08:30", "2024-12-18 12:30", "2024-12-19 15:00"));
+        doctorAppointments.put("Dr. Jan Kowalski", List.of("2025-01-14 08:00", "2025-01-14 10:00", "2025-01-14 14:00"));
+        doctorAppointments.put("Dr. Anna Nowak", List.of("2025-01-14 09:00", "2025-01-14 11:00", "2025-01-14 13:00"));
+        doctorAppointments.put("Dr. Piotr Wiśniewski", List.of("2025-01-14 08:30", "2025-01-14 12:30", "2025-01-14 15:00"));
     }
 
     public static void setSelectedDoctor(String doctor) {

@@ -45,15 +45,13 @@ public class BazaMojeKonto {
         return null;
     }
 
-    public static void updateUserData(String login, String imie, String nazwisko, String email, String nrTelefonu) {
-        String sql = "UPDATE dane_uzytkownikow SET imie = ?, nazwisko = ?, email = ?, nrTelefonu = ? WHERE login = ?";
+    public static void updateUserData(String login, String email, String nrTelefonu) {
+        String sql = "UPDATE dane_uzytkownikow SET email = ?, nrTelefonu = ? WHERE login = ?";
         try (Connection conn = BazaRejestracja.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, imie);
-            pstmt.setString(2, nazwisko);
-            pstmt.setString(3, email);
-            pstmt.setString(4, nrTelefonu);
-            pstmt.setString(5, login);
+            pstmt.setString(1, email);
+            pstmt.setString(2, nrTelefonu);
+            pstmt.setString(3, login);
             pstmt.executeUpdate();
             System.out.println("Dane użytkownika '" + login + "' zostały zaktualizowane.");
         } catch (SQLException e) {

@@ -49,9 +49,10 @@ public class BazaWizyty {
     }
 
     public boolean dodajWizyte(int idLekarza, int idPacjenta, LocalDateTime dataczas) {
-        // Sprawdź czy lekarz przyjmuje w tym czasie, do aplikacji ze strony użytkownika
+        // Sprawdź czy lekarz przyjmuje w tym czasie
         BazaWizytyLekarze bazaLekarze = new BazaWizytyLekarze();
         if (!bazaLekarze.sprawdzCzyPrzyjmuje(dataczas.getDayOfWeek().toString(), dataczas.toLocalTime())) {
+            System.out.println("Lekarz nie przyjmuje w tym czasie");
             return false;
         }
 
@@ -64,13 +65,15 @@ public class BazaWizyty {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idLekarza);
             pstmt.setInt(2, idPacjenta);
+            // Zapisujemy datę w formacie YYYY-MM-DD
             pstmt.setString(3, dataczas.toLocalDate().toString());
             pstmt.setString(4, dataczas.toLocalTime().toString());
             pstmt.setString(5, "OCZEKUJACA");
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Błąd dodawania wizyty: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -124,18 +127,38 @@ public class BazaWizyty {
                     wizyta.id = rs.getInt("id");
                     wizyta.idLekarza = rs.getInt("id_lekarza");
                     wizyta.idPacjenta = rs.getInt("id_pacjenta");
+
+                    // Bezpieczniejsze parsowanie daty
                     String dateStr = rs.getString("data_wizyty");
-                    String[] dateParts = dateStr.split("\\.");
-                    LocalDate data = LocalDate.of(
-                            Integer.parseInt(dateParts[2]), // rok
-                            Integer.parseInt(dateParts[1]), // miesiąc
-                            Integer.parseInt(dateParts[0])  // dzień
-                    );
-                    LocalTime czas = LocalTime.parse(rs.getString("godzina_wizyty"));
-                    wizyta.dataczas = LocalDateTime.of(data, czas);
-                    wizyta.status = rs.getString("status");
-                    wizyta.pacjentName = getPacjentName(wizyta.idPacjenta);
-                    wizyty.add(wizyta);
+                    LocalDate data;
+                    try {
+                        // Próbujemy najpierw format YYYY-MM-DD
+                        data = LocalDate.parse(dateStr);
+                    } catch (Exception e) {
+                        try {
+                            // Jeśli nie wyjdzie, próbujemy format DD.MM.YYYY
+                            String[] dateParts = dateStr.split("\\.");
+                            data = LocalDate.of(
+                                    Integer.parseInt(dateParts[2]), // rok
+                                    Integer.parseInt(dateParts[1]), // miesiąc
+                                    Integer.parseInt(dateParts[0])  // dzień
+                            );
+                        } catch (Exception ex) {
+                            System.out.println("Błąd parsowania daty: " + dateStr);
+                            continue; // Pomijamy nieprawidłowy wpis
+                        }
+                    }
+
+                    // Bezpieczniejsze parsowanie czasu
+                    try {
+                        LocalTime czas = LocalTime.parse(rs.getString("godzina_wizyty"));
+                        wizyta.dataczas = LocalDateTime.of(data, czas);
+                        wizyta.status = rs.getString("status");
+                        wizyta.pacjentName = getPacjentName(wizyta.idPacjenta);
+                        wizyty.add(wizyta);
+                    } catch (Exception e) {
+                        System.out.println("Błąd parsowania czasu: " + rs.getString("godzina_wizyty"));
+                    }
                 }
             }
         } catch (SQLException e) {

@@ -18,8 +18,9 @@ public class ZmianaDanychController {
         String nrTelefonu = newNrTelefonu.getText();
 
         if (!email.isEmpty() && !nrTelefonu.isEmpty()) {
-            BazaMojeKonto.updateUserData(MementoMori.currentUser, null, null, email, nrTelefonu);
+            BazaMojeKonto.updateUserData(MementoMori.currentUser, email, nrTelefonu);
             System.out.println("Dane użytkownika zostały zaktualizowane.");
+            MojeKontoController.refreshUserData();
             MementoMori.navigateTo("moje_konto/moje_konto.fxml");
         } else {
             System.out.println("Wszystkie pola muszą być wypełnione.");

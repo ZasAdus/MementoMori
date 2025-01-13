@@ -60,7 +60,7 @@ public class WizytyController {
         updateCalendar();
     }
 
-    private void updateCalendar() {
+    public void updateCalendar() {
         calendarGrid.getChildren().clear();
         headerBox.getChildren().clear();
 
@@ -74,6 +74,7 @@ public class WizytyController {
         weekText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         headerBox.getChildren().add(weekText);
 
+        // Dodaj nagłówki dni tygodnia
         String[] daysOfWeek = {"Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"};
         for (int i = 0; i < 7; i++) {
             LocalDate currentDay = startOfWeek.plusDays(i);
@@ -82,25 +83,24 @@ public class WizytyController {
             calendarGrid.add(dayText, i + 1, 0);
         }
 
-        for (int i = 6; i <= 20; i += 2) {
-            String time = String.format("%02d:00", i);
-            int row = (i - 6) / 2 + 1;
-            calendarGrid.add(new Text(time), 0, row);
+        // Dodaj godziny
+        for (int hour = 6; hour < 24; hour++) {
+            for (int minute = 0; minute < 60; minute += 30) {
+                int rowIndex = (hour - 6) * 2 + (minute == 30 ? 1 : 0) + 1;
+                String time = String.format("%02d:%02d", hour, minute);
+                calendarGrid.add(new Text(time), 0, rowIndex);
+            }
         }
 
+        // Dodaj zaplanowane wizyty
         if (selectedAppointment != null) {
             LocalDateTime appointmentDateTime = parseAppointment(selectedAppointment);
             if (!appointmentDateTime.toLocalDate().isBefore(startOfWeek) && !appointmentDateTime.toLocalDate().isAfter(endOfWeek)) {
-
-                int dayColumn = appointmentDateTime.getDayOfWeek().getValue() % 7;
-
-                int startHour = 6;
-                int step = 2;
+                int dayColumn = appointmentDateTime.getDayOfWeek().getValue();
                 int hour = appointmentDateTime.getHour();
                 int minutes = appointmentDateTime.getMinute();
 
-                double row = (hour - startHour) / (double) step + 1;
-                row += (minutes / 60.0) / step;
+                int rowIndex = (hour - 6) * 2 + (minutes >= 30 ? 1 : 0) + 1;
 
                 Button button = new Button();
                 button.setStyle(
@@ -110,12 +110,13 @@ public class WizytyController {
                                 "-fx-min-height: 25px; "
                 );
                 button.setOnAction(event -> showAppointmentDetails(selectedAppointment));
-                calendarGrid.add(button, dayColumn + 1, (int) row);
+                calendarGrid.add(button, dayColumn, rowIndex);
             }
         }
 
+        // Ustaw ScrollPane
+        calendarScrollPane.setVvalue(0.0); // Przewiń na samą górę
         calendarScrollPane.setFitToWidth(true);
-        calendarScrollPane.setFitToHeight(true);
     }
 
     public static void setSelectedAppointment(String appointment) {
