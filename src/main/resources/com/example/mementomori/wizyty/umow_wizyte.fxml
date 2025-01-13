@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ComboBox?>
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.ListView?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.mementomori.UmowWizyteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.UmowWizyteController">
     <top>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
@@ -26,22 +19,24 @@
             </children>
         </HBox>
     </top>
+
     <bottom>
-        <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
+        <HBox styleClass="bottom-bar">
             <children>
-                <Button mnemonicParsing="false" onAction="#goWizyty" text="← Wizyty" />
-                <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
+                <Button mnemonicParsing="false" onAction="#goHome" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button mnemonicParsing="false" onAction="#goWizyty" text="🡄 Wizyty" />
             </children>
-            <BorderPane.margin>
-                <Insets bottom="10.0" />
-            </BorderPane.margin>
         </HBox>
     </bottom>
     <center>
-        <VBox spacing="10" alignment="TOP_CENTER" fillWidth="true">
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Miasto" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" prefWidth="100" />
-                <ComboBox fx:id="cityComboBox" promptText="Wybierz miasto" HBox.hgrow="ALWAYS">
+        <VBox alignment="TOP_CENTER" fillWidth="true" spacing="10">
+            <HBox alignment="CENTER" spacing="10">
+                <Label prefWidth="100" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" text="Miasto" />
+                <ComboBox fx:id="cityComboBox" prefHeight="25.0" prefWidth="143.0" promptText="Wybierz miasto" HBox.hgrow="ALWAYS">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
                             <String fx:value="Warszawa" />
@@ -54,8 +49,8 @@
             </HBox>
 
             <!-- Drugi zestaw: Specjalista -->
-            <HBox spacing="10" alignment="CENTER">
-                <Label text="Specjalista" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" prefWidth="100"/>
+            <HBox alignment="CENTER" spacing="10">
+                <Label prefWidth="100" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" text="Specjalista" />
                 <ComboBox fx:id="specialistComboBox" promptText="Wybierz specjalistę" HBox.hgrow="ALWAYS">
                     <items>
                         <FXCollections fx:factory="observableArrayList">
@@ -68,12 +63,12 @@
                 </ComboBox>
             </HBox>
 
-            <Button text="Szukaj" onAction="#searchAppointments"/>
+            <Button onAction="#searchAppointments" text="Szukaj" />
 
-            <ListView fx:id="doctorListView" prefHeight="200" maxHeight="200" VBox.vgrow="ALWAYS">
+            <ListView fx:id="doctorListView" maxHeight="200" prefHeight="200" VBox.vgrow="ALWAYS">
             </ListView>
 
-            <Label fx:id="selectedDoctorLabel" text="Wybierz lekarza, aby kontynuować."/>
+            <Label fx:id="selectedDoctorLabel" text="Wybierz lekarza, aby kontynuować." />
 
 
         </VBox>

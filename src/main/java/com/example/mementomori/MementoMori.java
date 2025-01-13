@@ -44,6 +44,7 @@ public class MementoMori extends Application {
         BazaRejestracja.initTable();
 
 
+//        stage.setScene(load(LekiController.MAIN_PATH));
         stage.setScene(load("Logowanie.fxml"));
         stage.show();
     }
@@ -78,7 +79,6 @@ public class MementoMori extends Application {
     public static Scene forceReload(String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(path));
         Scene result =  new Scene(loader.load());
-        result.getStylesheets().add(MementoMori.class.getResource("styles/style.css").toExternalForm()); // ładowanie globalnych styli
 
         loadedScenes.put(path, result);
         return result;

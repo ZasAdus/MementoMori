@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 926; -fx-pref-width: 428;" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.RejestracjaController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 926; -fx-pref-width: 428;" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.RejestracjaController">
     <top>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
@@ -28,26 +24,26 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <Text layoutX="34.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nazwa użytkownika:">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Text>
-                <TextField fx:id="NazwaUzytkownika" layoutX="34.0" layoutY="104.0" prefHeight="25.0" prefWidth="226.0" />
-                <Text layoutX="34.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hasło:">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Text>
-                <Text layoutX="34.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Powtórz Hasło:">
-                    <font>
-                        <Font size="24.0" />
-                    </font>
-                </Text>
-                <Button fx:id="TypKonta" layoutX="180.0" layoutY="608.0" mnemonicParsing="false" onAction="#PowrotDoTypuKonta" text="Typ konta" />
-                <Button fx:id="GuzikKontynuuj" layoutX="180.0" layoutY="351.0" mnemonicParsing="false" onAction="#KontynujRejestrację" text="Kontynuuj" />
-            <PasswordField fx:id="Haslo" layoutX="34.0" layoutY="182.0" prefHeight="25.0" prefWidth="228.0" />
-            <PasswordField fx:id="PowtorzoneHaslo" layoutX="34.0" layoutY="272.0" prefHeight="25.0" prefWidth="228.0" />
+                <Label layoutX="72.0" layoutY="156.0" text="Nazwa użytkownika">
+                   <font>
+                      <Font size="24.0" />
+                   </font>
+                </Label>
+                <TextField fx:id="NazwaUzytkownika" layoutX="72.0" layoutY="191.0" prefHeight="37.0" prefWidth="285.0" />
+                <Label layoutX="71.0" layoutY="242.0" text="Hasło">
+                   <font>
+                      <Font size="24.0" />
+                   </font>
+                </Label>
+                <Label layoutX="71.0" layoutY="333.0" text="Powtórz hasło">
+                   <font>
+                      <Font size="24.0" />
+                   </font>
+                </Label>
+                <Button fx:id="TypKonta" layoutX="101.0" layoutY="445.0" mnemonicParsing="false" onAction="#PowrotDoTypuKonta" text="🡄 Typ konta" />
+                <Button fx:id="GuzikKontynuuj" layoutX="249.0" layoutY="445.0" mnemonicParsing="false" onAction="#KontynujRejestrację" text="Kontynuuj" />
+                <PasswordField fx:id="Haslo" layoutX="72.0" layoutY="278.0" prefHeight="37.0" prefWidth="285.0" />
+                <PasswordField fx:id="PowtorzoneHaslo" layoutX="72.0" layoutY="369.0" prefHeight="37.0" prefWidth="285.0" />
             </children>
         </AnchorPane>
     </center>

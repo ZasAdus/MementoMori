@@ -5,12 +5,6 @@ import java.io.IOException;
 
 public class HomeController {
     @FXML
-    protected void goHome() {
-        System.out.println("ten guzik jest useless XD");
-        MementoMori.returnHome();
-    }
-
-    @FXML
     protected void goKonto() { MementoMori.navigateTo(MojeKontoController.PATH); }
 
     @FXML
