@@ -4,6 +4,7 @@ import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
@@ -90,33 +91,43 @@ public class PanelLekarzaZarzadzanieWizytamiController {
             e.printStackTrace();
         }
     }
-
     private HBox createAppointmentEntry(BazaWizyty.Wizyta wizyta) {
         HBox entryContainer = new HBox(10);
-        entryContainer.setStyle("-fx-background-color: #E6F3FF; -fx-padding: 10; " +
-                "-fx-background-radius: 5;");
-        entryContainer.setPrefWidth(300);
+        entryContainer.setStyle("-fx-background-color: #E6F3FF; -fx-padding: 10; -fx-background-radius: 5;");
+        entryContainer.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(entryContainer, Priority.ALWAYS);
 
         VBox patientInfo = new VBox(5);
         Label nameLabel = new Label(wizyta.pacjentName);
-        nameLabel.setStyle("-fx-font-weight: bold;");
+        nameLabel.setStyle("-fx-font-weight: bold; -fx-wrap-text: true;");
+        nameLabel.setMaxWidth(Double.MAX_VALUE);
         patientInfo.getChildren().add(nameLabel);
+        HBox.setHgrow(patientInfo, Priority.ALWAYS);
+        patientInfo.setMinWidth(100);
 
         VBox dateTimeInfo = new VBox(5);
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         Label dateLabel = new Label(wizyta.dataczas.format(dateFormatter));
-        Label timeLabel = new Label(wizyta.dataczas.format(timeFormatter));
+        Label timeLabel = new Label(wizyta.dataczas.format(timeFormatter) + " - " +
+                wizyta.dataczas.plusMinutes(15).format(timeFormatter));
         dateLabel.setStyle("-fx-font-weight: bold;");
-        dateTimeInfo.getChildren().addAll(dateLabel, timeLabel);
+        Label dayLabel = new Label(wizyta.dataczas.getDayOfWeek().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.forLanguageTag("pl")));
+        dateTimeInfo.getChildren().addAll(dateLabel, dayLabel, timeLabel);
+        dateTimeInfo.setMinWidth(100);
 
         VBox buttonBox = new VBox(5);
+        buttonBox.setMinWidth(120);
         Button cancelButton = new Button("Odwołaj wizytę");
         Button detailsButton = new Button("Szczegóły wizyty");
+
+        cancelButton.setPrefWidth(120);
+        detailsButton.setPrefWidth(120);
 
         if (wizyta.status.equals("OCZEKUJACA")) {
             Button confirmButton = new Button("Potwierdź wizytę");
             confirmButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
+            confirmButton.setPrefWidth(120);
             confirmButton.setOnAction(e -> {
                 bazaWizyty.zmienStatusWizyty(wizyta.id, "POTWIERDZONA");
                 loadAppointments();

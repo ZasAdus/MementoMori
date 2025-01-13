@@ -1,5 +1,6 @@
 package com.example.mementomori;
 
+import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -13,6 +14,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class PanelLekarzaMainControler {
     public Button lewoDataGuzik;
@@ -32,27 +34,15 @@ public class PanelLekarzaMainControler {
     private ScrollPane calendarScrollPane;
 
     private LocalDate currentMonday;
-
     private static String selectedAppointment;
-
     private static PanelLekarzaMainControler instance;
+    private BazaWizyty bazaWizyty;
 
     @FXML
     public void initialize() {
         currentMonday = LocalDate.now().with(DayOfWeek.MONDAY);
         instance = this;
-        updateCalendar();
-    }
-
-    @FXML
-    public void nextWeek() {
-        currentMonday = currentMonday.plusWeeks(1);
-        updateCalendar();
-    }
-
-    @FXML
-    public void prevWeek() {
-        currentMonday = currentMonday.minusWeeks(1);
+        bazaWizyty = new BazaWizyty();
         updateCalendar();
     }
 
@@ -63,13 +53,14 @@ public class PanelLekarzaMainControler {
         LocalDate startOfWeek = currentMonday;
         LocalDate endOfWeek = currentMonday.plusDays(6);
 
+        // Display week range header
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
         String weekRange = "Tydzień " + startOfWeek.format(formatter) + " - " + endOfWeek.format(formatter) + " (" + endOfWeek.getYear() + ")";
-
         Text weekText = new Text(weekRange);
         weekText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         headerBox.getChildren().add(weekText);
 
+        // Add day headers
         String[] daysOfWeek = {"Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"};
         for (int i = 0; i < 7; i++) {
             LocalDate currentDay = startOfWeek.plusDays(i);
@@ -78,51 +69,63 @@ public class PanelLekarzaMainControler {
             calendarGrid.add(dayText, i + 1, 0);
         }
 
+        // Add hour labels
         for (int i = 0; i < 24; i++) {
             String time = String.format("%02d:00", i);
             calendarGrid.add(new Text(time), 0, i + 1);
         }
 
-        if (selectedAppointment != null) {
-            LocalDateTime appointmentDateTime = parseAppointment(selectedAppointment);
-            System.out.println(appointmentDateTime);
-            if (!appointmentDateTime.toLocalDate().isBefore(startOfWeek) && !appointmentDateTime.toLocalDate().isAfter(endOfWeek)) {
+        // Load and display confirmed appointments
+        List<BazaWizyty.Wizyta> confirmedAppointments = bazaWizyty.pobierzWizyty(MementoMori.idDoctor, "POTWIERDZONA");
+        List<BazaWizyty.Wizyta> pendingAppointments = bazaWizyty.pobierzWizyty(MementoMori.idDoctor, "OCZEKUJACA");
 
-                int dayColumn = appointmentDateTime.getDayOfWeek().getValue() % 7;
-                int hourRow = appointmentDateTime.getHour() + 1;
+        // Display confirmed appointments
+        for (BazaWizyty.Wizyta wizyta : confirmedAppointments) {
+            addAppointmentDot(wizyta, "#27ae60");
+        }
 
-                Button button = new Button();
-                button.setStyle(
-                        "-fx-background-color: #27ae60; " +
-                                "-fx-background-radius: 50%; " +
-                                "-fx-min-width: 15px; " +
-                                "-fx-min-height: 15px; "
-                );
-                button.setOnAction(event -> showAppointmentDetails(selectedAppointment));
-                calendarGrid.add(button, dayColumn + 1, hourRow);
-            }
+        // Display pending appointments
+        for (BazaWizyty.Wizyta wizyta : pendingAppointments) {
+            addAppointmentDot(wizyta, "#f39c12");
         }
 
         calendarScrollPane.setFitToWidth(true);
         calendarScrollPane.setFitToHeight(true);
     }
 
-    public static void setSelectedAppointment(String appointment) {
-        selectedAppointment = appointment;
-        instance.updateCalendar();
+    private void addAppointmentDot(BazaWizyty.Wizyta wizyta, String color) {
+        LocalDateTime appointmentDateTime = wizyta.dataczas;
+
+        if (!appointmentDateTime.toLocalDate().isBefore(currentMonday) &&
+                !appointmentDateTime.toLocalDate().isAfter(currentMonday.plusDays(6))) {
+
+            int dayColumn = appointmentDateTime.getDayOfWeek().getValue();
+            int hourRow = appointmentDateTime.getHour() + 1;
+
+            Button button = new Button();
+            button.setStyle(
+                    "-fx-background-color: " + color + "; " +
+                            "-fx-background-radius: 50%; " +
+                            "-fx-min-width: 15px; " +
+                            "-fx-min-height: 15px; " +
+                            "-fx-max-width: 15px; " +
+                            "-fx-max-height: 15px; "
+            );
+
+            button.setOnAction(event -> showAppointmentDetails(wizyta));
+            calendarGrid.add(button, dayColumn, hourRow);
+        }
     }
 
-    private LocalDateTime parseAppointment(String appointment) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        return LocalDateTime.parse(appointment, formatter);
-    }
+    private void showAppointmentDetails(BazaWizyty.Wizyta wizyta) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-
-    private void showAppointmentDetails(String appointment) {
         String[] details = {
-                "Data wizyty: " + appointment.substring(0, 10),
-                "Godzina wizyty: " + appointment.substring(11),
-                "Pacjent", // + dodać z bazy kto
+                "Data wizyty: " + wizyta.dataczas.format(dateFormatter),
+                "Godzina wizyty: " + wizyta.dataczas.format(timeFormatter),
+                "Pacjent: " + wizyta.pacjentName,
+                "Status: " + wizyta.status
         };
 
         String info = String.join("\n", details);
@@ -134,7 +137,6 @@ public class PanelLekarzaMainControler {
 
         alert.showAndWait();
     }
-
 
     public void prevWeek(ActionEvent actionEvent) {
         currentMonday = currentMonday.minusWeeks(1);
