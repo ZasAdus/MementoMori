@@ -156,24 +156,23 @@ public class BazaRejestracja {
         }
         return false;
     }
-
     public static int idDoctor(String login) {
         String sql = "SELECT id FROM doctors WHERE login = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, login);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) { // Sprawdzenie, czy jest wynik
-                return rs.getInt("id"); // Pobranie wartości "id"
+            if (rs.next()) {
+                return rs.getInt("id");
             } else {
                 System.out.println("Nie znaleziono lekarza o podanym loginie.");
-                return -1; // Zwraca -1, jeśli użytkownik nie istnieje
+                return -1;
             }
         } catch (SQLException e) {
             System.out.println("Błąd podczas sprawdzania typu użytkownika.");
             e.printStackTrace();
         }
-        return -1; // Zwraca -1 w przypadku błędu
+        return -1;
     }
 
     public static void updatePassword(String login, String newPassword) {

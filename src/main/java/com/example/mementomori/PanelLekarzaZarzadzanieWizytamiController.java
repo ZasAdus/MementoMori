@@ -110,7 +110,7 @@ public class PanelLekarzaZarzadzanieWizytamiController {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         Label dateLabel = new Label(wizyta.dataczas.format(dateFormatter));
         Label timeLabel = new Label(wizyta.dataczas.format(timeFormatter) + " - " +
-                wizyta.dataczas.plusMinutes(15).format(timeFormatter));
+                wizyta.dataczas.plusMinutes(30).format(timeFormatter));
         dateLabel.setStyle("-fx-font-weight: bold;");
         Label dayLabel = new Label(wizyta.dataczas.getDayOfWeek().getDisplayName(java.time.format.TextStyle.FULL, java.util.Locale.forLanguageTag("pl")));
         dateTimeInfo.getChildren().addAll(dateLabel, dayLabel, timeLabel);

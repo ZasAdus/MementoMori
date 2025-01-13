@@ -10,7 +10,7 @@ import java.util.List;
 public class BazaWizyty {
     private static final String DB_NAME = "data\\harmonogram.db";
     private static final String URL = "jdbc:sqlite:" + DB_NAME;
-    private static final int VISIT_DURATION_MINUTES = 15;
+    private static final int VISIT_DURATION_MINUTES = 30;
     private static final String USER_DB_URL = "jdbc:sqlite:data\\uzytkownicy.db";
 
     public BazaWizyty() {
