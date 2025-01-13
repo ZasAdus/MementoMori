@@ -31,9 +31,14 @@
       </HBox>
    </bottom>
    <center>
-      <VBox BorderPane.alignment="CENTER">
+      <VBox BorderPane.alignment="CENTER" alignment="TOP_CENTER">
          <children>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="538.0" VBox.vgrow="SOMETIMES">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="HARMONOGRAM">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <ScrollPane hbarPolicy="NEVER" prefHeight="400" VBox.vgrow="SOMETIMES">
                <content>
                   <VBox fx:id="LekiContainer" alignment="CENTER" prefWidth="398.0" spacing="20.0" />
                </content>
@@ -43,7 +48,7 @@
             </ScrollPane>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="SOMETIMES">
                <children>
-                  <Button mnemonicParsing="false" onAction="#checkAvailability" styleClass="round-btn" text="Sprwadź dostępność" />
+                  <Button mnemonicParsing="false" onAction="#checkAvailability" styleClass="round-btn" text="Sprawdź dostępność" />
                </children>
             </HBox>
          </children>
