@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="202.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="86.0" layoutY="50.0" text="Data:" />
+      <DatePicker fx:id="date" layoutX="149.0" layoutY="46.0" prefHeight="25.0" prefWidth="200.0" />
+
+      <Label layoutX="45.0" layoutY="88.0" text="Początek snu:" />
+      <TextField fx:id="start_hours" layoutX="147.0" layoutY="84.0" prefHeight="25.0" prefWidth="86.0" text="00" />
+      <Text layoutX="245.0" layoutY="142.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
+      <TextField fx:id="start_minutes" layoutX="264.0" layoutY="84.0" prefHeight="25.0" prefWidth="86.0" text="00" />
+
+      <Label layoutX="56.0" layoutY="129.0" text="Koniec snu:" />
+      <TextField fx:id="end_hours" layoutX="147.0" layoutY="125.0" prefHeight="25.0" prefWidth="86.0" text="00" />
+      <Text layoutX="246.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
+      <TextField fx:id="end_minutes" layoutX="264.0" layoutY="125.0" prefHeight="25.0" prefWidth="86.0" text="00" />
+   </children>
+</AnchorPane>
