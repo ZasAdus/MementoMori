@@ -156,4 +156,24 @@ public class BazaRejestracja {
         }
         return false;
     }
+
+    public static int idDoctor(String login) {
+        String sql = "SELECT id FROM doctors WHERE login = ?";
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, login);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) { // Sprawdzenie, czy jest wynik
+                return rs.getInt("id"); // Pobranie wartości "id"
+            } else {
+                System.out.println("Nie znaleziono lekarza o podanym loginie.");
+                return -1; // Zwraca -1, jeśli użytkownik nie istnieje
+            }
+        } catch (SQLException e) {
+            System.out.println("Błąd podczas sprawdzania typu użytkownika.");
+            e.printStackTrace();
+        }
+        return -1; // Zwraca -1 w przypadku błędu
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.example.mementomori;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -142,4 +143,15 @@ public class WizytyController {
         alert.showAndWait();
     }
 
+    public void doHarmonogramuPracy(ActionEvent actionEvent) {
+    }
+
+    public void doZarzadzaniaWizytami(ActionEvent actionEvent) {
+    }
+
+    public void doMain(ActionEvent actionEvent) {
+    }
+
+    public void doMojeKonto(ActionEvent actionEvent) {
+    }
 }
