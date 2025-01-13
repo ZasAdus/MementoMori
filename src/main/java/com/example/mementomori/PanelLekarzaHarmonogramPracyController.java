@@ -50,10 +50,7 @@ public class PanelLekarzaHarmonogramPracyController {
 
     private void loadScheduleFromDatabase() {
         System.out.println("Loading schedule for doctor ID: " + ID_LEKARZA);
-
         harmonogram = baza.pobierzHarmonogram();
-
-
         for (Map.Entry<String, Button> entry : dniTygodnia.entrySet()) {
             String dzien = entry.getKey();
             Button button = entry.getValue();

@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.mementomori.Lekarz.ZarzadzajWizytami"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="926.0" prefWidth="428.0"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.mementomori.PanelLekarzaZarzadzanieWizytamiController">
+    <center>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label layoutX="45.0" layoutY="50.0" text="Zarządzanie wizytami">
+                    <font>
+                        <Font size="36.0" />
+                    </font>
+                </Label>
+                <TabPane fx:id="appointmentTabPane" layoutX="45.0" layoutY="202.0" prefHeight="411.0" prefWidth="331.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab fx:id="confirmedTab" text="Potwierdzone">
+                            <content>
+                                <AnchorPane fx:id="confirmedAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="400.0" prefWidth="331.0" />
+                            </content>
+                        </Tab>
+                        <Tab fx:id="pendingTab" text="Oczekujące">
+                            <content>
+                                <AnchorPane fx:id="pendingAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                            </content>
+                        </Tab>
+                    </tabs>
+                </TabPane>
+                <Button fx:id="homeButton" layoutX="108.0" layoutY="887.0" mnemonicParsing="false"
+                        onAction="#handleHomeButton" prefHeight="25.0" prefWidth="206.0" text="Home" />
+            </children>
+        </AnchorPane>
+    </center>
+</BorderPane>
