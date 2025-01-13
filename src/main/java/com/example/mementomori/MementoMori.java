@@ -16,6 +16,7 @@ import java.util.Map;
 public class MementoMori extends Application {
 
     public static Stage main_stage;
+    public static int idDoctor;
 
     private static Map<String, Scene> loadedScenes;
 
