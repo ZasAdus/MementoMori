@@ -13,5 +13,6 @@ module com.example.mementomori {
     requires org.xerial.sqlitejdbc;
 
     opens com.example.mementomori to javafx.fxml;
+    opens com.example.mementomori.custom_elements to javafx.fxml;
     exports com.example.mementomori;
 }

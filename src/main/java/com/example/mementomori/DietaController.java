@@ -1,11 +1,11 @@
 package com.example.mementomori;
+import com.example.mementomori.custom_elements.RoundProgressbar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -19,16 +19,16 @@ public class DietaController {
     public Button DietaZmienCel;
     public Button DietaStatystyki;
     public Button DietaDodajRecznie;
-    public Button DietaHome;
-    public ProgressBar DietaProgres;
     public Integer cel = 2000;
     public Integer liczbaKalori = 300;
-    public Text DietaKalorieCel;
-
+    @FXML RoundProgressbar DietaProgress;
 
     public void initialize() {
-        DietaProgres.setProgress((double) liczbaKalori / cel);
-        DietaKalorieCel.setText(liczbaKalori + "/" + cel + " kcal");
+        DietaProgress.setProgress((double) liczbaKalori / cel);
+        DietaProgress.setProgressTitle("Kalorie");
+        DietaProgress.setColor("orange");
+        DietaProgress.setMin(liczbaKalori.toString());
+        DietaProgress.setMax(cel.toString() + " kcal");
     }
 
     public void DietaZmienCel(ActionEvent actionEvent) {
@@ -39,8 +39,8 @@ public class DietaController {
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(iloscKalori -> {
             cel = Integer.parseInt(iloscKalori);
-            DietaProgres.setProgress((double) liczbaKalori / cel);
-            DietaKalorieCel.setText(liczbaKalori + "/" + cel + " kcal");
+            DietaProgress.setProgress((double) liczbaKalori / cel);
+            DietaProgress.setMax(cel.toString() + " kcal");
         });
     }
 
@@ -52,8 +52,8 @@ public class DietaController {
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(x -> {
             liczbaKalori += Integer.parseInt(x);
-            DietaProgres.setProgress((double) liczbaKalori / cel);
-            DietaKalorieCel.setText(liczbaKalori + "/" + cel + " kcal");
+            DietaProgress.setProgress((double) liczbaKalori / cel);
+            DietaProgress.setMin(liczbaKalori.toString());
         });
     }
 
@@ -179,6 +179,3 @@ public class DietaController {
     }
 
 }
-
-
-

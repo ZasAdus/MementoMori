@@ -1,4 +1,5 @@
 package com.example.mementomori;
+import com.example.mementomori.custom_elements.RoundProgressbar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -19,16 +20,19 @@ public class KrokiController {
     public Button KrokiZmienCel;
     public Button KrokiStatystyki;
     public Button KrokiDodajRecznie;
-    public Button KrokiHome;
-    public ProgressBar KrokiProgres;
     public Integer cel = 6000;
     public Integer liczbaKrokow = 1200;
     public Text KrokiCel;
 
+    @FXML RoundProgressbar progress;
+
 
     public void initialize() {
-        KrokiProgres.setProgress((double) liczbaKrokow / cel);
-        KrokiCel.setText(liczbaKrokow + "/" + cel + " Kroki");
+        progress.setProgress((double) liczbaKrokow / cel);
+        progress.setProgressTitle("Cel");
+        progress.setColor("#2f9e44");
+        progress.setMin(liczbaKrokow.toString());
+        progress.setMax(cel.toString() + " kroków");
     }
 
     public void KrokiZmienCel(ActionEvent actionEvent) {
@@ -39,8 +43,8 @@ public class KrokiController {
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(iloscKalori -> {
             cel = Integer.parseInt(iloscKalori);
-            KrokiProgres.setProgress((double) liczbaKrokow / cel);
-            KrokiCel.setText(liczbaKrokow + "/" + cel + " kroki");
+            progress.setProgress((double) liczbaKrokow / cel);
+            progress.setMax(cel.toString() + " kroków");
         });
     }
 
@@ -52,8 +56,8 @@ public class KrokiController {
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(x -> {
             liczbaKrokow += Integer.parseInt(x);
-            KrokiProgres.setProgress((double) liczbaKrokow / cel);
-            KrokiCel.setText(liczbaKrokow + "/" + cel + " kroki");
+            progress.setProgress((double) liczbaKrokow / cel);
+            progress.setMin(liczbaKrokow.toString());
         });
     }
 
