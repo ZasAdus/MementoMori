@@ -11,7 +11,7 @@
 
 <?import javafx.scene.control.TextField?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.mementomori.ZmianaDanychController">
+            fx:controller="com.example.mementomori.ZmianaDanychController" styleClass="main" stylesheets="@../styles/style.css">
     <top>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informacje osobowe">

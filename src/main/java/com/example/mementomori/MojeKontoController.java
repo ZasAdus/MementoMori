@@ -16,7 +16,11 @@ public class MojeKontoController {
     @FXML private Label labelEmail;
     @FXML private Label labelNrTelefonu;
 
+    private static MojeKontoController instance;
+
     public void initialize() {
+        instance = this;
+
         String currentUser = MementoMori.currentUser;
 
         User user = BazaMojeKonto.getUserData(currentUser);
@@ -30,6 +34,10 @@ public class MojeKontoController {
         } else {
             System.out.println("Nie znaleziono danych użytkownika w bazie.");
         }
+    }
+
+    public static void refreshUserData() {
+        instance.initialize();
     }
 
     @FXML
