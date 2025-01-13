@@ -40,10 +40,31 @@ public class PanelLekarzaMainControler {
 
     @FXML
     public void initialize() {
-        currentMonday = LocalDate.now().with(DayOfWeek.MONDAY);
-        instance = this;
-        bazaWizyty = new BazaWizyty();
-        updateCalendar();
+        try {
+            // Inicjalizacja podstawowych zmiennych
+            currentMonday = LocalDate.now().with(DayOfWeek.MONDAY);
+            instance = this;
+
+            // Upewnij się, że ScrollPane jest poprawnie skonfigurowany
+            if (calendarScrollPane != null) {
+                calendarScrollPane.setFitToWidth(true);
+                calendarScrollPane.setFitToHeight(false);
+                calendarScrollPane.setPannable(true);
+            }
+
+            // Inicjalizacja bazy danych
+            bazaWizyty = new BazaWizyty();
+
+            // Aktualizacja kalendarza
+            if (calendarGrid != null && headerBox != null) {
+                updateCalendar();
+            } else {
+                System.out.println("Błąd: Nie znaleziono wymaganych komponentów GUI");
+            }
+        } catch (Exception e) {
+            System.out.println("Błąd podczas inicjalizacji: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     private void updateCalendar() {
