@@ -53,14 +53,12 @@ public class PanelLekarzaMainControler {
         LocalDate startOfWeek = currentMonday;
         LocalDate endOfWeek = currentMonday.plusDays(6);
 
-        // Display week range header
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
         String weekRange = "Tydzień " + startOfWeek.format(formatter) + " - " + endOfWeek.format(formatter) + " (" + endOfWeek.getYear() + ")";
         Text weekText = new Text(weekRange);
         weekText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         headerBox.getChildren().add(weekText);
 
-        // Add day headers
         String[] daysOfWeek = {"Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"};
         for (int i = 0; i < 7; i++) {
             LocalDate currentDay = startOfWeek.plusDays(i);
@@ -69,25 +67,21 @@ public class PanelLekarzaMainControler {
             calendarGrid.add(dayText, i + 1, 0);
         }
 
-        // Add 30-minute interval time labels
-        for (int hour = 0; hour < 24; hour++) {
+        for (int hour = 6; hour < 24; hour++) {
             for (int minute = 0; minute < 60; minute += 30) {
-                int rowIndex = hour * 2 + (minute == 30 ? 1 : 0) + 1;
+                int rowIndex = (hour - 6) * 2 + (minute == 30 ? 1 : 0) + 1;
                 String time = String.format("%02d:%02d", hour, minute);
                 calendarGrid.add(new Text(time), 0, rowIndex);
             }
         }
 
-        // Load and display appointments
         List<BazaWizyty.Wizyta> confirmedAppointments = bazaWizyty.pobierzWizyty(MementoMori.idDoctor, "POTWIERDZONA");
         List<BazaWizyty.Wizyta> pendingAppointments = bazaWizyty.pobierzWizyty(MementoMori.idDoctor, "OCZEKUJACA");
 
-        // Display confirmed appointments
         for (BazaWizyty.Wizyta wizyta : confirmedAppointments) {
             addAppointmentDot(wizyta, "#27ae60");
         }
 
-        // Display pending appointments
         for (BazaWizyty.Wizyta wizyta : pendingAppointments) {
             addAppointmentDot(wizyta, "#f39c12");
         }
@@ -103,8 +97,8 @@ public class PanelLekarzaMainControler {
                 !appointmentDateTime.toLocalDate().isAfter(currentMonday.plusDays(6))) {
 
             int dayColumn = appointmentDateTime.getDayOfWeek().getValue();
-            // Calculate row based on both hour and minutes
-            int hourRow = appointmentDateTime.getHour() * 2 +
+
+            int hourRow = (appointmentDateTime.getHour() - 6) * 2 +
                     (appointmentDateTime.getMinute() >= 30 ? 1 : 0) + 1;
 
             Button button = new Button();
