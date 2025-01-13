@@ -34,7 +34,11 @@ public class MojeKontoController {
 
     @FXML
     public void goHome() {
-        MementoMori.returnHome();
+        if (MementoMori.isDoctor){
+            MementoMori.navigateTo("Lekarz/PanelLekarzaMain.fxml");
+        }else{
+            MementoMori.returnHome();
+        }
     }
 
     @FXML
