@@ -69,13 +69,16 @@ public class PanelLekarzaMainControler {
             calendarGrid.add(dayText, i + 1, 0);
         }
 
-        // Add hour labels
-        for (int i = 0; i < 24; i++) {
-            String time = String.format("%02d:00", i);
-            calendarGrid.add(new Text(time), 0, i + 1);
+        // Add 30-minute interval time labels
+        for (int hour = 0; hour < 24; hour++) {
+            for (int minute = 0; minute < 60; minute += 30) {
+                int rowIndex = hour * 2 + (minute == 30 ? 1 : 0) + 1;
+                String time = String.format("%02d:%02d", hour, minute);
+                calendarGrid.add(new Text(time), 0, rowIndex);
+            }
         }
 
-        // Load and display confirmed appointments
+        // Load and display appointments
         List<BazaWizyty.Wizyta> confirmedAppointments = bazaWizyty.pobierzWizyty(MementoMori.idDoctor, "POTWIERDZONA");
         List<BazaWizyty.Wizyta> pendingAppointments = bazaWizyty.pobierzWizyty(MementoMori.idDoctor, "OCZEKUJACA");
 
@@ -100,7 +103,9 @@ public class PanelLekarzaMainControler {
                 !appointmentDateTime.toLocalDate().isAfter(currentMonday.plusDays(6))) {
 
             int dayColumn = appointmentDateTime.getDayOfWeek().getValue();
-            int hourRow = appointmentDateTime.getHour() + 1;
+            // Calculate row based on both hour and minutes
+            int hourRow = appointmentDateTime.getHour() * 2 +
+                    (appointmentDateTime.getMinute() >= 30 ? 1 : 0) + 1;
 
             Button button = new Button();
             button.setStyle(
