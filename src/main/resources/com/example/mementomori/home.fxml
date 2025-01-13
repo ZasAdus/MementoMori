@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.HomeController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.HomeController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -38,8 +38,7 @@
                <children>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#goKroki" style="-fx-font-size: 25px;"
-                                styleClass="round-btn" text="Kroki"/>
+                        <Button mnemonicParsing="false" onAction="#goKroki" styleClass="round-btn" text="Kroki" />
                      </children>
                   </VBox>
                   <VBox alignment="CENTER" GridPane.columnIndex="1">
@@ -68,14 +67,10 @@
       </VBox>
    </center>
    <bottom>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
+      <HBox styleClass="bottom-bar">
          <children>
-            <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
             <Button mnemonicParsing="false" onAction="#goKonto" text="Moje konto" />
          </children>
-         <BorderPane.margin>
-            <Insets bottom="10.0" />
-         </BorderPane.margin>
       </HBox>
    </bottom>
 </BorderPane>

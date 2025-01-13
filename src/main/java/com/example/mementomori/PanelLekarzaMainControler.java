@@ -166,7 +166,7 @@ public class PanelLekarzaMainControler {
     }
 
     public void doMojeKonto(ActionEvent actionEvent) {
-        //do implementacji
+        MementoMori.navigateTo("moje_konto/moje_konto.fxml");
     }
 }
 

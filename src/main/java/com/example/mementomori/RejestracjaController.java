@@ -71,6 +71,7 @@ public class RejestracjaController implements Initializable {
     public void RejestracjaDaneOsobowe(ActionEvent actionEvent) {
         if (!isDoctor) {
             MementoMori.navigateTo("Rejestracja/RejestracjaDaneKonta.fxml");
+            return;
         }
         String specjalizacja = specjalizcjaChoice.getValue();
         String adres = adresField.getText();
@@ -94,6 +95,7 @@ public class RejestracjaController implements Initializable {
     }
 
     public void PowrotDoTypuKonta(ActionEvent actionEvent) {
+        isDoctor = false;
         MementoMori.navigateTo("Rejestracja/RejestracjaTypKonta.fxml");
     }
 

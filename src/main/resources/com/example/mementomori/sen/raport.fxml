@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.mementomori.SenRaportController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.SenRaportController">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -26,22 +18,10 @@
          </children>
       </HBox>
    </top>
-   <bottom>
-      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
-            <Button mnemonicParsing="false" onAction="#goSpanko" text="⬅ Sen" />
-            <Button mnemonicParsing="false" text="Dodaj dane" />
-         </children>
-         <BorderPane.margin>
-            <Insets bottom="10.0" />
-         </BorderPane.margin>
-      </HBox>
-   </bottom>
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <BarChart alternativeColumnFillVisible="true" prefHeight="398.0" prefWidth="428.0">
+            <BarChart alternativeColumnFillVisible="true" prefHeight="398.0" prefWidth="428.0" style="-fx-background-color: #d5f1de;">
               <xAxis>
                 <CategoryAxis prefWidth="369.0" side="LEFT" />
               </xAxis>
@@ -76,4 +56,19 @@
          </children>
       </VBox>
    </center>
+   <Button mnemonicParsing="false" onAction="#goHome" text="Home" />
+   <Button mnemonicParsing="false" onAction="#goSpanko" text="⬅ Sen" />
+   <Button mnemonicParsing="false" text="Dodaj dane" />
+   <bottom>
+      <HBox styleClass="bottom-bar">
+         <children>
+            <Button mnemonicParsing="false" onAction="#goHome" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#goSpanko" text="🡄 Sen" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
