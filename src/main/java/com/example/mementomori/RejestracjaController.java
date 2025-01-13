@@ -125,7 +125,7 @@ public class RejestracjaController implements Initializable {
             System.out.println("uzupełnij wszystkie pola");
             return;
         }
-        BazaRejestracja.insertDaneOsobowe(login, Imie.getText(), Nazwisko.getText(), NrTelefonu.getText(), Email.getText());
+        BazaRejestracja.insertDaneOsobowe(login, Imie.getText(), Nazwisko.getText(), Email.getText(), NrTelefonu.getText());
         System.out.println("dodano dane osobowe " + login + Imie.getText() + " " + Nazwisko.getText() + " " + NrTelefonu.getText() + " " + Email.getText());
         MementoMori.navigateTo("Logowanie.fxml");
     }
