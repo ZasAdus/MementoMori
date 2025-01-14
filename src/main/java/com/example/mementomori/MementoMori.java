@@ -51,6 +51,7 @@ public class MementoMori extends Application {
 
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> System.exit(0));
+        stage.getIcons().add(new javafx.scene.image.Image("file:images/icon.png"));
 
         // bez tego folderu się rzeczy wywalają
         new File("data").mkdirs();
