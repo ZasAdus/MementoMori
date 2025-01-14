@@ -3,13 +3,18 @@ package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaLeki;
 import com.example.mementomori.bazyDanych.BazaRejestracja;
 import javafx.application.Application;
-import javafx.css.Style;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,28 +29,38 @@ public class MementoMori extends Application {
     public static boolean isDoctor;
 
 
+    private static final double VALID_RATIO = 0.7;
+    private static final double WIDTH = 428;
+    private static final double HEIGHT = 926;
+    private static double scale = 0.75;
+
     @Override
     public void start(Stage stage) throws IOException {
         loadedScenes = new HashMap<>();
         main_stage = stage;
 
         stage.setTitle("Memento mori");
-        stage.setMinWidth(428);
-        stage.setMinHeight(926);
+
+        double screenHeight = Screen.getPrimary().getBounds().getHeight();
+        scale = Math.min(1, screenHeight / HEIGHT * VALID_RATIO);
+
+        System.out.printf("scale: %.2f \n",scale);
+        System.out.printf("actual dimensions: %.2f x %.2f \n", WIDTH * scale, HEIGHT * scale);
+
+        stage.setWidth(WIDTH* scale);
+        stage.setHeight(HEIGHT* scale);
+
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> System.exit(0));
 
         // bez tego folderu się rzeczy wywalają
-        // z mojej winy więc później może to naprawię XD
         new File("data").mkdirs();
 
         // vv to potrzebuje folder data vv
         BazaLeki.initTable();
         BazaRejestracja.initTable();
 
-
-//        stage.setScene(load(LekiController.MAIN_PATH));
-        stage.setScene(load("Logowanie.fxml"));
+        navigateTo("Logowanie.fxml");
         stage.show();
     }
 
@@ -65,10 +80,26 @@ public class MementoMori extends Application {
     public static void navigateTo(String path) {
         try {
             main_stage.setScene(load(path));
+
+            // do skalowania bo inaczej wyjebka
+            main_stage.sizeToScene();
         }
         catch(IOException e) {
             System.err.println("nie udało się załadować " + e + ": " + e.toString());
         }
+    }
+
+    public static void delay(long millis, Runnable continuation) {
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try { Thread.sleep(millis); }
+                catch (InterruptedException e) { }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(event -> continuation.run());
+        new Thread(sleeper).start();
     }
 
 
@@ -78,10 +109,24 @@ public class MementoMori extends Application {
      */
     public static Scene forceReload(String path) throws IOException {
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(path));
-        Scene result =  new Scene(loader.load());
+        Region root = loader.load();
+        root.setPrefSize(WIDTH, HEIGHT);
 
-        loadedScenes.put(path, result);
-        return result;
+        //Wrap the resizable content in a non-resizable container (Group)
+        Group group = new Group( root );
+        //Place the Group in a StackPane, which will keep it centered
+        StackPane rootPane = new StackPane();
+        rootPane.getChildren().add( group );
+
+        // Create the scene initally at the "100%" size
+        Scene scene = new Scene( rootPane, WIDTH* scale, HEIGHT* scale);
+
+        // Bind the scene's width and height to the scaling parameters on the group
+        group.scaleXProperty().bind( scene.widthProperty().divide( WIDTH ) );
+        group.scaleYProperty().bind( scene.heightProperty().divide( HEIGHT ) );
+
+        loadedScenes.put(path, scene);
+        return scene;
     }
 
     /**
