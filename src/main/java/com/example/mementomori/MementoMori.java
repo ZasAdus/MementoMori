@@ -3,7 +3,7 @@ package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaLeki;
 import com.example.mementomori.bazyDanych.BazaRejestracja;
 import javafx.application.Application;
-import javafx.concurrent.Task;
+import javafx.css.Style;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,19 +86,6 @@ public class MementoMori extends Application {
         catch(IOException e) {
             System.err.println("nie udało się załadować " + e + ": " + e.toString());
         }
-    }
-
-    public static void delay(long millis, Runnable continuation) {
-        Task<Void> sleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                try { Thread.sleep(millis); }
-                catch (InterruptedException e) { }
-                return null;
-            }
-        };
-        sleeper.setOnSucceeded(event -> continuation.run());
-        new Thread(sleeper).start();
     }
 
 
