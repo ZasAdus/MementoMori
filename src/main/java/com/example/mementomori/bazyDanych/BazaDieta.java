@@ -22,6 +22,26 @@ public class BazaDieta {
         return conn;
     }
 
+    public static void initTable() {
+        String sql = """
+        CREATE TABLE IF NOT EXISTS kroki (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_login TEXT NOT NULL,
+            date TEXT NOT NULL,
+            kal INTEGER DEFAULT 0,
+            goal INTEGER DEFAULT 6000,
+            UNIQUE(user_login, date)
+        )
+        """;
+
+        try (Connection conn = connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Błąd podczas tworzenia tabeli kroki: " + e.getMessage());
+        }
+    }
+
     public static void sprawdzLubUtworzDzien(String login) {
         String sqlCheck = "SELECT COUNT(*) FROM dieta WHERE user_login = ? AND date = ?";
         String sqlInsert = "INSERT INTO dieta (user_login, date, kal, goal) VALUES (?, ?, 0, ?)";
