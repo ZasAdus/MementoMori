@@ -1,4 +1,5 @@
 package com.example.mementomori;
+import com.example.mementomori.bazyDanych.BazaKroki;
 import com.example.mementomori.custom_elements.RoundProgressbar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -6,12 +7,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 public class KrokiController {
@@ -20,14 +21,23 @@ public class KrokiController {
     public Button KrokiZmienCel;
     public Button KrokiStatystyki;
     public Button KrokiDodajRecznie;
-    public Integer cel = 6000;
-    public Integer liczbaKrokow = 1200;
+    public Integer cel;
+    public Integer liczbaKrokow;
     public Text KrokiCel;
+    public String currentUser;
 
     @FXML RoundProgressbar progress;
 
 
     public void initialize() {
+        currentUser = MementoMori.currentUser;
+
+        BazaKroki.sprawdzLubUtworzDzien(currentUser);
+
+        int[] dane = BazaKroki.pobierzDaneKroki(currentUser);
+        liczbaKrokow = dane[0];
+        cel = dane[1];
+
         progress.setProgress((double) liczbaKrokow / cel);
         progress.setProgressTitle("Cel");
         progress.setColor("#2f9e44");
@@ -36,15 +46,36 @@ public class KrokiController {
     }
 
     public void KrokiZmienCel(ActionEvent actionEvent) {
+        // Wyświetlenie dialogu do wprowadzenia nowego celu
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Zmiana Celu");
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź nowy cel:");
+
         Optional<String> wynik = dialog.showAndWait();
-        wynik.ifPresent(iloscKalori -> {
-            cel = Integer.parseInt(iloscKalori);
-            progress.setProgress((double) liczbaKrokow / cel);
-            progress.setMax(cel.toString() + " kroków");
+        wynik.ifPresent(newGoal -> {
+            try {
+                // Parsowanie nowego celu z tekstu na liczbę
+                int nowyCel = Integer.parseInt(newGoal);
+
+                // Aktualizacja zmiennej `cel`
+                cel = nowyCel;
+
+                // Zaktualizuj cel w bazie danych dla zalogowanego użytkownika i bieżącej daty
+                BazaKroki.zaktualizujDaneKroki(currentUser, liczbaKrokow, cel);
+
+                // Aktualizacja progresu na interfejsie
+                progress.setProgress((double) liczbaKrokow / cel);
+                progress.setMax(cel.toString() + " kroków");
+
+            } catch (NumberFormatException e) {
+                // Obsługa błędu w przypadku, gdy użytkownik wprowadzi niepoprawne dane
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd");
+                alert.setHeaderText(null);
+                alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+                alert.showAndWait();
+            }
         });
     }
 
@@ -53,11 +84,15 @@ public class KrokiController {
         dialog.setTitle("Dodaj kroki");
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź ile kroków przeszedłeś:");
+
         Optional<String> wynik = dialog.showAndWait();
-        wynik.ifPresent(x -> {
-            liczbaKrokow += Integer.parseInt(x);
+        wynik.ifPresent(kroki -> {
+            liczbaKrokow += Integer.parseInt(kroki);
             progress.setProgress((double) liczbaKrokow / cel);
             progress.setMin(liczbaKrokow.toString());
+
+            // Zapisz zmienione dane do bazy
+            BazaKroki.zaktualizujDaneKroki(MementoMori.currentUser, liczbaKrokow, cel);
         });
     }
 
@@ -144,6 +179,9 @@ public class KrokiController {
     private void updateWeekGrid(GridPane weekGrid, LocalDate weekStart) {
         weekGrid.getChildren().clear();
         LocalDate date = weekStart;
+
+        Map<LocalDate, int[]> weeklyData = BazaKroki.pobierzKrokiICeleWTygodniu(currentUser, weekStart);
+
         for (int i = 0; i < 7; i++) {
             String dayDetails = String.format("%02d/%02d", date.getDayOfMonth(), date.getMonthValue());
             VBox dayBox = new VBox();
@@ -153,8 +191,23 @@ public class KrokiController {
             dayLabel.setStyle("-fx-font-weight: bold;");
             dayBox.getChildren().add(dayLabel);
 
-            Button statusButton = createStatusButton(date);
-            dayBox.getChildren().add(statusButton);
+            int[] data = weeklyData.getOrDefault(date, new int[]{0, cel});
+            int steps = data[0];
+            int goal = data[1];
+
+            Label stepsLabel = new Label(steps + "");
+            stepsLabel.setStyle("-fx-text-fill: blue;");
+            dayBox.getChildren().add(stepsLabel);
+
+            Label goalLabel = new Label();
+            if (steps >= goal) {
+                goalLabel.setText("Cel osiągnięty! 🎉");
+                goalLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            } else {
+                goalLabel.setText(goal + "");
+                goalLabel.setStyle("-fx-text-fill: red;");
+            }
+            dayBox.getChildren().add(goalLabel);
 
             weekGrid.add(dayBox, i, 0);
             date = date.plusDays(1);
@@ -174,8 +227,6 @@ public class KrokiController {
         button.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 50%; -fx-min-width: 20px; -fx-min-height: 20px; -fx-max-width: 20px; -fx-max-height: 20px;");
         return button;
     }
-
-
 
     @FXML
     public void ReturnHome() {

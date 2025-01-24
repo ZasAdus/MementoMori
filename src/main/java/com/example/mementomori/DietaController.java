@@ -1,4 +1,6 @@
 package com.example.mementomori;
+import com.example.mementomori.bazyDanych.BazaDieta;
+import com.example.mementomori.bazyDanych.BazaKroki;
 import com.example.mementomori.custom_elements.RoundProgressbar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.Optional;
 
 public class DietaController {
@@ -19,11 +22,20 @@ public class DietaController {
     public Button DietaZmienCel;
     public Button DietaStatystyki;
     public Button DietaDodajRecznie;
-    public Integer cel = 2000;
-    public Integer liczbaKalori = 300;
+    public Integer cel;
+    public Integer liczbaKalori;
     @FXML RoundProgressbar DietaProgress;
+    public String currentUser;
 
     public void initialize() {
+        currentUser = MementoMori.currentUser;
+
+        BazaDieta.sprawdzLubUtworzDzien(currentUser);
+
+        int[] dane = BazaDieta.pobierzDaneDieta(currentUser);
+        liczbaKalori = dane[0];
+        cel = dane[1];
+
         DietaProgress.setProgress((double) liczbaKalori / cel);
         DietaProgress.setProgressTitle("Kalorie");
         DietaProgress.setColor("orange");
@@ -31,29 +43,79 @@ public class DietaController {
         DietaProgress.setMax(cel.toString() + " kcal");
     }
 
+//    public void DietaZmienCel(ActionEvent actionEvent) {
+//        TextInputDialog dialog = new TextInputDialog();
+//        dialog.setTitle("Zmiana Celu");
+//        dialog.setHeaderText(null);
+//        dialog.setContentText("Wprowadź nowy cel:");
+//        Optional<String> wynik = dialog.showAndWait();
+//        wynik.ifPresent(iloscKalori -> {
+//            cel = Integer.parseInt(iloscKalori);
+//            DietaProgress.setProgress((double) liczbaKalori / cel);
+//            DietaProgress.setMax(cel.toString() + " kcal");
+//        });
+//    }
+
     public void DietaZmienCel(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Zmiana Celu");
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź nowy cel:");
+
         Optional<String> wynik = dialog.showAndWait();
-        wynik.ifPresent(iloscKalori -> {
-            cel = Integer.parseInt(iloscKalori);
-            DietaProgress.setProgress((double) liczbaKalori / cel);
-            DietaProgress.setMax(cel.toString() + " kcal");
+        wynik.ifPresent(newGoal -> {
+            try {
+                // Parsowanie nowego celu z tekstu na liczbę
+                int nowyCel = Integer.parseInt(newGoal);
+
+                // Aktualizacja zmiennej `cel`
+                cel = nowyCel;
+
+                // Zaktualizuj cel w bazie danych dla zalogowanego użytkownika i bieżącej daty
+                BazaDieta.zaktualizujDaneDieta(currentUser, liczbaKalori, cel);
+
+                // Aktualizacja progresu na interfejsie
+                DietaProgress.setProgress((double) liczbaKalori / cel);
+                DietaProgress.setMax(cel.toString() + " kcal");
+
+            } catch (NumberFormatException e) {
+                // Obsługa błędu w przypadku, gdy użytkownik wprowadzi niepoprawne dane
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd");
+                alert.setHeaderText(null);
+                alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+                alert.showAndWait();
+            }
         });
     }
+
+//    public void DietaDodajRecznie(ActionEvent actionEvent) {
+//        TextInputDialog dialog = new TextInputDialog();
+//        dialog.setTitle("Dodaj kalorie");
+//        dialog.setHeaderText(null);
+//        dialog.setContentText("Wprowadź ile kcal spożyłeś:");
+//        Optional<String> wynik = dialog.showAndWait();
+//        wynik.ifPresent(x -> {
+//            liczbaKalori += Integer.parseInt(x);
+//            DietaProgress.setProgress((double) liczbaKalori / cel);
+//            DietaProgress.setMin(liczbaKalori.toString());
+//        });
+//    }
 
     public void DietaDodajRecznie(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Dodaj kalorie");
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź ile kcal spożyłeś:");
+
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(x -> {
             liczbaKalori += Integer.parseInt(x);
             DietaProgress.setProgress((double) liczbaKalori / cel);
             DietaProgress.setMin(liczbaKalori.toString());
+
+            // Zapisz zmienione dane do bazy
+            BazaDieta.zaktualizujDaneDieta(MementoMori.currentUser, liczbaKalori, cel);
         });
     }
 
@@ -140,6 +202,9 @@ public class DietaController {
     private void updateWeekGrid(GridPane weekGrid, LocalDate weekStart) {
         weekGrid.getChildren().clear();
         LocalDate date = weekStart;
+
+        Map<LocalDate, int[]> weeklyData = BazaDieta.pobierzKalICeleWTygodniu(currentUser, weekStart);
+
         for (int i = 0; i < 7; i++) {
             String dayDetails = String.format("%02d/%02d", date.getDayOfMonth(), date.getMonthValue());
             VBox dayBox = new VBox();
@@ -149,8 +214,23 @@ public class DietaController {
             dayLabel.setStyle("-fx-font-weight: bold;");
             dayBox.getChildren().add(dayLabel);
 
-            Button statusButton = createStatusButton(date);
-            dayBox.getChildren().add(statusButton);
+            int[] data = weeklyData.getOrDefault(date, new int[]{0, cel});
+            int steps = data[0];
+            int goal = data[1];
+
+            Label stepsLabel = new Label(steps + "");
+            stepsLabel.setStyle("-fx-text-fill: blue;");
+            dayBox.getChildren().add(stepsLabel);
+
+            Label goalLabel = new Label();
+            if (steps >= goal) {
+                goalLabel.setText("Cel osiągnięty! 🎉");
+                goalLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            } else {
+                goalLabel.setText(goal + "");
+                goalLabel.setStyle("-fx-text-fill: red;");
+            }
+            dayBox.getChildren().add(goalLabel);
 
             weekGrid.add(dayBox, i, 0);
             date = date.plusDays(1);

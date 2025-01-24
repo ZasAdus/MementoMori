@@ -21,7 +21,7 @@ public class BazaMojeKonto {
     }
 
     public static User getUserData(String login) {
-        String sql = "SELECT login, imie, nazwisko, email, nrTelefonu FROM dane_uzytkownikow WHERE login = ?";
+        String sql = "SELECT id, login, imie, nazwisko, email, nrTelefonu FROM dane_uzytkownikow WHERE login = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, login);
@@ -29,6 +29,7 @@ public class BazaMojeKonto {
 
             if (rs.next()) {
                 return new User(
+                        rs.getInt("id"),
                         rs.getString("login"),
                         rs.getString("imie"),
                         rs.getString("nazwisko"),

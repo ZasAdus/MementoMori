@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import java.awt.Desktop;
 import java.net.URI;
@@ -27,6 +28,7 @@ public class RejestracjaController implements Initializable {
     public TextField PowtorzoneHaslo;
     public Button Cofnij;
     public Button GuzikUtworzKonto;
+    public Label komunikaty;
 
     public static String login;
     public Button cofnijDoTypKontaButton;
@@ -61,6 +63,7 @@ public class RejestracjaController implements Initializable {
             specjalizcjaChoice.getItems().addAll(specjalizacje);
             specjalizcjaChoice.setValue(specjalizacje[0]); // Set default value
         }
+
     }
 
     public void RejestracjaLekarz(ActionEvent actionEvent) {
@@ -101,13 +104,17 @@ public class RejestracjaController implements Initializable {
 
     public void KontynujRejestrację(ActionEvent actionEvent) {
         if(NazwaUzytkownika.getText().isEmpty() || Haslo.getText().isEmpty() || PowtorzoneHaslo.getText().isEmpty()){
-            System.out.println("uzupełnij wszystkie pola");
+            komunikaty.setText("Uzupełnij wszystkie pola");
             return;
         }else if(!Haslo.getText().equals(PowtorzoneHaslo.getText())){
-            System.out.println("hasła nie są takie same");
+            komunikaty.setText("Hasła nie są takie same");
             return;
         }
         login = NazwaUzytkownika.getText();
+        if (BazaRejestracja.userExists(login)) {
+            komunikaty.setText("Użytkownik o podanym loginie już istnieje");
+            return;
+        }
         if(isDoctor){
             System.out.println(tempSpecjalizacja);
             System.out.println(tempAdres);
