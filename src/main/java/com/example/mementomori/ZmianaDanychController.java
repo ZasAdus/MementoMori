@@ -17,7 +17,7 @@ public class ZmianaDanychController {
         String email = newEmail.getText();
         String nrTelefonu = newNrTelefonu.getText();
 
-        if (!email.isEmpty() && !nrTelefonu.isEmpty()) {
+        if (!email.isEmpty() || !nrTelefonu.isEmpty()) {
             BazaMojeKonto.updateUserData(MementoMori.currentUser, email, nrTelefonu);
             System.out.println("Dane użytkownika zostały zaktualizowane.");
             MojeKontoController.refreshUserData();

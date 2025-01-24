@@ -39,7 +39,7 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text fx:id="ErrorMessage" layoutX="102.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #b12719; -fx-font-weight: bold;" text="Niepoprawny login i hasło" visible="false" wrappingWidth="215.087890625" />
+            <Text fx:id="ErrorMessage" layoutX="102.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #b12719; -fx-font-weight: bold;" text="Niepoprawny login lub hasło" visible="false" wrappingWidth="215.087890625" />
          </children>
       </AnchorPane>
    </center>
