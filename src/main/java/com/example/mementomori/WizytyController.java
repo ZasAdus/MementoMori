@@ -115,7 +115,8 @@ public class WizytyController {
                         "-fx-background-color: #27ae60; " +
                                 "-fx-background-radius: 50%; " +
                                 "-fx-min-width: 25px; " +
-                                "-fx-min-height: 25px; "
+                                "-fx-min-height: 25px; "+
+                                "-fx-border-width: 0 "
                 );
 
                 String tooltipText = getAppointmentDetails(appointment);
@@ -126,7 +127,7 @@ public class WizytyController {
             }
         }
 
-        calendarScrollPane.setVvalue(0.0); // Przewiń na samą górę
+        calendarScrollPane.setVvalue(0.0);
         calendarScrollPane.setFitToWidth(true);
     }
 

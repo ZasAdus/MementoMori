@@ -110,9 +110,6 @@ public class PanelLekarzaMainControler {
 
         calendarScrollPane.setFitToWidth(true);
         calendarScrollPane.setFitToHeight(true);
-        calendarScrollPane.setStyle(
-                        "-fx-border-color: black; "
-        );
     }
 
     public static void refreshCalendar() {
@@ -137,7 +134,8 @@ public class PanelLekarzaMainControler {
                     "-fx-background-color: " + color + ";"+
                             "-fx-background-radius: 50%; " +
                             "-fx-min-width: 25px; " +
-                            "-fx-min-height: 25px; "
+                            "-fx-min-height: 25px; " +
+                            "-fx-border-width: 0 "
             );
             button.setFocusTraversable(false);
             button.setOnAction(event -> showAppointmentDetails(wizyta));
