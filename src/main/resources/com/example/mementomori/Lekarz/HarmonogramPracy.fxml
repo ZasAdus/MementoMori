@@ -39,9 +39,9 @@
                 </VBox>
                 <HBox layoutX="75.0" layoutY="155.0" prefHeight="27.0" prefWidth="271.0">
                     <children>
-                        <Button fx:id="lewoDataGuzik" mnemonicParsing="false" onAction="#prevWeek" prefHeight="26.0" prefWidth="39.0" styleClass="button" text="←" />
+                        <Button fx:id="lewoDataGuzik" mnemonicParsing="false" onAction="#prevWeek" prefHeight="26.0" prefWidth="39.0" styleClass="button" text="⮜" />
                         <Text fx:id="tygodniowkaText" style="-fx-font-size: 16px;" textAlignment="CENTER" wrappingWidth="203.67822265625" />
-                        <Button fx:id="prawoDataGuzik" mnemonicParsing="false" onAction="#nextWeek" prefHeight="26.0" prefWidth="39.0" styleClass="button" text="→" />
+                        <Button fx:id="prawoDataGuzik" mnemonicParsing="false" onAction="#nextWeek" prefHeight="26.0" prefWidth="39.0" styleClass="button" text="⮞" />
                     </children>
                 </HBox>
             </children>
