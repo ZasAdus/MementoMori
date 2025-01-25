@@ -30,7 +30,7 @@
 
 <center>
     <VBox>
-        <ListView fx:id="appointmentsList" prefWidth="600" prefHeight="400" style="-fx-font-size: 16px; -fx-background-color: transparent; "/>
+        <ListView fx:id="appointmentsList" prefWidth="600" prefHeight="600" style="-fx-font-size: 16px; -fx-background-color: transparent; "/>
     </VBox>
 </center>
 </BorderPane>

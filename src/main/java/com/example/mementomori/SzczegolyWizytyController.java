@@ -2,10 +2,12 @@ package com.example.mementomori;
 
 import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.collections.FXCollections;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -55,7 +57,18 @@ public class SzczegolyWizytyController {
                 String doctorDetails = BazaWizyty.getDoctorDetails(doctorId);
 
                 HBox appointmentBox = new HBox(10);
-                appointmentBox.setStyle("-fx-alignment: center-left;");
+                appointmentBox.setStyle(
+                        "-fx-alignment: center-left; " +
+                                "-fx-background-color: #D0E8FF; " +
+                                "-fx-border-radius: 10px; " +
+                                "-fx-padding: 10px; " +
+                                "-fx-effect: null; " +
+                                "-fx-border-color: #172023; " +
+                                "-fx-border-width: 2px;" +
+                                "-fx-text-fill: black; "
+                );
+
+                appointmentBox.setOnMouseClicked(Event::consume);
 
                 Label appointmentLabel = new Label(dateTime + "\n" + doctorDetails + "\nStatus: " + status);
                 appointmentLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
@@ -74,6 +87,7 @@ public class SzczegolyWizytyController {
             }
         }
 
+        appointmentsList.setStyle("-fx-selection-bar: transparent;");
         appointmentsList.setItems(FXCollections.observableArrayList(formattedAppointments));
     }
 

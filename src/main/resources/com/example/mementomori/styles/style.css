@@ -79,3 +79,18 @@
 .tab:selected {
     -fx-background-color: #D0E8FF;
 }
+
+.list-cell:focused {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.list-cell:selected {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.list-cell:hover {
+    -fx-background-color: transparent;
+}
+
