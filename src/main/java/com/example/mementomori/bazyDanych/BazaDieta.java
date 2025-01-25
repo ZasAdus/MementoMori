@@ -24,12 +24,12 @@ public class BazaDieta {
 
     public static void initTable() {
         String sql = """
-        CREATE TABLE IF NOT EXISTS kroki (
+        CREATE TABLE IF NOT EXISTS dieta (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_login TEXT NOT NULL,
             date TEXT NOT NULL,
             kal INTEGER DEFAULT 0,
-            goal INTEGER DEFAULT 6000,
+            goal INTEGER DEFAULT 2000,
             UNIQUE(user_login, date)
         )
         """;
