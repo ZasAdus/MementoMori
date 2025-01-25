@@ -23,7 +23,6 @@ public class KrokiController {
     public Button KrokiDodajRecznie;
     public Integer cel;
     public Integer liczbaKrokow;
-    public Text KrokiCel;
     public String currentUser;
 
     @FXML RoundProgressbar progress;
@@ -46,7 +45,6 @@ public class KrokiController {
     }
 
     public void KrokiZmienCel(ActionEvent actionEvent) {
-        // Wyświetlenie dialogu do wprowadzenia nowego celu
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Zmiana Celu");
         dialog.setHeaderText(null);
@@ -55,21 +53,16 @@ public class KrokiController {
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(newGoal -> {
             try {
-                // Parsowanie nowego celu z tekstu na liczbę
                 int nowyCel = Integer.parseInt(newGoal);
 
-                // Aktualizacja zmiennej `cel`
                 cel = nowyCel;
 
-                // Zaktualizuj cel w bazie danych dla zalogowanego użytkownika i bieżącej daty
                 BazaKroki.zaktualizujDaneKroki(currentUser, liczbaKrokow, cel);
 
-                // Aktualizacja progresu na interfejsie
                 progress.setProgress((double) liczbaKrokow / cel);
                 progress.setMax(cel.toString() + " kroków");
 
             } catch (NumberFormatException e) {
-                // Obsługa błędu w przypadku, gdy użytkownik wprowadzi niepoprawne dane
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
@@ -91,7 +84,6 @@ public class KrokiController {
             progress.setProgress((double) liczbaKrokow / cel);
             progress.setMin(liczbaKrokow.toString());
 
-            // Zapisz zmienione dane do bazy
             BazaKroki.zaktualizujDaneKroki(MementoMori.currentUser, liczbaKrokow, cel);
         });
     }
@@ -99,7 +91,7 @@ public class KrokiController {
     public void KrokiStatystyki(ActionEvent actionEvent) {
         Stage statsStage = new Stage();
         statsStage.initStyle(StageStyle.UNDECORATED);
-        statsStage.setWidth(420);
+        statsStage.setWidth(480);
 
         BorderPane layout = new BorderPane();
         layout.setStyle("-fx-padding: 20px; -fx-font-size: 14px; -fx-border-color: black; -fx-border-width: 1px;");
@@ -195,37 +187,33 @@ public class KrokiController {
             int steps = data[0];
             int goal = data[1];
 
-            Label stepsLabel = new Label(steps + "");
-            stepsLabel.setStyle("-fx-text-fill: blue;");
-            dayBox.getChildren().add(stepsLabel);
+            Label circleLabel = new Label();
+            circleLabel.setMinSize(40, 40);
+            circleLabel.setMaxSize(40, 40);
+            circleLabel.setStyle("-fx-border-radius: 20px; -fx-background-radius: 20px; -fx-alignment: center; -fx-text-fill: white; -fx-font-weight: bold;");
 
-            Label goalLabel = new Label();
-            if (steps >= goal) {
-                goalLabel.setText("Cel osiągnięty! 🎉");
-                goalLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-            } else {
-                goalLabel.setText(goal + "");
-                goalLabel.setStyle("-fx-text-fill: red;");
+            if (steps >= goal * 2) { // Cel przekroczony dwukrotnie
+                circleLabel.setText("🏆");
+                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: navy;");
+                Tooltip tooltip = new Tooltip( "Cel przekroczony dwukrotnie" + "\nKroki: " + steps + "\nCel: " + goal);
+                Tooltip.install(circleLabel, tooltip);
+            } else if (steps >= goal) { // Cel osiągnięty
+                circleLabel.setText("✔");
+                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: green;");
+                Tooltip tooltip = new Tooltip( "Cel osiągnięty" + "\nKroki: " + steps + "\nCel: " + goal);
+                Tooltip.install(circleLabel, tooltip);
+            } else { // Cel nieosiągnięty
+                circleLabel.setText("❌");
+                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: red;");
+                Tooltip tooltip = new Tooltip( "Cel nieosiągnięty" + "\nKroki: " + steps + "\nCel: " + goal);
+                Tooltip.install(circleLabel, tooltip);
             }
-            dayBox.getChildren().add(goalLabel);
+
+            dayBox.getChildren().add(circleLabel);
 
             weekGrid.add(dayBox, i, 0);
             date = date.plusDays(1);
         }
-    }
-
-    private Button createStatusButton(LocalDate date) {
-        String color;
-        switch (date.getDayOfWeek()) {
-            case MONDAY: color = "#00FF00"; break;
-            case WEDNESDAY: color = "#FFFF00"; break;
-            case FRIDAY: color = "#FF0000"; break;
-            default: color = "#00FF00"; break;
-        }
-
-        Button button = new Button();
-        button.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 50%; -fx-min-width: 20px; -fx-min-height: 20px; -fx-max-width: 20px; -fx-max-height: 20px;");
-        return button;
     }
 
     @FXML

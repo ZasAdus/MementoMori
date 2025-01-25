@@ -1,9 +1,11 @@
 package com.example.mementomori;
 
+import com.example.mementomori.bazyDanych.BazaMojeKonto;
+import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class WizytyController {
     public static final String PATH = "wizyty/wizyty.fxml";
@@ -31,11 +34,17 @@ public class WizytyController {
 
     private static WizytyController instance;
 
+    private static int userId;
+
     @FXML
     public void initialize() {
+        String currentUser = MementoMori.currentUser;
+        User user = BazaMojeKonto.getUserData(currentUser);
+        userId = user.getId();
+
         currentMonday = LocalDate.now().with(DayOfWeek.MONDAY);
         instance = this;
-        updateCalendar();
+        updateCalendar(userId);
     }
 
     @FXML
@@ -51,16 +60,16 @@ public class WizytyController {
     @FXML
     public void nextWeek() {
         currentMonday = currentMonday.plusWeeks(1);
-        updateCalendar();
+        updateCalendar(userId);
     }
 
     @FXML
     public void prevWeek() {
         currentMonday = currentMonday.minusWeeks(1);
-        updateCalendar();
+        updateCalendar(userId);
     }
 
-    public void updateCalendar() {
+    public void updateCalendar(int patientId) {
         calendarGrid.getChildren().clear();
         headerBox.getChildren().clear();
 
@@ -74,7 +83,6 @@ public class WizytyController {
         weekText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         headerBox.getChildren().add(weekText);
 
-        // Dodaj nagłówki dni tygodnia
         String[] daysOfWeek = {"Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"};
         for (int i = 0; i < 7; i++) {
             LocalDate currentDay = startOfWeek.plusDays(i);
@@ -83,7 +91,6 @@ public class WizytyController {
             calendarGrid.add(dayText, i + 1, 0);
         }
 
-        // Dodaj godziny
         for (int hour = 6; hour < 24; hour++) {
             for (int minute = 0; minute < 60; minute += 30) {
                 int rowIndex = (hour - 6) * 2 + (minute == 30 ? 1 : 0) + 1;
@@ -92,11 +99,12 @@ public class WizytyController {
             }
         }
 
-        // Dodaj zaplanowane wizyty
-        if (selectedAppointment != null) {
-            LocalDateTime appointmentDateTime = parseAppointment(selectedAppointment);
+        List<String> appointments = BazaWizyty.fetchAppointmentsFromDatabase(patientId);
+
+        for (String appointment : appointments) {
+            LocalDateTime appointmentDateTime = parseAppointment(appointment);
             if (!appointmentDateTime.toLocalDate().isBefore(startOfWeek) && !appointmentDateTime.toLocalDate().isAfter(endOfWeek)) {
-                int dayColumn = appointmentDateTime.getDayOfWeek().getValue();
+                int dayColumn = appointmentDateTime.getDayOfWeek().getValue(); // dzień tygodnia (1-7)
                 int hour = appointmentDateTime.getHour();
                 int minutes = appointmentDateTime.getMinute();
 
@@ -109,19 +117,23 @@ public class WizytyController {
                                 "-fx-min-width: 25px; " +
                                 "-fx-min-height: 25px; "
                 );
-                button.setOnAction(event -> showAppointmentDetails(selectedAppointment));
+
+                String tooltipText = getAppointmentDetails(appointment);
+                Tooltip tooltip = new Tooltip(tooltipText);
+                Tooltip.install(button, tooltip);
+
                 calendarGrid.add(button, dayColumn, rowIndex);
             }
         }
 
-        // Ustaw ScrollPane
         calendarScrollPane.setVvalue(0.0); // Przewiń na samą górę
         calendarScrollPane.setFitToWidth(true);
     }
 
+
     public static void setSelectedAppointment(String appointment) {
         selectedAppointment = appointment;
-        instance.updateCalendar();
+        instance.updateCalendar(userId);
     }
 
     private LocalDateTime parseAppointment(String appointment) {
@@ -130,7 +142,7 @@ public class WizytyController {
     }
 
 
-    private void showAppointmentDetails(String appointment) {
+    private String getAppointmentDetails(String appointment) {
         String[] details = {
                 "Data wizyty: " + appointment.substring(0, 10),
                 "Godzina wizyty: " + appointment.substring(11),
@@ -139,14 +151,7 @@ public class WizytyController {
                 "Adres: "
         };
 
-        String info = String.join("\n", details);
-
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Szczegóły wizyty");
-        alert.setHeaderText("Informacje o wizycie");
-        alert.setContentText(info);
-
-        alert.showAndWait();
+        return String.join("\n", details);
     }
 
     public void doHarmonogramuPracy(ActionEvent actionEvent) {

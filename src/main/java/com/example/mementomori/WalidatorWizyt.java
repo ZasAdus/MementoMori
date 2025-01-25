@@ -11,7 +11,7 @@ import java.util.Map;
 public class WalidatorWizyt {
     private final BazaHarmonogram bazaLekarze;
     private final BazaWizyty bazaWizyty;
-    private static final int CZAS_WIZYTY = 15; // czas wizyty w minutach
+    private static final int CZAS_WIZYTY = 30; // czas wizyty w minutach
 
     public WalidatorWizyt() {
         this.bazaLekarze = new BazaHarmonogram();

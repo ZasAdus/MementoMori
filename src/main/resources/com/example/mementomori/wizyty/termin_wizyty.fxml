@@ -38,7 +38,7 @@
             </children>
             <children>
                 <HBox alignment="CENTER" spacing="10">
-                    <Button onAction="#onAppointmentSelected" text="Zapisz" />
+<!--                    <Button onAction="#onAppointmentSelected" text="Zapisz" />-->
                     <Button onAction="#goWizyty" text="Anuluj" />
                 </HBox>
             </children>

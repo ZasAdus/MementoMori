@@ -5,7 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BazaWizyty {
     private static final String DB_NAME = "data\\wizyty.db";
@@ -230,6 +232,59 @@ public class BazaWizyty {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public static Map<String, Integer> fetchDoctorsFromDatabase(String specialist, String city) {
+        Map<String, Integer> doctorMap = new HashMap<>();
+        String sql = """
+            SELECT d.id, u.imie, u.nazwisko
+            FROM lekarze d
+            JOIN dane_uzytkownikow u ON d.login = u.login
+            WHERE d.specjalizacja = ? AND d.miasto = ?
+            """;
+
+        try (Connection conn = DriverManager.getConnection(USER_DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, specialist);
+            pstmt.setString(2, city);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int doctorId = rs.getInt("id");
+                String doctorName = rs.getString("imie") + " " + rs.getString("nazwisko");
+                doctorMap.put(doctorName, doctorId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return doctorMap;
+    }
+
+    public static List<String> fetchAppointmentsFromDatabase(int patientId) {
+        List<String> appointments = new ArrayList<>();
+        String sql = """
+            SELECT data_wizyty, godzina_wizyty, id_lekarza
+            FROM wizyty
+            WHERE id_pacjenta = ?
+            """;
+
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:data\\wizyty.db");
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, patientId);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String date = rs.getString("data_wizyty");
+                String time = rs.getString("godzina_wizyty");
+                appointments.add(date + " " + time); // Można dodać dodatkowe informacje, np. lekarza
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return appointments;
     }
 }
 

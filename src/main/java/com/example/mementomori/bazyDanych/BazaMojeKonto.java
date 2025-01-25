@@ -21,7 +21,12 @@ public class BazaMojeKonto {
     }
 
     public static User getUserData(String login) {
-        String sql = "SELECT id, login, imie, nazwisko, email, nrTelefonu FROM dane_uzytkownikow WHERE login = ?";
+        String sql = """
+    SELECT u.id, d.login, d.imie, d.nazwisko, d.email, d.nrTelefonu
+    FROM uzytkownicy u
+    JOIN dane_uzytkownikow d ON u.login = d.login
+    WHERE d.login = ?
+""";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, login);

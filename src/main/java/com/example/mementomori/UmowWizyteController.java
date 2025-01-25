@@ -1,12 +1,13 @@
 package com.example.mementomori;
 
+import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import java.util.HashMap;
+import java.util.Map;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class UmowWizyteController {
 
@@ -21,9 +22,7 @@ public class UmowWizyteController {
     @FXML
     private ListView<String> doctorListView;
 
-    private List<String> doctorsInWarsawFamilyDoctor = List.of("Dr. Jan Kowalski", "Dr. Anna Nowak");
-    private List<String> doctorsInKrakowFamilyDoctor = List.of("Dr. Piotr Wiśniewski");
-    private List<String> doctorsInWroclawDermatologist = List.of("Dr. Monika Zielińska");
+    private Map<String, Integer> doctorIdMap = new HashMap<>();
 
     @FXML
     public void initialize() {
@@ -41,36 +40,35 @@ public class UmowWizyteController {
         String selectedSpecialist = specialistComboBox.getValue();
 
         if (selectedCity != null && selectedSpecialist != null) {
-            List<String> doctors = new ArrayList<>();
+            Map<String, Integer> fetchedDoctors = BazaWizyty.fetchDoctorsFromDatabase(selectedSpecialist, selectedCity);
 
-            if (selectedCity.equals("Warszawa") && selectedSpecialist.equals("Lekarz rodzinny")) {
-                doctors.addAll(doctorsInWarsawFamilyDoctor);
-            } else if (selectedCity.equals("Kraków") && selectedSpecialist.equals("Lekarz rodzinny")) {
-                doctors.addAll(doctorsInKrakowFamilyDoctor);
-            } else if (selectedCity.equals("Wrocław") && selectedSpecialist.equals("Dermatolog")) {
-                doctors.addAll(doctorsInWroclawDermatologist);
-            }
-
-            doctorListView.getItems().clear();
-
-            doctorListView.getItems().addAll(doctors);
-
-            if (doctors.isEmpty()) {
-                doctorListView.getItems().add("Brak dostępnych lekarzy.");
-            }
+            updateDoctorListView(fetchedDoctors);
         } else {
             doctorListView.getItems().clear();
             doctorListView.getItems().add("Wybierz miasto i specjalistę przed wyszukaniem.");
         }
     }
 
+    private void updateDoctorListView(Map<String, Integer> doctors) {
+        doctorListView.getItems().clear();
+        doctorIdMap.clear();
+
+        if (doctors.isEmpty()) {
+            doctorListView.getItems().add("Brak dostępnych lekarzy.");
+        } else {
+            doctorListView.getItems().addAll(doctors.keySet());
+            doctorIdMap.putAll(doctors);
+        }
+    }
+
     private void onDoctorSelected(MouseEvent event) {
         String selectedDoctor = doctorListView.getSelectionModel().getSelectedItem();
-        if (selectedDoctor != null) {
+        if (selectedDoctor != null && !selectedDoctor.equals("Brak dostępnych lekarzy.") && !selectedDoctor.equals("Wybierz miasto i specjalistę przed wyszukaniem.")) {
+            Integer doctorId = doctorIdMap.get(selectedDoctor);
             TerminWizytyController.setSelectedDoctor(selectedDoctor);
+            TerminWizytyController.setSelectedDoctorId(doctorId);
             scheduleAppointment();
         }
-
     }
 
     @FXML

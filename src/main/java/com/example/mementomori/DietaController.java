@@ -1,6 +1,5 @@
 package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaDieta;
-import com.example.mementomori.bazyDanych.BazaKroki;
 import com.example.mementomori.custom_elements.RoundProgressbar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -43,19 +42,6 @@ public class DietaController {
         DietaProgress.setMax(cel.toString() + " kcal");
     }
 
-//    public void DietaZmienCel(ActionEvent actionEvent) {
-//        TextInputDialog dialog = new TextInputDialog();
-//        dialog.setTitle("Zmiana Celu");
-//        dialog.setHeaderText(null);
-//        dialog.setContentText("Wprowadź nowy cel:");
-//        Optional<String> wynik = dialog.showAndWait();
-//        wynik.ifPresent(iloscKalori -> {
-//            cel = Integer.parseInt(iloscKalori);
-//            DietaProgress.setProgress((double) liczbaKalori / cel);
-//            DietaProgress.setMax(cel.toString() + " kcal");
-//        });
-//    }
-
     public void DietaZmienCel(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Zmiana Celu");
@@ -65,21 +51,16 @@ public class DietaController {
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(newGoal -> {
             try {
-                // Parsowanie nowego celu z tekstu na liczbę
                 int nowyCel = Integer.parseInt(newGoal);
 
-                // Aktualizacja zmiennej `cel`
                 cel = nowyCel;
 
-                // Zaktualizuj cel w bazie danych dla zalogowanego użytkownika i bieżącej daty
                 BazaDieta.zaktualizujDaneDieta(currentUser, liczbaKalori, cel);
 
-                // Aktualizacja progresu na interfejsie
                 DietaProgress.setProgress((double) liczbaKalori / cel);
                 DietaProgress.setMax(cel.toString() + " kcal");
 
             } catch (NumberFormatException e) {
-                // Obsługa błędu w przypadku, gdy użytkownik wprowadzi niepoprawne dane
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
@@ -88,19 +69,6 @@ public class DietaController {
             }
         });
     }
-
-//    public void DietaDodajRecznie(ActionEvent actionEvent) {
-//        TextInputDialog dialog = new TextInputDialog();
-//        dialog.setTitle("Dodaj kalorie");
-//        dialog.setHeaderText(null);
-//        dialog.setContentText("Wprowadź ile kcal spożyłeś:");
-//        Optional<String> wynik = dialog.showAndWait();
-//        wynik.ifPresent(x -> {
-//            liczbaKalori += Integer.parseInt(x);
-//            DietaProgress.setProgress((double) liczbaKalori / cel);
-//            DietaProgress.setMin(liczbaKalori.toString());
-//        });
-//    }
 
     public void DietaDodajRecznie(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
@@ -215,43 +183,32 @@ public class DietaController {
             dayBox.getChildren().add(dayLabel);
 
             int[] data = weeklyData.getOrDefault(date, new int[]{0, cel});
-            int steps = data[0];
+            int kal = data[0];
             int goal = data[1];
 
-            Label stepsLabel = new Label(steps + "");
-            stepsLabel.setStyle("-fx-text-fill: blue;");
-            dayBox.getChildren().add(stepsLabel);
+            Label circleLabel = new Label();
+            circleLabel.setMinSize(40, 40);
+            circleLabel.setMaxSize(40, 40);
+            circleLabel.setStyle("-fx-border-radius: 20px; -fx-background-radius: 20px; -fx-alignment: center; -fx-text-fill: white; -fx-font-weight: bold;");
 
-            Label goalLabel = new Label();
-            if (steps >= goal) {
-                goalLabel.setText("Cel osiągnięty! 🎉");
-                goalLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-            } else {
-                goalLabel.setText(goal + "");
-                goalLabel.setStyle("-fx-text-fill: red;");
+            if (kal >= goal) { // Cel osiągnięty
+                circleLabel.setText("✔");
+                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: green;");
+                Tooltip tooltip = new Tooltip( "Cel osiągnięty" + "\nKalorie: " + kal + "\nCel: " + goal);
+                Tooltip.install(circleLabel, tooltip);
+            } else { // Cel nieosiągnięty
+                circleLabel.setText("❌");
+                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: red;");
+                Tooltip tooltip = new Tooltip( "Cel nieosiągnięty" + "\nKalorie: " + kal + "\nCel: " + goal);
+                Tooltip.install(circleLabel, tooltip);
             }
-            dayBox.getChildren().add(goalLabel);
+
+            dayBox.getChildren().add(circleLabel);
 
             weekGrid.add(dayBox, i, 0);
             date = date.plusDays(1);
         }
     }
-
-    private Button createStatusButton(LocalDate date) {
-        String color;
-        switch (date.getDayOfWeek()) {
-            case MONDAY: color = "#00FF00"; break;
-            case WEDNESDAY: color = "#FFFF00"; break;
-            case FRIDAY: color = "#FF0000"; break;
-            default: color = "#00FF00"; break;
-        }
-
-        Button button = new Button();
-        button.setStyle("-fx-background-color: " + color + "; -fx-background-radius: 50%; -fx-min-width: 20px; -fx-min-height: 20px; -fx-max-width: 20px; -fx-max-height: 20px;");
-        return button;
-    }
-
-
 
     @FXML
     public void ReturnHome() {
