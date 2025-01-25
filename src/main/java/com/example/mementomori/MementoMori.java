@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MementoMori extends Application {
-
     public static Stage main_stage;
     public static int idDoctor;
 
@@ -31,9 +30,9 @@ public class MementoMori extends Application {
 
 
     private static final double VALID_RATIO = 0.7;
-    private static final double WIDTH = 428;
-    private static final double HEIGHT = 926;
-    private static double scale = 0.75;
+    static final double WIDTH = 428;
+    static final double HEIGHT = 926;
+    static double scale = 0.75;
 
     @Override
     public void start(Stage stage) throws IOException {

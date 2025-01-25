@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.PanelLekarzaHarmonogramPracyController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.PanelLekarzaHarmonogramPracyController">
     <top>
         <VBox alignment="CENTER" spacing="10">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Harmonogram pracy">
@@ -25,27 +25,37 @@
             <children>
                 <VBox layoutX="65.0" layoutY="183.0" prefHeight="403.0" prefWidth="297.0" spacing="15">
                     <children>
-                        <Button fx:id="poniedzialekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="270.0" text="Poniedziałek: Brak godzin" />
-                        <Button fx:id="wtorekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="270.0" text="Wtorek: Brak godzin" />
-                        <Button fx:id="srodaBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="270.0" text="Środa: Brak godzin" />
-                        <Button fx:id="czwartekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" text="Czwartek: Brak godzin" />
-                        <Button fx:id="piatekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" text="Piątek: Brak godzin" />
-                        <Button fx:id="sobotaBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" text="Sobota: Brak godzin" />
-                        <Button fx:id="niedzielaBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" text="Niedziela: Brak godzin" />
+                        <Button fx:id="poniedzialekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="270.0" styleClass="button" text="Poniedziałek: Brak godzin" />
+                        <Button fx:id="wtorekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="270.0" styleClass="button" text="Wtorek: Brak godzin" />
+                        <Button fx:id="srodaBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="270.0" styleClass="button" text="Środa: Brak godzin" />
+                        <Button fx:id="czwartekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" styleClass="button" text="Czwartek: Brak godzin" />
+                        <Button fx:id="piatekBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" styleClass="button" text="Piątek: Brak godzin" />
+                        <Button fx:id="sobotaBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" styleClass="button" text="Sobota: Brak godzin" />
+                        <Button fx:id="niedzielaBtn" mnemonicParsing="false" onAction="#handleDayClick" prefHeight="40.0" prefWidth="271.0" styleClass="button" text="Niedziela: Brak godzin" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </VBox>
-                <Button fx:id="homeBtn" layoutX="111.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleHome" prefHeight="25.0" prefWidth="206.0" text="Home" />
-            <HBox layoutX="75.0" layoutY="155.0" prefHeight="27.0" prefWidth="271.0">
-               <children>
-                      <Button fx:id="lewoDataGuzik" mnemonicParsing="false" onAction="#prevWeek" prefHeight="26.0" prefWidth="39.0" text="←" />
-                      <Text fx:id="tygodniowkaText" style="-fx-font-size: 16px;" textAlignment="CENTER" wrappingWidth="203.67822265625" />
-                      <Button fx:id="prawoDataGuzik" mnemonicParsing="false" onAction="#nextWeek" prefHeight="26.0" prefWidth="39.0" text="→" />
-               </children>
-            </HBox>
+                <HBox layoutX="75.0" layoutY="155.0" prefHeight="27.0" prefWidth="271.0">
+                    <children>
+                        <Button fx:id="lewoDataGuzik" mnemonicParsing="false" onAction="#prevWeek" prefHeight="26.0" prefWidth="39.0" styleClass="button" text="⮜" />
+                        <Text fx:id="tygodniowkaText" style="-fx-font-size: 16px;" textAlignment="CENTER" wrappingWidth="203.67822265625" />
+                        <Button fx:id="prawoDataGuzik" mnemonicParsing="false" onAction="#nextWeek" prefHeight="26.0" prefWidth="39.0" styleClass="button" text="⮞" />
+                    </children>
+                </HBox>
             </children>
         </AnchorPane>
     </center>
+   <bottom>
+       <HBox styleClass="bottom-bar">
+           <children>
+               <Button mnemonicParsing="false" onAction="#handleHome" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+                   <font>
+                       <Font size="12.0" />
+                   </font>
+               </Button>
+           </children>
+       </HBox>
+   </bottom>
 </BorderPane>

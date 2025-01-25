@@ -24,11 +24,6 @@
    <bottom>
       <HBox styleClass="bottom-bar">
          <children>
-            <Button mnemonicParsing="false" onAction="#doMain" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Button>
             <Button mnemonicParsing="false" onAction="#doMojeKonto" text="Moje konto" />
          </children>
       </HBox>

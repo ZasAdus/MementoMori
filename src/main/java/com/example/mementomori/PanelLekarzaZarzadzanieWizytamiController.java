@@ -3,11 +3,16 @@ package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
+
+import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import com.example.mementomori.PanelLekarzaMainControler;
@@ -31,8 +36,6 @@ public class PanelLekarzaZarzadzanieWizytamiController {
     @FXML
     private AnchorPane pendingAnchorPane;
 
-    private ScrollPane confirmedScrollPane;
-    private ScrollPane pendingScrollPane;
     private VBox confirmedAppointmentsBox;
     private VBox pendingAppointmentsBox;
     private BazaWizyty bazaWizyty;
@@ -48,16 +51,13 @@ public class PanelLekarzaZarzadzanieWizytamiController {
             confirmedAppointmentsBox.setPadding(new Insets(10));
             pendingAppointmentsBox.setPadding(new Insets(10));
 
-            // Initialize ScrollPanes
-            confirmedScrollPane = new ScrollPane(confirmedAppointmentsBox);
-            pendingScrollPane = new ScrollPane(pendingAppointmentsBox);
+            ScrollPane confirmedScrollPane = new ScrollPane(confirmedAppointmentsBox);
+            ScrollPane pendingScrollPane = new ScrollPane(pendingAppointmentsBox);
 
-            // Configure ScrollPanes
             configureScrollPane(confirmedScrollPane);
             configureScrollPane(pendingScrollPane);
 
             if (confirmedAnchorPane != null && pendingAnchorPane != null) {
-                // Add ScrollPanes to AnchorPanes with proper anchoring
                 setAnchorConstraints(confirmedScrollPane);
                 setAnchorConstraints(pendingScrollPane);
 
@@ -65,10 +65,13 @@ public class PanelLekarzaZarzadzanieWizytamiController {
                 pendingAnchorPane.getChildren().add(pendingScrollPane);
 
                 loadAppointments();
+                appointmentTabPane.getStyleClass().add("tab-pane");
+                confirmedTab.getStyleClass().add("tab");
+                pendingTab.getStyleClass().add("tab");
+
 
                 appointmentTabPane.getSelectionModel().selectedItemProperty().addListener(
                         (observable, oldTab, newTab) -> {
-                            System.out.println("Tab changed to: " + newTab.getText());
                             loadAppointments();
                         });
             }
@@ -119,7 +122,15 @@ public class PanelLekarzaZarzadzanieWizytamiController {
     }
     private HBox createAppointmentEntry(BazaWizyty.Wizyta wizyta) {
         HBox entryContainer = new HBox(10);
-        entryContainer.setStyle("-fx-background-color: #E6F3FF; -fx-padding: 10; -fx-background-radius: 5;");
+        entryContainer.setStyle(
+                "-fx-background-color: #D0E8FF; " +
+                        "-fx-padding: 10; " +
+                        "-fx-background-radius: 5; " +
+                        "-fx-border-color: black; " +
+                        "-fx-border-radius: 5; " +
+                        "-fx-border-width: 1;"
+        );
+
         entryContainer.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(entryContainer, Priority.ALWAYS);
 
