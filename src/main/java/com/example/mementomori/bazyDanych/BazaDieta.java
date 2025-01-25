@@ -24,12 +24,12 @@ public class BazaDieta {
 
     public static void initTable() {
         String sql = """
-        CREATE TABLE IF NOT EXISTS kroki (
+        CREATE TABLE IF NOT EXISTS dieta (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_login TEXT NOT NULL,
             date TEXT NOT NULL,
             kal INTEGER DEFAULT 0,
-            goal INTEGER DEFAULT 6000,
+            goal INTEGER DEFAULT 2000,
             UNIQUE(user_login, date)
         )
         """;
@@ -54,7 +54,7 @@ public class BazaDieta {
                 ResultSet rs = pstmtCheck.executeQuery();
 
                 if (rs.next() && rs.getInt(1) == 0) {
-                    int poprzedniCel = 6000;
+                    int poprzedniCel = 2000;
                     try (PreparedStatement pstmtGoal = conn.prepareStatement(sqlPreviousGoal)) {
                         pstmtGoal.setString(1, login);
                         ResultSet rsGoal = pstmtGoal.executeQuery();
@@ -96,7 +96,7 @@ public class BazaDieta {
 
     public static int[] pobierzDaneDieta(String login) {
         String sql = "SELECT kal, goal FROM dieta WHERE user_login = ? AND date = ?";
-        int[] dane = new int[]{0, 6000};
+        int[] dane = new int[]{0, 2000};
 
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
