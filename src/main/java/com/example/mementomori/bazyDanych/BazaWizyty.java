@@ -18,24 +18,34 @@ public class BazaWizyty {
     }
 
     private void createTables() {
-        String sql = """
-            CREATE TABLE IF NOT EXISTS wizyty (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                id_lekarza INTEGER NOT NULL,
-                id_pacjenta INTEGER NOT NULL,
-                data_wizyty TEXT NOT NULL,
-                godzina_wizyty TEXT NOT NULL,
-                status TEXT NOT NULL,
-                UNIQUE(id_lekarza, data_wizyty, godzina_wizyty)
-            );
-        """;
+        String createWizytyTableSQL = """
+        CREATE TABLE IF NOT EXISTS wizyty (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id_lekarza INTEGER NOT NULL,
+            id_pacjenta INTEGER NOT NULL,
+            data_wizyty TEXT NOT NULL,
+            godzina_wizyty TEXT NOT NULL,
+            status TEXT NOT NULL,
+            UNIQUE(id_lekarza, data_wizyty, godzina_wizyty)
+        );
+    """;
+
+        String createPacjenciTableSQL = """
+        CREATE TABLE IF NOT EXISTS pacjenci (
+            id_pacjenta INTEGER PRIMARY KEY,
+            imie TEXT NOT NULL,
+            nazwisko TEXT NOT NULL
+        );
+    """;
 
         try (Connection conn = DriverManager.getConnection(URL);
              Statement stmt = conn.createStatement()) {
-            stmt.execute(sql);
-            System.out.println("Tabela wizyt została utworzona lub już istnieje.");
+            stmt.execute(createWizytyTableSQL);
+            stmt.execute(createPacjenciTableSQL);
+            System.out.println("Tabele wizyty i pacjenci zostały utworzone lub już istnieją.");
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Błąd podczas tworzenia tabel: " + e.getMessage());
+            e.printStackTrace();  // Wydrukuj pełny ślad stosu, aby uzyskać więcej informacji
         }
     }
 
@@ -61,7 +71,6 @@ public class BazaWizyty {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, idLekarza);
             pstmt.setInt(2, idPacjenta);
-            // Zapisujemy datę w formacie YYYY-MM-DD
             pstmt.setString(3, dataczas.toLocalDate().toString());
             pstmt.setString(4, dataczas.toLocalTime().toString());
             pstmt.setString(5, "OCZEKUJACA");
@@ -81,6 +90,7 @@ public class BazaWizyty {
         JOIN dane_uzytkownikow du ON u.login = du.login
         WHERE u.id = ?
     """;
+        String i = "", n = "";
 
         try (Connection conn = DriverManager.getConnection(USER_DB_URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -90,7 +100,9 @@ public class BazaWizyty {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     String imie = rs.getString("imie");
+                    i = imie;
                     String nazwisko = rs.getString("nazwisko");
+                    n = nazwisko;
                     return imie + " " + nazwisko;
                 }
             }
@@ -98,8 +110,21 @@ public class BazaWizyty {
             System.out.println("Error getting patient data: " + e.getMessage());
             e.printStackTrace();
         }
+        sql = "INSERT INTO pacjenci VALUES(?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, idPacjenta);
+            pstmt.setString(2, i);
+            pstmt.setString(3, n);
+
+            // Execute the prepared statement
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return "Pacjent " + idPacjenta;
     }
+
 
     public List<Wizyta> pobierzWizyty(int idLekarza, String status) {
         String sql = """

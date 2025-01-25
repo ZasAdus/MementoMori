@@ -111,6 +111,12 @@ public class PanelLekarzaMainControler {
         calendarScrollPane.setFitToHeight(true);
     }
 
+    public static void refreshCalendar() {
+        if (instance != null) {
+            instance.updateCalendar();
+        }
+    }
+
     private void addAppointmentDot(BazaWizyty.Wizyta wizyta, String color) {
         LocalDateTime appointmentDateTime = wizyta.dataczas;
 

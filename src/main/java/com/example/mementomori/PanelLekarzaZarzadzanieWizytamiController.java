@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import com.example.mementomori.PanelLekarzaMainControler;
 
 public class PanelLekarzaZarzadzanieWizytamiController {
     @FXML
@@ -156,6 +157,7 @@ public class PanelLekarzaZarzadzanieWizytamiController {
             confirmButton.setOnAction(e -> {
                 bazaWizyty.zmienStatusWizyty(wizyta.id, "POTWIERDZONA");
                 loadAppointments();
+                PanelLekarzaMainControler.refreshCalendar();
             });
             buttonBox.getChildren().add(confirmButton);
         }
@@ -166,6 +168,7 @@ public class PanelLekarzaZarzadzanieWizytamiController {
         cancelButton.setOnAction(e -> {
             bazaWizyty.zmienStatusWizyty(wizyta.id, "ANULOWANA");
             loadAppointments();
+            PanelLekarzaMainControler.refreshCalendar();
         });
 
         buttonBox.getChildren().addAll(cancelButton, detailsButton);
