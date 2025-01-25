@@ -57,3 +57,25 @@
 .transparent-bg {
     -fx-background-color: transparent;
 }
+
+
+.tab-pane {
+    -fx-background-color: #d5f1de;
+}
+
+.tab-header-background {
+    -fx-background-color: #d5f1de;
+}
+
+.tab {
+    -fx-background-color: #D0E8FF;
+    -fx-padding: 10;
+    -fx-background-radius: 5;
+    -fx-border-color: black;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+}
+
+.tab:selected {
+    -fx-background-color: #D0E8FF;
+}

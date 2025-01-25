@@ -153,16 +153,4 @@ public class WizytyController {
 
         return String.join("\n", details);
     }
-
-    public void doHarmonogramuPracy(ActionEvent actionEvent) {
-    }
-
-    public void doZarzadzaniaWizytami(ActionEvent actionEvent) {
-    }
-
-    public void doMain(ActionEvent actionEvent) {
-    }
-
-    public void doMojeKonto(ActionEvent actionEvent) {
-    }
 }

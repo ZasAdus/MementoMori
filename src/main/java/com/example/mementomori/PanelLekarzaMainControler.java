@@ -3,13 +3,14 @@ package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.StageStyle;
 
+import javax.swing.text.Style;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -109,6 +110,9 @@ public class PanelLekarzaMainControler {
 
         calendarScrollPane.setFitToWidth(true);
         calendarScrollPane.setFitToHeight(true);
+        calendarScrollPane.setStyle(
+                        "-fx-border-color: black; "
+        );
     }
 
     public static void refreshCalendar() {
@@ -117,7 +121,7 @@ public class PanelLekarzaMainControler {
         }
     }
 
-    private void addAppointmentDot(BazaWizyty.Wizyta wizyta, String color) {
+   private void addAppointmentDot(BazaWizyty.Wizyta wizyta, String color) {
         LocalDateTime appointmentDateTime = wizyta.dataczas;
 
         if (!appointmentDateTime.toLocalDate().isBefore(currentMonday) &&
@@ -130,14 +134,12 @@ public class PanelLekarzaMainControler {
 
             Button button = new Button();
             button.setStyle(
-                    "-fx-background-color: " + color + "; " +
+                    "-fx-background-color: " + color + ";"+
                             "-fx-background-radius: 50%; " +
-                            "-fx-min-width: 15px; " +
-                            "-fx-min-height: 15px; " +
-                            "-fx-max-width: 15px; " +
-                            "-fx-max-height: 15px; "
+                            "-fx-min-width: 25px; " +
+                            "-fx-min-height: 25px; "
             );
-
+            button.setFocusTraversable(false);
             button.setOnAction(event -> showAppointmentDetails(wizyta));
             calendarGrid.add(button, dayColumn, hourRow);
         }
@@ -151,15 +153,49 @@ public class PanelLekarzaMainControler {
                 "Data wizyty: " + wizyta.dataczas.format(dateFormatter),
                 "Godzina wizyty: " + wizyta.dataczas.format(timeFormatter),
                 "Pacjent: " + wizyta.pacjentName,
-                "Status: " + wizyta.status
+                "Status: " + wizyta.status.toLowerCase()
         };
 
         String info = String.join("\n", details);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Szczegóły wizyty");
-        alert.setHeaderText("Informacje o wizycie");
+        Alert alert = new Alert(Alert.AlertType.NONE);
+        alert.setHeaderText(null);
+        alert.setTitle("Informacje o wizycie");
+        alert.initStyle(StageStyle.UNDECORATED);
+
+        ButtonType closeButton = new ButtonType("Zamknij", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().add(closeButton);
+
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle(
+                "-fx-background-color: #d5f1de;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-border-color: black;"
+
+        );
+
+        Node closeButtonNode = dialogPane.lookupButton(closeButton);
+        closeButtonNode.setStyle(
+                "-fx-background-color: #a5d8ff;" +
+                        "-fx-focus-color: transparent;" +
+                        "-fx-faint-focus-color: transparent;" +
+                        "-fx-background-insets: 0;" +
+                        "-fx-background-radius: 5px;" +
+                        "-fx-background-color-hover: #7ec8ff;" +
+                        "-fx-background-color-pressed: #5eb8ff;"+
+                        "-fx-border-color: black;"
+        );
+
         alert.setContentText(info);
+
+        dialogPane.setMaxWidth(MementoMori.WIDTH * MementoMori.scale * 0.8);
+        dialogPane.setMaxHeight(MementoMori.HEIGHT * MementoMori.scale * 0.5);
+
+        javafx.stage.Window window = alert.getDialogPane().getScene().getWindow();
+        window.setOnShown(event -> {
+            window.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - window.getWidth()) / 2);
+            window.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - window.getHeight()) / 2);
+        });
 
         alert.showAndWait();
     }
