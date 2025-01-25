@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BazaWizyty {
-    private static final String DB_NAME = "data\\harmonogram.db";
+    private static final String DB_NAME = "data\\wizyty.db";
     private static final String URL = "jdbc:sqlite:" + DB_NAME;
     private static final int VISIT_DURATION_MINUTES = 30;
     private static final String USER_DB_URL = "jdbc:sqlite:data\\uzytkownicy.db";
@@ -50,11 +50,7 @@ public class BazaWizyty {
 
     public boolean dodajWizyte(int idLekarza, int idPacjenta, LocalDateTime dataczas) {
         // Sprawdź czy lekarz przyjmuje w tym czasie
-        BazaWizytyLekarze bazaLekarze = new BazaWizytyLekarze();
-        if (!bazaLekarze.sprawdzCzyPrzyjmuje(dataczas.getDayOfWeek().toString(), dataczas.toLocalTime())) {
-            System.out.println("Lekarz nie przyjmuje w tym czasie");
-            return false;
-        }
+        BazaHarmonogram bazaLekarze = new BazaHarmonogram();
 
         String sql = """
             INSERT INTO wizyty(id_lekarza, id_pacjenta, data_wizyty, godzina_wizyty, status)

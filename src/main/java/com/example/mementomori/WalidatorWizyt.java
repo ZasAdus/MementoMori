@@ -1,7 +1,7 @@
 package com.example.mementomori;
 
 import com.example.mementomori.bazyDanych.BazaWizyty;
-import com.example.mementomori.bazyDanych.BazaWizytyLekarze;
+import com.example.mementomori.bazyDanych.BazaHarmonogram;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -9,12 +9,12 @@ import java.time.DayOfWeek;
 import java.util.Map;
 
 public class WalidatorWizyt {
-    private final BazaWizytyLekarze bazaLekarze;
+    private final BazaHarmonogram bazaLekarze;
     private final BazaWizyty bazaWizyty;
     private static final int CZAS_WIZYTY = 15; // czas wizyty w minutach
 
     public WalidatorWizyt() {
-        this.bazaLekarze = new BazaWizytyLekarze();
+        this.bazaLekarze = new BazaHarmonogram();
         this.bazaWizyty = new BazaWizyty();
     }
 

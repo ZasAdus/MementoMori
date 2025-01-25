@@ -74,8 +74,8 @@ public class PanelLekarzaMainControler {
         LocalDate startOfWeek = currentMonday;
         LocalDate endOfWeek = currentMonday.plusDays(6);
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
-        String weekRange = "Tydzień " + startOfWeek.format(formatter) + " - " + endOfWeek.format(formatter) + " (" + endOfWeek.getYear() + ")";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String weekRange = startOfWeek.format(formatter) + " - " + endOfWeek.format(formatter);
         Text weekText = new Text(weekRange);
         weekText.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         headerBox.getChildren().add(weekText);
