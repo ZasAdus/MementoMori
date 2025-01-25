@@ -30,7 +30,8 @@ public class WizytyController {
 
     private LocalDate currentMonday;
 
-    private static String selectedAppointment;
+//    private static String selectedAppointment;
+//    private static int doctorId;
 
     private static WizytyController instance;
 
@@ -50,6 +51,12 @@ public class WizytyController {
     @FXML
     public void goHome() {
         MementoMori.returnHome();
+    }
+
+    @FXML
+    public void listWizyty() {
+        SzczegolyWizytyController.setUserId(userId);
+        MementoMori.navigateTo(SzczegolyWizytyController.PATH);
     }
 
     @FXML
@@ -102,7 +109,11 @@ public class WizytyController {
         List<String> appointments = BazaWizyty.fetchAppointmentsFromDatabase(patientId);
 
         for (String appointment : appointments) {
-            LocalDateTime appointmentDateTime = parseAppointment(appointment);
+            String[] parts = appointment.split("\\|");
+            String dateTime = parts[0];
+            int doctorId = Integer.parseInt(parts[1]);
+
+            LocalDateTime appointmentDateTime = parseAppointment(dateTime);
             if (!appointmentDateTime.toLocalDate().isBefore(startOfWeek) && !appointmentDateTime.toLocalDate().isAfter(endOfWeek)) {
                 int dayColumn = appointmentDateTime.getDayOfWeek().getValue(); // dzień tygodnia (1-7)
                 int hour = appointmentDateTime.getHour();
@@ -118,7 +129,12 @@ public class WizytyController {
                                 "-fx-min-height: 25px; "
                 );
 
-                String tooltipText = getAppointmentDetails(appointment);
+                String doctorDetails = BazaWizyty.getDoctorDetails(doctorId);
+
+                String tooltipText = String.format(
+                        "Data wizyty: %s\nGodzina wizyty: %s\n%s",
+                        dateTime.substring(0, 10), dateTime.substring(11), doctorDetails
+                );
                 Tooltip tooltip = new Tooltip(tooltipText);
                 Tooltip.install(button, tooltip);
 
@@ -130,28 +146,14 @@ public class WizytyController {
         calendarScrollPane.setFitToWidth(true);
     }
 
-
     public static void setSelectedAppointment(String appointment) {
-        selectedAppointment = appointment;
+        //selectedAppointment = appointment;
         instance.updateCalendar(userId);
     }
 
     private LocalDateTime parseAppointment(String appointment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(appointment, formatter);
-    }
-
-
-    private String getAppointmentDetails(String appointment) {
-        String[] details = {
-                "Data wizyty: " + appointment.substring(0, 10),
-                "Godzina wizyty: " + appointment.substring(11),
-                "Lekarz: ",
-                "Specjalizacja: ",
-                "Adres: "
-        };
-
-        return String.join("\n", details);
     }
 
     public void doHarmonogramuPracy(ActionEvent actionEvent) {

@@ -3,8 +3,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.SzczegolyWizytyController">
-    <Label fx:id="appointmentLabel" text="Szczegóły wizyty" style="-fx-font-size: 18px; -fx-font-weight: bold;" />
-    <Label fx:id="detailsLabel" text="Informacje o wizycie" />
-    <Button text="Zamknij" onAction="#closeWindow" />
-</VBox>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.SzczegolyWizytyController">
+<top>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wizyty">
+            <font>
+                <Font size="36.0" />
+            </font>
+        </Text>
+    </HBox>
+</top>
+
+<bottom>
+    <HBox styleClass="bottom-bar">
+        <children>
+            <Button mnemonicParsing="false" onAction="#goBack" text="Powrót" />
+        </children>
+        <BorderPane.margin>
+            <Insets />
+        </BorderPane.margin>
+    </HBox>
+</bottom>
+
+<center>
+    <VBox>
+        <ListView fx:id="appointmentsList" prefWidth="600" prefHeight="400" style="-fx-font-size: 16px; -fx-background-color: transparent; "/>
+    </VBox>
+</center>
+</BorderPane>

@@ -1,44 +1,83 @@
 package com.example.mementomori;
 
+import com.example.mementomori.bazyDanych.BazaWizyty;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SzczegolyWizytyController {
 
-    @FXML
-    private Label detailsLabel;
+    public static final String PATH = "wizyty/szczegoly_wizyty.fxml";
 
-    public void setDetails(String details) {
-        detailsLabel.setText(details);
+    @FXML
+    public void goBack() { MementoMori.navigateTo(WizytyController.PATH); }
+
+    @FXML
+    private ListView<HBox> appointmentsList;
+
+    private static int userId;
+
+    private static SzczegolyWizytyController instance;
+
+    public static void setUserId(int id) {
+        userId = id;
     }
 
     @FXML
-    public void closeWindow() {
-        Stage stage = (Stage) detailsLabel.getScene().getWindow();
-        stage.close();
-    }
+    public void initialize() {
+        instance = this;
 
-    private void showAppointmentDetails(String appointment) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("szczegoly_wizyty.fxml"));
-            Parent root = loader.load();
+        List<String> rawAppointments = BazaWizyty.fetchAppointmentsFromDatabase(userId);
+        List<HBox> formattedAppointments = new ArrayList<>();
 
-            SzczegolyWizytyController controller = loader.getController();
-            controller.setDetails("Data wizyty: " + appointment);
+        if (rawAppointments.isEmpty()) {
+            Label noAppointmentsLabel = new Label("Brak zaplanowanych wizyt.");
+            noAppointmentsLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-            Stage stage = new Stage();
-            stage.setTitle("Szczegóły wizyty");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+            HBox noAppointmentsBox = new HBox(noAppointmentsLabel);
+            noAppointmentsBox.setStyle("-fx-alignment: center;");
+
+            formattedAppointments.add(noAppointmentsBox);
+        } else {
+            for (String appointment : rawAppointments) {
+                String[] parts = appointment.split("\\|");
+                String dateTime = parts[0];
+                int doctorId = Integer.parseInt(parts[1]);
+                String status = parts[2];
+
+                String doctorDetails = BazaWizyty.getDoctorDetails(doctorId);
+
+                HBox appointmentBox = new HBox(10);
+                appointmentBox.setStyle("-fx-alignment: center-left;");
+
+                Label appointmentLabel = new Label(dateTime + "\n" + doctorDetails + "\nStatus: " + status);
+                appointmentLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+
+                Button cancelButton = new Button("Odwołaj wizytę");
+                cancelButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-size: 14px;");
+
+                cancelButton.setOnAction(event -> BazaWizyty.cancelAppointment(dateTime, doctorId));
+
+                Region spacer = new Region();
+                HBox.setHgrow(spacer, Priority.ALWAYS);
+
+                appointmentBox.setSpacing(10);
+                appointmentBox.getChildren().addAll(appointmentLabel, spacer, cancelButton);
+                formattedAppointments.add(appointmentBox);
+            }
         }
+
+        appointmentsList.setItems(FXCollections.observableArrayList(formattedAppointments));
     }
+
+
+    public static void odswiez() { instance.initialize(); }
 
 }

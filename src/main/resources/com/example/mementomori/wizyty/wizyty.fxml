@@ -24,7 +24,7 @@
                         <Font size="12.0" />
                     </font>
                 </Button>
-                <Button mnemonicParsing="false" text="Twoje wizyty" />
+                <Button mnemonicParsing="false" onAction="#listWizyty" text="Twoje wizyty" />
             </children>
             <BorderPane.margin>
                 <Insets />

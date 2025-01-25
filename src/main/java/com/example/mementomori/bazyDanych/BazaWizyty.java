@@ -1,5 +1,7 @@
 package com.example.mementomori.bazyDanych;
 
+import com.example.mementomori.SzczegolyWizytyController;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -264,12 +266,13 @@ public class BazaWizyty {
     public static List<String> fetchAppointmentsFromDatabase(int patientId) {
         List<String> appointments = new ArrayList<>();
         String sql = """
-            SELECT data_wizyty, godzina_wizyty, id_lekarza
+            SELECT data_wizyty, godzina_wizyty, id_lekarza, status
             FROM wizyty
             WHERE id_pacjenta = ?
+            AND status != 'ODWOLANA'
             """;
 
-        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:data\\wizyty.db");
+        try (Connection conn = DriverManager.getConnection(URL);
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setInt(1, patientId);
@@ -278,7 +281,11 @@ public class BazaWizyty {
             while (rs.next()) {
                 String date = rs.getString("data_wizyty");
                 String time = rs.getString("godzina_wizyty");
-                appointments.add(date + " " + time); // Można dodać dodatkowe informacje, np. lekarza
+                int doctorId = rs.getInt("id_lekarza");
+                String status = rs.getString("status");
+
+                // Dodaj wszystkie dane w jednej linii, oddzielone separatorem
+                appointments.add(date + " " + time + "|" + doctorId + "|" + status);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -286,5 +293,66 @@ public class BazaWizyty {
 
         return appointments;
     }
+
+    public static String getDoctorDetails(int doctorId) {
+        String details = "";
+        String sql = """
+        SELECT u.imie, u.nazwisko, l.specjalizacja, l.miasto, l.ulica, l.numer
+        FROM lekarze l
+        JOIN dane_uzytkownikow u ON l.login = u.login WHERE l.id = ?;
+        """;
+
+        try (Connection conn = DriverManager.getConnection(USER_DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, doctorId);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String imie = rs.getString("imie");
+                String nazwisko = rs.getString("nazwisko");
+                String specjalizacja = rs.getString("specjalizacja");
+                String miasto = rs.getString("miasto");
+                String ulica = rs.getString("ulica");
+                String numer = rs.getString("numer");
+
+                details = String.format(
+                        "Lekarz: %s %s\nSpecjalizacja: %s\nAdres: %s, %s %s",
+                        imie, nazwisko, specjalizacja, miasto, ulica, numer
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return details;
+    }
+
+    public static void cancelAppointment(String appointmentDateTime, int doctorId) {
+        String date = appointmentDateTime.split(" ")[0];
+        String time = appointmentDateTime.split(" ")[1];
+        System.out.println(appointmentDateTime + doctorId);
+
+        String sql = """
+            UPDATE wizyty
+            SET status = 'ODWOLANA'
+            WHERE data_wizyty = ? AND godzina_wizyty = ? AND id_lekarza = ?;
+        """;
+
+        try (Connection conn = DriverManager.getConnection("jdbc:sqlite:data\\wizyty.db");
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, date);
+            pstmt.setString(2, time);
+            pstmt.setInt(3, doctorId);
+
+            pstmt.executeUpdate();
+            SzczegolyWizytyController.odswiez();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

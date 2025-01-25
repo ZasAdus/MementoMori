@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,10 @@ public class TerminWizytyController {
     private Label doctorLabel;
 
     @FXML
+    private Label dateLabel;
+    private LocalDate selectedDate = LocalDate.now();
+
+    @FXML
     private ListView<String> appointmentListView;
 
     public static void setSelectedDoctor(String doctor) {
@@ -52,37 +57,49 @@ public class TerminWizytyController {
 
         doctorLabel.setText("Wybrany lekarz: " + selectedDoctor);
 
-        List<String> appointments = fetchAppointmentsFromDatabase(selectedDoctorId);
+        updateAppointmentList();
+
+        appointmentListView.setOnMouseClicked(this::onAppointmentSelected);
+    }
+
+    private void updateAppointmentList() {
+        dateLabel.setText("Data: " + selectedDate.toString());
+
+        List<String> appointments = fetchAppointmentsFromDatabase(selectedDoctorId, selectedDate);
         ObservableList<String> appointmentList = FXCollections.observableArrayList(appointments);
+
         appointmentListView.setItems(appointmentList);
 
         if (appointments.isEmpty()) {
             appointmentListView.getItems().add("Brak dostępnych terminów.");
         }
-
-        appointmentListView.setOnMouseClicked(this::onAppointmentSelected);
     }
 
-    private List<String> fetchAppointmentsFromDatabase(int doctorId) {
+    private List<String> fetchAppointmentsFromDatabase(int doctorId, LocalDate date) {
         List<String> appointments = new ArrayList<>();
         String sql = """
                 SELECT dzien, miesiac, rok, godzina_start, godzina_koniec
                 FROM harmonogram_lekarzy
-                WHERE id_lekarza = ?
+                WHERE id_lekarza = ? AND dzien = ? AND miesiac = ? AND rok = ?
                 """;
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:data\\wizyty.db");
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
+            String[] dateParts = date.toString().split("-");
+
             pstmt.setInt(1, doctorId);
+            pstmt.setString(2, dateParts[2]);
+            pstmt.setString(3, dateParts[1]);
+            pstmt.setString(4, dateParts[0]);
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                String date = String.format("%s-%s-%s", rs.getString("rok"), rs.getString("miesiac"), rs.getString("dzien"));
+                String dateStr = String.format("%s-%s-%s", rs.getString("rok"), rs.getString("miesiac"), rs.getString("dzien"));
                 String startTime = rs.getString("godzina_start");
                 String endTime = rs.getString("godzina_koniec");
 
-                List<String> availableAppointments = generateAvailableAppointments(date, startTime, endTime);
+                List<String> availableAppointments = generateAvailableAppointments(dateStr, startTime, endTime);
 
                 for (String appointment : availableAppointments) {
                     if (isAppointmentAvailable(appointment)) {
@@ -113,6 +130,7 @@ public class TerminWizytyController {
 
         return availableAppointments;
     }
+
 
     private boolean isAppointmentAvailable(String appointment) {
         String[] parts = appointment.split(" ");
@@ -145,6 +163,7 @@ public class TerminWizytyController {
         if (selectedAppointment != null && !selectedAppointment.equals("Brak dostępnych terminów.")) {
             saveAppointmentToDatabase(selectedAppointment);
             WizytyController.setSelectedAppointment(selectedAppointment);
+            SzczegolyWizytyController.odswiez();
             scheduleAppointment();
         }
     }
@@ -181,6 +200,18 @@ public class TerminWizytyController {
     @FXML
     public void scheduleAppointment() {
         MementoMori.navigateTo(WizytyController.PATH);
+    }
+
+    @FXML
+    public void previousDay() {
+        selectedDate = selectedDate.minusDays(1);
+        updateAppointmentList();
+    }
+
+    @FXML
+    public void nextDay() {
+        selectedDate = selectedDate.plusDays(1);
+        updateAppointmentList();
     }
 
 }
