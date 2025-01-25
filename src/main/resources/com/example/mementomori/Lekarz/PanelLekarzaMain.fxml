@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.PanelLekarzaMainControler">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.PanelLekarzaMainControler">
    <top>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Wizyty pacjentów">
@@ -20,35 +20,50 @@
          </Text>
       </HBox>
    </top>
+
+   <bottom>
+      <HBox styleClass="bottom-bar">
+         <children>
+            <Button mnemonicParsing="false" onAction="#doMain" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#doMojeKonto" text="Moje konto" />
+         </children>
+      </HBox>
+   </bottom>
+
    <center>
       <VBox BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="lewoDataGuzik" mnemonicParsing="false" onAction="#prevWeek" text="←" />
+                  <Button mnemonicParsing="false" onAction="#prevWeek" text="⮜" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Button>
                   <VBox fx:id="headerBox" alignment="CENTER" spacing="10">
                   </VBox>
-                  <Button fx:id="prawoDataGuzik" mnemonicParsing="false" onAction="#nextWeek" text="→" />
+                  <Button mnemonicParsing="false" onAction="#nextWeek" text="⮞" />
                </children>
             </HBox>
             <VBox BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane fx:id="calendarScrollPane" fitToHeight="false" fitToWidth="true" prefHeight="450.0" vbarPolicy="AS_NEEDED">
+                  <ScrollPane fx:id="calendarScrollPane" fitToHeight="false" fitToWidth="true" prefHeight="350.0" vbarPolicy="AS_NEEDED">
                      <content>
-                        <GridPane fx:id="calendarGrid" alignment="CENTER" hgap="20" style="-fx-background-color: #dff9fb;" vgap="20">
-                        </GridPane>
+                        <GridPane fx:id="calendarGrid" alignment="CENTER" hgap="20" vgap="20" />
                      </content>
                   </ScrollPane>
+                  <AnchorPane prefHeight="332.0" prefWidth="428.0">
+                     <children>
+                        <Button layoutX="214.0" layoutY="22.0" maxHeight="162.0" maxWidth="160.0" mnemonicParsing="false" onAction="#doZarzadzaniaWizytami" prefHeight="162.0" prefWidth="160.0" styleClass="round-btn" text="Zarządzaj wizytami" />
+                        <Button layoutX="63.0" layoutY="159.0" maxHeight="187.0" maxWidth="197.0" mnemonicParsing="false" onAction="#doHarmonogramuPracy" prefHeight="150.0" prefWidth="197.0" styleClass="round-btn" text="Grafik" />
+                     </children>
+                  </AnchorPane>
                </children>
             </VBox>
-            <AnchorPane prefHeight="275.0" prefWidth="428.0">
-               <children>
-                  <Button fx:id="HarmonogramPracyGuzik" layoutX="104.0" layoutY="31.0" mnemonicParsing="false" onAction="#doHarmonogramuPracy" prefHeight="25.0" prefWidth="249.0" text="Harmonogram pracy" />
-                  <Button fx:id="ZarzadzanieWizytamiGuzik" layoutX="104.0" layoutY="82.0" mnemonicParsing="false" onAction="#doZarzadzaniaWizytami" prefHeight="25.0" prefWidth="247.0" text="Zarządzanie wizytami" />
-                  <Button fx:id="homeGuzik" layoutX="9.0" layoutY="236.0" mnemonicParsing="false" onAction="#doMain" prefHeight="25.0" prefWidth="205.0" text="Home" />
-                  <Button fx:id="MojeKontoGuzik" layoutX="214.0" layoutY="236.0" mnemonicParsing="false" onAction="#doMojeKonto" prefHeight="25.0" prefWidth="205.0" text="Moje konto" />
-               </children>
-            </AnchorPane>
          </children>
       </VBox>
    </center>

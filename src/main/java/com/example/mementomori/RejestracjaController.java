@@ -29,19 +29,15 @@ public class RejestracjaController implements Initializable {
     public Button Cofnij;
     public Button GuzikUtworzKonto;
     public Label komunikaty;
+    public TextField ulica;
+    public TextField numer;
+    public TextField miasto;
 
-    public static String login;
     public Button cofnijDoTypKontaButton;
     public Button przejdzDoOsobowychButton;
 
     @FXML
     public ChoiceBox<String> specjalizcjaChoice;
-
-    @FXML
-    public TextField adresField;
-
-    @FXML
-    public Button mapButton;
 
     private final String[] specjalizacje = {
             "Alergolog",
@@ -54,8 +50,12 @@ public class RejestracjaController implements Initializable {
     };
 
     public static boolean isDoctor = false;
+    public static String login;
+    public static String tempHaslo;
     public static String tempSpecjalizacja;
-    public static String tempAdres;
+    public static String tempMiasto;
+    public static String tempUlica;
+    public static String tempNumer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -77,18 +77,19 @@ public class RejestracjaController implements Initializable {
             return;
         }
         String specjalizacja = specjalizcjaChoice.getValue();
-        String adres = adresField.getText();
+        String m = miasto.getText();
+        String u = ulica.getText();
+        String n = numer.getText();
 
-        System.out.println(specjalizacja);
-        System.out.println(adres);
-
-        if (specjalizacja == null || adres.isEmpty()) {
+        if (specjalizacja == null || m.isEmpty() || u.isEmpty() || n.isEmpty()) {
             System.out.println("Proszę wypełnić wszystkie pola");
             return;
         }
         tempSpecjalizacja = specjalizacja;
-        tempAdres = adres;
-
+        tempMiasto = m;
+        tempUlica = u;
+        tempNumer = n;
+        System.out.println(tempSpecjalizacja);
         MementoMori.navigateTo("Rejestracja/RejestracjaDaneKonta.fxml");
     }
 
@@ -111,21 +112,12 @@ public class RejestracjaController implements Initializable {
             return;
         }
         login = NazwaUzytkownika.getText();
+        tempHaslo = Haslo.getText();
         if (BazaRejestracja.userExists(login)) {
             komunikaty.setText("Użytkownik o podanym loginie już istnieje");
             return;
         }
-        if(isDoctor){
-            System.out.println(tempSpecjalizacja);
-            System.out.println(tempAdres);
-            BazaRejestracja.insertLoginHaslo(login, Haslo.getText());
-            BazaRejestracja.insertDaneZawodowe(login, tempSpecjalizacja, tempAdres);
-            isDoctor = false;
-            tempAdres = "";
-            tempSpecjalizacja = "";
-        }else {
-            BazaRejestracja.insertLoginHaslo(login, Haslo.getText());
-        }
+        System.out.println(tempSpecjalizacja);
         MementoMori.navigateTo("Rejestracja/RejestracjaDaneOsobowe.fxml");
     }
 
@@ -134,21 +126,18 @@ public class RejestracjaController implements Initializable {
             System.out.println("uzupełnij wszystkie pola");
             return;
         }
+        if(isDoctor){
+            System.out.println(tempSpecjalizacja);
+            BazaRejestracja.insertDaneZawodowe(login, tempSpecjalizacja, tempMiasto, tempUlica, tempNumer);
+        }
         BazaRejestracja.insertDaneOsobowe(login, Imie.getText(), Nazwisko.getText(), Email.getText(), NrTelefonu.getText());
-        System.out.println("dodano dane osobowe " + login + Imie.getText() + " " + Nazwisko.getText() + " " + NrTelefonu.getText() + " " + Email.getText());
+        BazaRejestracja.insertLoginHaslo(login, tempHaslo);
         MementoMori.navigateTo("Logowanie.fxml");
+        isDoctor = false;
     }
 
     public void CofanieDoDanychKonta(ActionEvent actionEvent) {
         MementoMori.navigateTo("Rejestracja/RejestracjaDaneKonta.fxml");
     }
 
-    public void MapaZWyborem(ActionEvent actionEvent) {
-        try {
-            Desktop.getDesktop().browse(new URI("https://www.google.com/maps"));
-            //można skopiować i dodać do adresField
-        } catch (Exception e) {
-            System.err.println("Nie udało się otworzyć Map Google: " + e.getMessage());
-        }
-    }
 }

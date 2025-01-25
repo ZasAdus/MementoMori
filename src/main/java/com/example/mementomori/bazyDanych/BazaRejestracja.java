@@ -31,11 +31,13 @@ public class BazaRejestracja {
                         "nrTelefonu TEXT, " +
                         "FOREIGN KEY (login) REFERENCES uzytkownicy(login))",
 
-                "CREATE TABLE IF NOT EXISTS doctors (" +
+                "CREATE TABLE IF NOT EXISTS lekarze (" +
                         "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         "login TEXT UNIQUE NOT NULL, " +
                         "specjalizacja TEXT NOT NULL, " +
-                        "adresPrzychodni TEXT NOT NULL, " +
+                        "miasto TEXT NOT NULL, " +
+                        "ulica TEXT NOT NULL, " +
+                        "numer TEXT NOT NULL, " +
                         "FOREIGN KEY (login) REFERENCES uzytkownicy(login))"
         };
 
@@ -123,18 +125,18 @@ public class BazaRejestracja {
         }
 
     }
-    public static void main(String[] args) {
-        BazaRejestracja.connect();
-        BazaRejestracja.insertDaneOsobowe("admin", "Jan", "Kowalski", "jan.kowalski@example.com", "123456789");
-    }
 
-    public static void insertDaneZawodowe(String login, String specjalizacja, String adresPrzychodni) {
-        String sql = "INSERT INTO doctors (login, specjalizacja, adresPrzychodni) VALUES (?, ?, ?)";
+    public static void insertDaneZawodowe(String login, String specjalizacja, String miasto, String ulica, String numer) {
+        String sql = "INSERT INTO lekarze (login, specjalizacja, miasto, ulica, numer) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, login);
             pstmt.setString(2, specjalizacja);
-            pstmt.setString(3, adresPrzychodni);
+            pstmt.setString(3, miasto);
+            pstmt.setString(4, ulica);
+            pstmt.setString(5, numer);
+
+
             pstmt.executeUpdate();
             System.out.println("Dane zawodowe zostały dodane dla użytkownika '" + login + "'");
         } catch (SQLException e) {
@@ -144,12 +146,14 @@ public class BazaRejestracja {
     }
 
     public static boolean isDoctor(String login) {
-        String sql = "SELECT login FROM doctors WHERE login = ?";
+        String sql = "SELECT login FROM lekarze WHERE login = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, login);
             ResultSet rs = pstmt.executeQuery();
-            return rs.next(); // jeśli znaleziono wpis w tabeli doctors, to jest to lekarz
+            if (rs.next()){
+                return true;
+            }
         } catch (SQLException e) {
             System.out.println("Błąd podczas sprawdzania typu użytkownika.");
             e.printStackTrace();
@@ -157,7 +161,7 @@ public class BazaRejestracja {
         return false;
     }
     public static int idDoctor(String login) {
-        String sql = "SELECT id FROM doctors WHERE login = ?";
+        String sql = "SELECT id FROM lekarze WHERE login = ?";
         try (Connection conn = connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, login);
