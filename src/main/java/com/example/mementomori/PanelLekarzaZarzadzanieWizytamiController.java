@@ -85,6 +85,7 @@ public class PanelLekarzaZarzadzanieWizytamiController {
         scrollPane.setFitToWidth(true);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.getStyleClass().add("scroll-pane");
     }
 
     private void setAnchorConstraints(ScrollPane scrollPane) {

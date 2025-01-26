@@ -109,6 +109,7 @@ public class PanelLekarzaMainControler {
 
         calendarScrollPane.setFitToWidth(true);
         calendarScrollPane.setFitToHeight(true);
+        calendarScrollPane.setStyle("-fx-border-color: gray; -fx-border-style: solid; -fx-border-radius: 5; -fx-background-radius: 5;-fx-background-color: #a5f0bd");
     }
 
     public static void refreshCalendar() {

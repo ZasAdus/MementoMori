@@ -126,7 +126,8 @@ public class WizytyController {
                         "-fx-background-color: #27ae60; " +
                                 "-fx-background-radius: 50%; " +
                                 "-fx-min-width: 25px; " +
-                                "-fx-min-height: 25px; "
+                                "-fx-min-height: 25px; " +
+                                "-fx-border-width: 0 "
                 );
 
                 String doctorDetails = BazaWizyty.getDoctorDetails(doctorId);
@@ -144,6 +145,9 @@ public class WizytyController {
 
         calendarScrollPane.setVvalue(0.0); // Przewiń na samą górę
         calendarScrollPane.setFitToWidth(true);
+        calendarScrollPane.setStyle("-fx-border-color: gray; -fx-border-style: solid; -fx-border-radius: 10; -fx-background-radius: 10;-fx-background-color: #a5f0bd");
+        calendarScrollPane.getStyleClass().add("scroll-bar");
+
     }
 
     public static void setSelectedAppointment(String appointment) {
@@ -154,17 +158,5 @@ public class WizytyController {
     private LocalDateTime parseAppointment(String appointment) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return LocalDateTime.parse(appointment, formatter);
-    }
-
-    public void doHarmonogramuPracy(ActionEvent actionEvent) {
-    }
-
-    public void doZarzadzaniaWizytami(ActionEvent actionEvent) {
-    }
-
-    public void doMain(ActionEvent actionEvent) {
-    }
-
-    public void doMojeKonto(ActionEvent actionEvent) {
     }
 }
