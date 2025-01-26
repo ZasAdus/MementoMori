@@ -127,7 +127,7 @@ public class PanelLekarzaZarzadzanieWizytamiController {
                 "-fx-background-color: #D0E8FF; " +
                         "-fx-padding: 10; " +
                         "-fx-background-radius: 5; " +
-                        "-fx-border-color: black; " +
+                        "-fx-border-color: gray; " +
                         "-fx-border-radius: 5; " +
                         "-fx-border-width: 1;"
         );
@@ -157,10 +157,8 @@ public class PanelLekarzaZarzadzanieWizytamiController {
         VBox buttonBox = new VBox(5);
         buttonBox.setMinWidth(120);
         Button cancelButton = new Button("Odwołaj wizytę");
-        Button detailsButton = new Button("Szczegóły wizyty");
 
         cancelButton.setPrefWidth(120);
-        detailsButton.setPrefWidth(120);
 
         if (wizyta.status.equals("OCZEKUJACA")) {
             Button confirmButton = new Button("Potwierdź wizytę");
@@ -175,7 +173,6 @@ public class PanelLekarzaZarzadzanieWizytamiController {
         }
 
         cancelButton.setStyle("-fx-background-color: #f44336; -fx-text-fill: white;");
-        detailsButton.setStyle("-fx-background-color: #2196F3; -fx-text-fill: white;");
 
         cancelButton.setOnAction(e -> {
             bazaWizyty.zmienStatusWizyty(wizyta.id, "ANULOWANA");
@@ -183,7 +180,7 @@ public class PanelLekarzaZarzadzanieWizytamiController {
             PanelLekarzaMainControler.refreshCalendar();
         });
 
-        buttonBox.getChildren().addAll(cancelButton, detailsButton);
+        buttonBox.getChildren().addAll(cancelButton);
         entryContainer.getChildren().addAll(patientInfo, dateTimeInfo, buttonBox);
 
         return entryContainer;

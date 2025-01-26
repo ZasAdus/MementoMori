@@ -12,6 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -146,6 +147,7 @@ public class WizytyController {
                         dateTime.substring(0, 10), dateTime.substring(11), doctorDetails
                 );
                 Tooltip tooltip = new Tooltip(tooltipText);
+                tooltip.setShowDelay(Duration.millis(100));
                 Tooltip.install(button, tooltip);
 
                 calendarGrid.add(button, dayColumn, rowIndex);

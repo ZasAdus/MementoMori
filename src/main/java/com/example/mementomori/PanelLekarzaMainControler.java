@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -118,7 +119,7 @@ public class PanelLekarzaMainControler {
         }
     }
 
-   private void addAppointmentDot(BazaWizyty.Wizyta wizyta, String color) {
+    private void addAppointmentDot(BazaWizyty.Wizyta wizyta, String color) {
         LocalDateTime appointmentDateTime = wizyta.dataczas;
 
         if (!appointmentDateTime.toLocalDate().isBefore(currentMonday) &&
@@ -138,7 +139,26 @@ public class PanelLekarzaMainControler {
                             "-fx-border-width: 0 "
             );
             button.setFocusTraversable(false);
-            button.setOnAction(event -> showAppointmentDetails(wizyta));
+
+            // Create tooltip with appointment details
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+            String tooltipText = String.format(
+                    "Data wizyty: %s\n" +
+                            "Godzina wizyty: %s\n" +
+                            "Pacjent: %s\n" +
+                            "Status: %s",
+                    appointmentDateTime.format(dateFormatter),
+                    appointmentDateTime.format(timeFormatter),
+                    wizyta.pacjentName,
+                    wizyta.status.toLowerCase()
+            );
+
+            Tooltip tooltip = new Tooltip(tooltipText);
+            tooltip.setShowDelay(Duration.millis(100));
+            Tooltip.install(button, tooltip);
+
             calendarGrid.add(button, dayColumn, hourRow);
         }
     }

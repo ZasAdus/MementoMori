@@ -19,7 +19,7 @@
     <bottom>
         <HBox styleClass="bottom-bar">
             <children>
-                <Button mnemonicParsing="false" onAction="#handleHomeButton" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+                <Button mnemonicParsing="false" onAction="#handleHomeButton"  text="Powrót" textAlignment="CENTER">
                     <font>
                         <Font size="12.0" />
                     </font>

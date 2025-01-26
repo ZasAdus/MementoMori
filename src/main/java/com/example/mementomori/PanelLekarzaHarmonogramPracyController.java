@@ -4,12 +4,12 @@ import com.example.mementomori.bazyDanych.BazaHarmonogram;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -115,27 +115,138 @@ public class PanelLekarzaHarmonogramPracyController {
         loadScheduleFromDatabase();
     }
 
+
     @FXML
     private void handleDayClick(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
+        String data = (clickedButton.getText().split(" ")[1]).replace(":","").replace("(","").replace(")","");
         String dzien = clickedButton.getText().split(" ")[0];
         String formattedDate = clickedButton.getText().split(" ")[1].replaceAll("[()]:", "");
         formattedDate = formattedDate.substring(1);
-        System.out.println(formattedDate);
 
-        javafx.scene.control.Dialog<ButtonType> dialog = new javafx.scene.control.Dialog<>();
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Opcje harmonogramu");
+        dialog.initStyle(StageStyle.UNDECORATED);
 
-        ButtonType modifyButtonType = new ButtonType("Modyfikuj godziny", ButtonBar.ButtonData.OK_DONE);
-        ButtonType removeButtonType = new ButtonType("Usuń godziny", ButtonBar.ButtonData.NO);
+        ButtonType modifyButtonType = new ButtonType("Zmień", ButtonBar.ButtonData.OK_DONE);
+        ButtonType removeButtonType = new ButtonType("Usuń", ButtonBar.ButtonData.NO);
         ButtonType cancelButtonType = new ButtonType("Anuluj", ButtonBar.ButtonData.CANCEL_CLOSE);
 
+
         dialog.getDialogPane().getButtonTypes().addAll(modifyButtonType, removeButtonType, cancelButtonType);
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setPrefWidth(MementoMori.WIDTH * MementoMori.scale * 0.85);
+        dialogPane.setPrefHeight(MementoMori.HEIGHT * MementoMori.scale * 0.2);
+
+        Stage mainStage = (Stage) clickedButton.getScene().getWindow();
+        double centerX = mainStage.getX() + mainStage.getWidth() * 0.93 / 2;
+        double centerY = mainStage.getY() + mainStage.getHeight() / 2;
+
+        dialog.setX(centerX - dialog.getDialogPane().getPrefWidth() / 2);
+        dialog.setY(centerY - dialog.getDialogPane().getPrefHeight() / 2);
+
+        dialog.getDialogPane().setStyle(
+                "-fx-background-color: #a5f0bd;" +
+                        "-fx-padding: 20; " +
+                        "-fx-background-radius: 5; " +
+                        "-fx-border-color: gray; " +
+                        "-fx-border-radius: 5; " +
+                        "-fx-border-width: 1;"
+        );
+
+        // Customize buttons
+        dialog.getDialogPane().lookupButton(modifyButtonType).setStyle(
+                "-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;"
+        );
+
+        dialog.getDialogPane().lookupButton(removeButtonType).setStyle(
+                "-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;"
+        );
+
+        dialog.getDialogPane().lookupButton(cancelButtonType).setStyle(
+                "-fx-background-color: #CCCCCC;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;"
+        );
+
+        dialog.getDialogPane().lookupButton(modifyButtonType).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #4CAF50;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(modifyButtonType).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #4CAF50;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(removeButtonType).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #f44336;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(removeButtonType).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #f44336;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(cancelButtonType).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #CCCCCC;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(cancelButtonType).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #CCCCCC;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
 
         VBox content = new VBox(10);
-        content.setPadding(new Insets(10));
-        content.getChildren().add(new Label("Chcesz modyfikować istniejące godziny czy je usunąć?"));
+        content.setPadding(new Insets(20));
+        Label messageLabel = new Label("Co chcesz zrobić z godzinami w dniu:");
+        messageLabel.setStyle("-fx-font-weight: bold;");
+        Label date = new Label(data + "?");
+        date.setStyle("-fx-font-weight: bold;");
+        content.getChildren().addAll(messageLabel,date);
+        content.setAlignment(Pos.CENTER);
 
         dialog.getDialogPane().setContent(content);
+
         Optional<ButtonType> result = dialog.showAndWait();
         if (result.isPresent()) {
             if (result.get() == modifyButtonType) {
