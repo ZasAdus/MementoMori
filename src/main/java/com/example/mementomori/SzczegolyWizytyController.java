@@ -38,7 +38,10 @@ public class SzczegolyWizytyController {
     @FXML
     public void initialize() {
         instance = this;
+        odswiezWidok();
+    }
 
+    public void odswiezWidok() {
         List<String> rawAppointments = BazaWizyty.fetchAppointmentsFromDatabase(userId);
         List<HBox> formattedAppointments = new ArrayList<>();
 
@@ -96,8 +99,9 @@ public class SzczegolyWizytyController {
 
 
     public static void odswiez() {
-        //instance = new SzczegolyWizytyController();
-        instance.initialize();
+        if (instance != null) {
+            instance.initialize();
+        }
     }
 
 }

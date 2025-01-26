@@ -4,6 +4,7 @@ import com.example.mementomori.bazyDanych.BazaMojeKonto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 public class ZmianaDanychController {
 
@@ -11,6 +12,7 @@ public class ZmianaDanychController {
 
     @FXML private TextField newEmail;
     @FXML private TextField newNrTelefonu;
+    @FXML private Text ErrorMessage;
 
     @FXML
     public void zapiszZmiany(ActionEvent event) {
@@ -19,11 +21,12 @@ public class ZmianaDanychController {
 
         if (!email.isEmpty() || !nrTelefonu.isEmpty()) {
             BazaMojeKonto.updateUserData(MementoMori.currentUser, email, nrTelefonu);
-            System.out.println("Dane użytkownika zostały zaktualizowane.");
+
             MojeKontoController.refreshUserData();
             MementoMori.navigateTo("moje_konto/moje_konto.fxml");
         } else {
-            System.out.println("Wszystkie pola muszą być wypełnione.");
+            ErrorMessage.setText("Uzupełnij pole do zmiany danych.");
+            ErrorMessage.setVisible(true);
         }
     }
 
