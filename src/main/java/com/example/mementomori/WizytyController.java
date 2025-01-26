@@ -4,12 +4,16 @@ import com.example.mementomori.bazyDanych.BazaMojeKonto;
 import com.example.mementomori.bazyDanych.BazaWizyty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -54,8 +58,13 @@ public class WizytyController {
     }
 
     @FXML
-    public void listWizyty() {
+    public void listWizyty() throws IOException {
         SzczegolyWizytyController.setUserId(userId);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(SzczegolyWizytyController.PATH));
+        Parent root = loader.load();
+
+        SzczegolyWizytyController controller = loader.getController();
+        controller.odswiez();
         MementoMori.navigateTo(SzczegolyWizytyController.PATH);
     }
 

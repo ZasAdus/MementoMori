@@ -38,7 +38,7 @@
                     <Button text="⮞" onAction="#nextDay" />
                 </HBox>
 
-                <ListView fx:id="appointmentListView" maxHeight="400" prefHeight="200" VBox.vgrow="ALWAYS">
+                <ListView fx:id="appointmentListView" maxHeight="500" prefHeight="200" VBox.vgrow="ALWAYS">
                 </ListView>
             </children>
             <children>

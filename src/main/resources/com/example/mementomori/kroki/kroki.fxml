@@ -3,43 +3,80 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.layout.HBox?>
 
 <!--jeśli chcecie scene builderem to poprawiać to zakreskującie tą linijke i jedną troche niżej-->
 <?import com.example.mementomori.custom_elements.RoundProgressbar?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-pref-height: 926px; -fx-pref-width: 428px;" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.KrokiController">
-    <top>
-        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kroki">
-                    <font>
-                        <Font size="36.0" />
-                    </font>
-                </Text>
-            </children>
-        </HBox>
-    </top>
-    <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-            <!-- vvv to też vvv -->
-            <RoundProgressbar fx:id="progress" layoutX="10.0" />
-            <Button fx:id="KrokiZmienCel" layoutX="30.0" layoutY="244.0" mnemonicParsing="false" onAction="#KrokiZmienCel" style="-fx-focus-traversable: false;" styleClass="round-btn" text="Zmień cel" />
-            <Button fx:id="KrokiStatystyki" layoutX="30.0" layoutY="547.0" mnemonicParsing="false" onAction="#KrokiStatystyki" prefHeight="22.0" prefWidth="69.0" style="-fx-focus-traversable: false;" styleClass="round-btn" text="Statystyki" />
-            <Button fx:id="KrokiDodajRecznie" layoutX="246.0" layoutY="412.0" mnemonicParsing="false" onAction="#KrokiDodajRecznie" style="-fx-focus-traversable: false;" styleClass="round-btn" text="Dodaj ręcznie" />
-        </AnchorPane>
-    </center>
-    <bottom>
-        <HBox styleClass="bottom-bar">
-            <children>
-                <Button mnemonicParsing="false" onAction="#ReturnHome" style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
-                    <font>
-                        <Font size="12.0" />
-                    </font>
-                </Button>
-            </children>
-        </HBox>
-    </bottom>
-</BorderPane>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.StackPane?>
+
+<?import javafx.scene.shape.Rectangle?>
+<StackPane xmlns="http://javafx.com/javafx/17.0.2-ea"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.example.mementomori.KrokiController"
+           style="-fx-pref-height: 926px; -fx-pref-width: 428px;"
+           stylesheets="@../styles/style.css">
+
+    <!-- Główny układ -->
+    <BorderPane fx:id="mainPane" styleClass="main" prefHeight="400.0" prefWidth="600.0">
+        <top>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <children>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kroki">
+                        <font>
+                            <Font size="36.0" />
+                        </font>
+                    </Text>
+                </children>
+            </HBox>
+        </top>
+        <center>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                <RoundProgressbar fx:id="progress" layoutX="10.0" />
+                <Button fx:id="KrokiZmienCel" layoutX="30.0" layoutY="244.0" mnemonicParsing="false"
+                        onAction="#KrokiZmienCel" style="-fx-focus-traversable: false;" styleClass="round-btn" text="Zmień cel" />
+                <Button fx:id="KrokiStatystyki" layoutX="30.0" layoutY="547.0" mnemonicParsing="false"
+                        onAction="#KrokiStatystyki" style="-fx-focus-traversable: false;" styleClass="round-btn" text="Statystyki" />
+                <Button fx:id="KrokiDodajRecznie" layoutX="246.0" layoutY="412.0" mnemonicParsing="false"
+                        onAction="#KrokiDodajRecznie" style="-fx-focus-traversable: false;" styleClass="round-btn" text="Dodaj ręcznie" />
+            </AnchorPane>
+        </center>
+        <bottom>
+            <HBox styleClass="bottom-bar">
+                <children>
+                    <Button mnemonicParsing="false" onAction="#ReturnHome"
+                            style="-fx-graphic: url('file:images/home.png'); -fx-graphic-text-gap: 15px" text="Home" textAlignment="CENTER">
+                        <font>
+                            <Font size="12.0" />
+                        </font>
+                    </Button>
+                </children>
+            </HBox>
+        </bottom>
+    </BorderPane>
+
+    <StackPane fx:id="statsOverlay" alignment="CENTER" visible="false">
+        <Rectangle width="400" height="300" fill="#d5f1de"/>
+        <VBox fx:id="statsPane" alignment="CENTER" spacing="10"
+              style="-fx-border-color: black; -fx-padding: 20;"
+              prefHeight="600" prefWidth="400">
+            <Text text="Statystyki" style="-fx-font-size: 20px; -fx-font-weight: bold;" />
+            <GridPane fx:id="weekGrid" hgap="10" vgap="10" alignment="CENTER" />
+            <HBox alignment="CENTER" spacing="10">
+                <Button fx:id="prevWeekButton" text="⮪" onAction="#prevWeek" />
+                <Text fx:id="weekLabel" text="Tydzień: ..." />
+                <Button fx:id="nextWeekButton" text="⮩" onAction="#nextWeek" />
+            </HBox>
+            <Button text="Zamknij" onAction="#hideStats" />
+        </VBox>
+    </StackPane>
+
+
+</StackPane>
+
+

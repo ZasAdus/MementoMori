@@ -3,14 +3,9 @@ import com.example.mementomori.bazyDanych.BazaKroki;
 import com.example.mementomori.custom_elements.RoundProgressbar;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +21,44 @@ public class KrokiController {
     public String currentUser;
 
     @FXML RoundProgressbar progress;
+
+    @FXML private GridPane weekGrid;
+    @FXML private Text weekLabel;
+
+    private LocalDate currentWeekStart = LocalDate.now().with(java.time.DayOfWeek.MONDAY);
+
+    public void KrokiStatystyki(ActionEvent actionEvent) {
+        showStats();
+        updateWeekGrid(weekGrid, LocalDate.now().with(java.time.DayOfWeek.MONDAY));
+        updateWeekLabel(weekLabel, LocalDate.now().with(java.time.DayOfWeek.MONDAY));
+    }
+
+    @FXML
+    private StackPane statsOverlay;
+
+    public void showStats() {
+        statsOverlay.setVisible(true);
+    }
+
+    public void hideStats() {
+        statsOverlay.setVisible(false);
+    }
+
+    public void hideStats(ActionEvent actionEvent) {
+        hideStats();
+    }
+
+    public void prevWeek() {
+        currentWeekStart = currentWeekStart.minusWeeks(1);
+        updateWeekLabel(weekLabel, currentWeekStart);
+        updateWeekGrid(weekGrid, currentWeekStart);
+    }
+
+    public void nextWeek(ActionEvent actionEvent) {
+        currentWeekStart = currentWeekStart.plusWeeks(1);
+        updateWeekLabel(weekLabel, currentWeekStart);
+        updateWeekGrid(weekGrid, currentWeekStart);
+    }
 
 
     public void initialize() {
@@ -88,78 +121,6 @@ public class KrokiController {
         });
     }
 
-    public void KrokiStatystyki(ActionEvent actionEvent) {
-        Stage statsStage = new Stage();
-        statsStage.initStyle(StageStyle.UNDECORATED);
-        statsStage.setWidth(480);
-
-        BorderPane layout = new BorderPane();
-        layout.setStyle("-fx-padding: 20px; -fx-font-size: 14px; -fx-border-color: black; -fx-border-width: 1px;");
-
-        final LocalDate[] currentWeekStart = {LocalDate.now().with(java.time.DayOfWeek.MONDAY)};
-
-        Text weekLabel = new Text();
-        updateWeekLabel(weekLabel, currentWeekStart[0]);
-
-        GridPane weekGrid = new GridPane();
-        weekGrid.setHgap(10);
-        weekGrid.setVgap(10);
-        weekGrid.setAlignment(Pos.CENTER);
-        updateWeekGrid(weekGrid, currentWeekStart[0]);
-
-        Button prevWeekButton = new Button("⮪");
-        prevWeekButton.setPrefSize(72, 20);
-        prevWeekButton.setFont(new Font(15));
-        Button nextWeekButton = new Button("⮩");
-        nextWeekButton.setPrefSize(72, 20);
-        nextWeekButton.setFont(new Font(15));
-
-        prevWeekButton.setOnAction(e -> {
-            LocalDate newWeekStart = currentWeekStart[0].minusWeeks(1);
-            updateWeekLabel(weekLabel, newWeekStart);
-            updateWeekGrid(weekGrid, newWeekStart);
-            currentWeekStart[0] = newWeekStart;
-        });
-
-        nextWeekButton.setOnAction(e -> {
-            LocalDate newWeekStart = currentWeekStart[0].plusWeeks(1);
-            updateWeekLabel(weekLabel, newWeekStart);
-            updateWeekGrid(weekGrid, newWeekStart);
-            currentWeekStart[0] = newWeekStart;
-        });
-
-        HBox navigationButtons = new HBox(10, prevWeekButton, weekLabel, nextWeekButton);
-        navigationButtons.setStyle("-fx-alignment: center;");
-        HBox.setHgrow(weekLabel, Priority.ALWAYS);
-        weekLabel.setStyle("-fx-alignment: center; -fx-font-weight: bold;");
-
-        // Create the close button (X) in the top-right corner
-        Button closeButton = new Button("X");
-        closeButton.setFont(new Font(18));
-        closeButton.setStyle("-fx-background-color: transparent; -fx-text-fill: black; -fx-border-width: 0;");
-        closeButton.setOnAction(e -> statsStage.close());
-
-        // Create a container for the X button and position it at the top-right corner
-        StackPane topRightPane = new StackPane(closeButton);
-        topRightPane.setStyle("-fx-alignment: top-right;");
-
-        // Wrap the navigation buttons and close button in a VBox
-        VBox topBox = new VBox(topRightPane, navigationButtons);
-        topBox.setStyle("-fx-alignment: top-left;");
-
-        VBox bottomBox = new VBox();
-        bottomBox.setStyle("-fx-alignment: center; -fx-padding: 10px;");
-
-        layout.setTop(topBox);
-        layout.setCenter(weekGrid);
-        layout.setBottom(bottomBox);
-
-        Scene scene = new Scene(layout);
-        statsStage.setScene(scene);
-        statsStage.setResizable(false);
-        statsStage.show();
-    }
-
     private void updateWeekLabel(Text weekLabel, LocalDate weekStart) {
         LocalDate weekEnd = weekStart.plusDays(6);
         String start = String.format("%02d/%02d", weekStart.getDayOfMonth(), weekStart.getMonthValue());
@@ -172,6 +133,7 @@ public class KrokiController {
         weekGrid.getChildren().clear();
         LocalDate date = weekStart;
 
+        LocalDate today = LocalDate.now();
         Map<LocalDate, int[]> weeklyData = BazaKroki.pobierzKrokiICeleWTygodniu(currentUser, weekStart);
 
         for (int i = 0; i < 7; i++) {
@@ -192,21 +154,26 @@ public class KrokiController {
             circleLabel.setMaxSize(40, 40);
             circleLabel.setStyle("-fx-border-radius: 20px; -fx-background-radius: 20px; -fx-alignment: center; -fx-text-fill: white; -fx-font-weight: bold;");
 
-            if (steps >= goal * 2) { // Cel przekroczony dwukrotnie
-                circleLabel.setText("🏆");
-                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: navy;");
-                Tooltip tooltip = new Tooltip( "Cel przekroczony dwukrotnie" + "\nKroki: " + steps + "\nCel: " + goal);
-                Tooltip.install(circleLabel, tooltip);
-            } else if (steps >= goal) { // Cel osiągnięty
-                circleLabel.setText("✔");
-                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: green;");
-                Tooltip tooltip = new Tooltip( "Cel osiągnięty" + "\nKroki: " + steps + "\nCel: " + goal);
-                Tooltip.install(circleLabel, tooltip);
-            } else { // Cel nieosiągnięty
-                circleLabel.setText("❌");
-                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: red;");
-                Tooltip tooltip = new Tooltip( "Cel nieosiągnięty" + "\nKroki: " + steps + "\nCel: " + goal);
-                Tooltip.install(circleLabel, tooltip);
+            if (!date.isAfter(today)) {
+                if (steps >= goal * 2) { // Cel przekroczony dwukrotnie
+                    circleLabel.setText("🏆");
+                    circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: navy;");
+                    Tooltip tooltip = new Tooltip( "Cel przekroczony dwukrotnie" + "\nKroki: " + steps + "\nCel: " + goal);
+                    Tooltip.install(circleLabel, tooltip);
+                } else if (steps >= goal) { // Cel osiągnięty
+                    circleLabel.setText("✔");
+                    circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: green;");
+                    Tooltip tooltip = new Tooltip( "Cel osiągnięty" + "\nKroki: " + steps + "\nCel: " + goal);
+                    Tooltip.install(circleLabel, tooltip);
+                } else { // Cel nieosiągnięty
+                    circleLabel.setText("❌");
+                    circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: red;");
+                    Tooltip tooltip = new Tooltip( "Cel nieosiągnięty" + "\nKroki: " + steps + "\nCel: " + goal);
+                    Tooltip.install(circleLabel, tooltip);
+                }
+            } else {
+                circleLabel.setText("");
+                circleLabel.setStyle(circleLabel.getStyle() + "-fx-background-color: lightgray;");
             }
 
             dayBox.getChildren().add(circleLabel);

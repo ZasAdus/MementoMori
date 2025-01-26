@@ -19,7 +19,10 @@ public class SzczegolyWizytyController {
     public static final String PATH = "wizyty/szczegoly_wizyty.fxml";
 
     @FXML
-    public void goBack() { MementoMori.navigateTo(WizytyController.PATH); }
+    public void goBack() {
+        MementoMori.navigateTo(WizytyController.PATH);
+        WizytyController.setSelectedAppointment(null);
+    }
 
     @FXML
     private ListView<HBox> appointmentsList;
@@ -92,6 +95,9 @@ public class SzczegolyWizytyController {
     }
 
 
-    public static void odswiez() { instance.initialize(); }
+    public static void odswiez() {
+        //instance = new SzczegolyWizytyController();
+        instance.initialize();
+    }
 
 }

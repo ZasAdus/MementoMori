@@ -102,6 +102,15 @@ public class TerminWizytyController {
                 List<String> availableAppointments = generateAvailableAppointments(dateStr, startTime, endTime);
 
                 for (String appointment : availableAppointments) {
+                    if (date.isEqual(LocalDate.now())) {
+                        String[] appointmentParts = appointment.split(" ");
+                        String appointmentTime = appointmentParts[1];
+                        LocalTime currentTime = LocalTime.now();
+
+                        if (LocalTime.parse(appointmentTime).isBefore(currentTime)) {
+                            continue;
+                        }
+                    }
                     if (isAppointmentAvailable(appointment)) {
                         appointments.add(appointment);
                     }
@@ -138,9 +147,9 @@ public class TerminWizytyController {
         String time = parts[1];
 
         String sql = """
-                SELECT COUNT(*) FROM wizyty
-                WHERE id_lekarza = ? AND data_wizyty = ? AND godzina_wizyty = ?
-                """;
+            SELECT COUNT(*) FROM wizyty
+            WHERE id_lekarza = ? AND data_wizyty = ? AND godzina_wizyty = ?
+            """;
 
         try (Connection conn = DriverManager.getConnection("jdbc:sqlite:data\\wizyty.db");
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -157,13 +166,14 @@ public class TerminWizytyController {
         }
     }
 
+
     @FXML
     private void onAppointmentSelected(MouseEvent event) {
         String selectedAppointment = appointmentListView.getSelectionModel().getSelectedItem();
         if (selectedAppointment != null && !selectedAppointment.equals("Brak dostępnych terminów.")) {
             saveAppointmentToDatabase(selectedAppointment);
             WizytyController.setSelectedAppointment(selectedAppointment);
-            SzczegolyWizytyController.odswiez();
+            //SzczegolyWizytyController.odswiez();
             scheduleAppointment();
         }
     }
@@ -204,6 +214,12 @@ public class TerminWizytyController {
 
     @FXML
     public void previousDay() {
+        LocalDate today = LocalDate.now();
+
+        if (!selectedDate.isAfter(today)) {
+            return;
+        }
+
         selectedDate = selectedDate.minusDays(1);
         updateAppointmentList();
     }
