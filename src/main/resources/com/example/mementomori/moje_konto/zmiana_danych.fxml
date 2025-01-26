@@ -2,21 +2,20 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.TextField?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.example.mementomori.ZmianaDanychController" styleClass="main" stylesheets="@../styles/style.css">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.ZmianaDanychController">
     <top>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Informacje osobowe">
                 <font>
-                    <Font size="36.0"/>
+                    <Font size="36.0" />
                 </font>
             </Text>
         </HBox>
@@ -32,17 +31,18 @@
         </HBox>
     </bottom>
     <center>
-        <VBox spacing="20" alignment="CENTER">
-            <VBox spacing="20" alignment="CENTER">
-                <Label text="Zmiana danych użytkownika" style="-fx-font-size: 18"/>
-                <Label text="Email" style="-fx-font-size: 14;" />
-                <TextField fx:id="newEmail" promptText="Nowy e-mail" maxWidth="300"/>
-                <Label text="Telefon" style="-fx-font-size: 14;" />
-                <TextField fx:id="newNrTelefonu" promptText="Nowy numer telefonu" maxWidth="300"/>
+        <VBox alignment="CENTER" spacing="20">
+            <VBox alignment="CENTER" spacing="20">
+                <Label style="-fx-font-size: 18" text="Zmiana danych użytkownika" />
+                <Label style="-fx-font-size: 14;" text="Email" />
+                <TextField fx:id="newEmail" maxWidth="300" promptText="Nowy e-mail" />
+                <Label style="-fx-font-size: 14;" text="Telefon" />
+                <TextField fx:id="newNrTelefonu" maxWidth="300" promptText="Nowy numer telefonu" />
             </VBox>
+         <Text fx:id="ErrorMessage" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="300.13671875" visible="false" style="-fx-fill: #b12719; -fx-font-weight: bold;" />
             <HBox alignment="CENTER" spacing="10">
-                <Button text="Zapisz zmiany" onAction="#zapiszZmiany"/>
-                <Button text="Anuluj" onAction="#anuluj" />
+                <Button onAction="#zapiszZmiany" text="Zapisz zmiany" />
+                <Button onAction="#anuluj" text="Anuluj" />
             </HBox>
         </VBox>
     </center>

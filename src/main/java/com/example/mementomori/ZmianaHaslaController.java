@@ -3,7 +3,9 @@ package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaRejestracja;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.text.Text;
 
 public class ZmianaHaslaController {
     public static final String PATH = "moje_konto/zmiana_hasla.fxml";
@@ -11,6 +13,7 @@ public class ZmianaHaslaController {
     @FXML private PasswordField currentPassword;
     @FXML private PasswordField newPassword;
     @FXML private PasswordField confirmPassword;
+    @FXML private Text ErrorMessage;
 
     @FXML
     public void zmienHaslo(ActionEvent event) {
@@ -19,22 +22,24 @@ public class ZmianaHaslaController {
         String confirmPass = confirmPassword.getText();
 
         if (!BazaRejestracja.isPasswordCorrect(MementoMori.currentUser, current)) {
-            System.out.println("Błędne aktualne hasło.");
+            ErrorMessage.setText("Błędne aktualne hasło.");
+            ErrorMessage.setVisible(true);
             return;
         }
 
         if (!newPass.equals(confirmPass)) {
-            System.out.println("Nowe hasło i potwierdzenie nie są zgodne.");
+            ErrorMessage.setText("Nowe hasło i potwierdzenie nie są zgodne.");
+            ErrorMessage.setVisible(true);
             return;
         }
 
         if (newPass.isEmpty()) {
-            System.out.println("Nowe hasło nie może być puste.");
+            ErrorMessage.setText("Nowe hasło nie może być puste.");
+            ErrorMessage.setVisible(true);
             return;
         }
 
         BazaRejestracja.updatePassword(MementoMori.currentUser, newPass);
-        System.out.println("Hasło zostało zmienione.");
         MementoMori.navigateTo("moje_konto/moje_konto.fxml");
     }
 
