@@ -60,12 +60,8 @@ public class WizytyController {
     @FXML
     public void listWizyty() throws IOException {
         SzczegolyWizytyController.setUserId(userId);
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(SzczegolyWizytyController.PATH));
-        Parent root = loader.load();
-
-        SzczegolyWizytyController controller = loader.getController();
-        SzczegolyWizytyController.odswiez();
         MementoMori.navigateTo(SzczegolyWizytyController.PATH);
+        SzczegolyWizytyController.odswiez();
     }
 
     @FXML
