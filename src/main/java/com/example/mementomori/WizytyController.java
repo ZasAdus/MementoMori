@@ -64,7 +64,7 @@ public class WizytyController {
         Parent root = loader.load();
 
         SzczegolyWizytyController controller = loader.getController();
-        controller.odswiez();
+        SzczegolyWizytyController.odswiez();
         MementoMori.navigateTo(SzczegolyWizytyController.PATH);
     }
 

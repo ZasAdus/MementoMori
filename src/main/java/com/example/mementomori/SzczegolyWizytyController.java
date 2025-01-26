@@ -96,7 +96,6 @@ public class SzczegolyWizytyController {
 
 
     public static void odswiez() {
-        //instance = new SzczegolyWizytyController();
         instance.initialize();
     }
 
