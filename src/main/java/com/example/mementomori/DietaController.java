@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.stage.StageStyle;
+
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +39,9 @@ public class DietaController {
 
     public void showStats() {
         statsOverlay.setVisible(true);
+        for (javafx.scene.Node child : statsOverlay.getChildren()) {
+            child.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-max-width: " + MementoMori.WIDTH *0.95 + "; -fx-max-height: 300px");
+        }
     }
 
     public void hideStats() {
@@ -77,27 +82,52 @@ public class DietaController {
 
     public void DietaZmienCel(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Zmiana Celu");
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.setGraphic(null);
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź nowy cel:");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
+                "-fx-padding: 10; " +
+                "-fx-background-radius: 5; " +
+                "-fx-border-color: gray; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 1;");
+
+        dialogPane.lookupButton(ButtonType.OK)
+                .setStyle("-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+        dialogPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
 
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(newGoal -> {
             try {
                 int nowyCel = Integer.parseInt(newGoal);
-
                 cel = nowyCel;
-
                 BazaDieta.zaktualizujDaneDieta(currentUser, liczbaKalori, cel);
-
                 DietaProgress.setProgress((double) liczbaKalori / cel);
                 DietaProgress.setMax(cel.toString() + " kcal");
-
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
                 alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+
+                // Style the error alert
+                DialogPane alertPane = alert.getDialogPane();
+                alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                alertPane.lookupButton(ButtonType.OK)
+                        .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                                "-fx-background-radius: 5; -fx-border-radius: 5;");
+
                 alert.showAndWait();
             }
         });
@@ -105,18 +135,54 @@ public class DietaController {
 
     public void DietaDodajRecznie(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Dodaj kalorie");
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.setGraphic(null);
         dialog.setHeaderText(null);
-        dialog.setContentText("Wprowadź ile kcal spożyłeś:");
+        dialog.setContentText("Ile kcal spożyłeś:");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
+                "-fx-padding: 10; " +
+                "-fx-background-radius: 5; " +
+                "-fx-border-color: gray; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 1;" );
+
+        dialogPane.lookupButton(ButtonType.OK)
+                .setStyle("-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+        dialogPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
 
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(x -> {
-            liczbaKalori += Integer.parseInt(x);
-            DietaProgress.setProgress((double) liczbaKalori / cel);
-            DietaProgress.setMin(liczbaKalori.toString());
+            try {
+                liczbaKalori += Integer.parseInt(x);
+                DietaProgress.setProgress((double) liczbaKalori / cel);
+                DietaProgress.setMin(liczbaKalori.toString());
 
-            // Zapisz zmienione dane do bazy
-            BazaDieta.zaktualizujDaneDieta(MementoMori.currentUser, liczbaKalori, cel);
+                BazaDieta.zaktualizujDaneDieta(MementoMori.currentUser, liczbaKalori, cel);
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd");
+                alert.setHeaderText(null);
+                alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+
+                // Style the error alert
+                DialogPane alertPane = alert.getDialogPane();
+                alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                alertPane.lookupButton(ButtonType.OK)
+                        .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                                "-fx-background-radius: 5; -fx-border-radius: 5;");
+
+                alert.showAndWait();
+            }
         });
     }
 
@@ -130,6 +196,7 @@ public class DietaController {
 
     private void updateWeekGrid(GridPane weekGrid, LocalDate weekStart) {
         weekGrid.getChildren().clear();
+        weekGrid.setStyle("-fx-background-color: #a5f0bd;");
         LocalDate date = weekStart;
 
         Map<LocalDate, int[]> weeklyData = BazaDieta.pobierzKalICeleWTygodniu(currentUser, weekStart);
@@ -138,10 +205,10 @@ public class DietaController {
         for (int i = 0; i < 7; i++) {
             String dayDetails = String.format("%02d/%02d", date.getDayOfMonth(), date.getMonthValue());
             VBox dayBox = new VBox();
-            dayBox.setStyle("-fx-border-color: gray; -fx-padding: 1.3px; -fx-alignment: center;");
+            dayBox.setStyle("-fx-border-color: gray; -fx-padding: 1.3px; -fx-alignment: center; -fx-background-color: #a5f0bd");
 
             Label dayLabel = new Label(dayDetails);
-            dayLabel.setStyle("-fx-font-weight: bold;");
+            dayLabel.setStyle("-fx-font-weight: bold; -fx-background-color: #a5f0bd;");
             dayBox.getChildren().add(dayLabel);
 
             int[] data = weeklyData.getOrDefault(date, new int[]{0, cel});

@@ -33,7 +33,6 @@ public class LogowanieController {
             MementoMori.isDoctor = BazaRejestracja.isDoctor(loginText);
             if (MementoMori.isDoctor) {
                 MementoMori.idDoctor = BazaRejestracja.idDoctor(loginText);
-                System.out.println(MementoMori.idDoctor);
                 MementoMori.navigateTo("Lekarz/PanelLekarzaMain.fxml");
             } else {
                 MementoMori.returnHome();

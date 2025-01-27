@@ -5,7 +5,14 @@ import java.io.IOException;
 
 public class HomeController {
     @FXML
-    protected void goKonto() { MementoMori.navigateTo(MojeKontoController.PATH); }
+    protected void goKonto() {
+        try {
+        MojeKontoController.refreshUserData();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        MementoMori.navigateTo(MojeKontoController.PATH);
+    }
 
     @FXML
     protected void goKroki() { MementoMori.navigateTo(KrokiController.PATH); }

@@ -6,13 +6,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Optional;
 
 public class KrokiController {
-    public static final String PATH = "kroki/kroki.fxml";
 
+    public static final String PATH = "kroki/kroki.fxml";
+    private ConfettiPane confettiPane;
     public Button KrokiZmienCel;
     public Button KrokiStatystyki;
     public Button KrokiDodajRecznie;
@@ -38,6 +42,9 @@ public class KrokiController {
 
     public void showStats() {
         statsOverlay.setVisible(true);
+        for (javafx.scene.Node child : statsOverlay.getChildren()) {
+            child.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; -fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-max-width: " + MementoMori.WIDTH *0.95 + "; -fx-max-height: 300px");
+        }
     }
 
     public void hideStats() {
@@ -75,31 +82,103 @@ public class KrokiController {
         progress.setColor("#2f9e44");
         progress.setMin(liczbaKrokow.toString());
         progress.setMax(cel.toString() + " kroków");
+
+        confettiPane = new ConfettiPane();
+        confettiPane.setMouseTransparent(true);
+        confettiPane.prefWidthProperty().bind(progress.widthProperty());
+        confettiPane.prefHeightProperty().bind(progress.heightProperty());
+        confettiPane.setVisible(false);
+
+        ((Pane) progress.getParent()).getChildren().add(confettiPane);
     }
 
     public void KrokiZmienCel(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Zmiana Celu");
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.setGraphic(null);
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź nowy cel:");
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
+                "-fx-padding: 10; " +
+                "-fx-background-radius: 5; " +
+                "-fx-border-color: gray; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 1;");
+
+        dialogPane.lookupButton(ButtonType.OK)
+                .setStyle("-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+        dialogPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+
+        dialog.getDialogPane().lookupButton(ButtonType.OK).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #4CAF50;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+        dialog.getDialogPane().lookupButton(ButtonType.OK).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #4CAF50;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #f44336;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #f44336;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
 
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(newGoal -> {
             try {
                 int nowyCel = Integer.parseInt(newGoal);
-
                 cel = nowyCel;
-
                 BazaKroki.zaktualizujDaneKroki(currentUser, liczbaKrokow, cel);
-
                 progress.setProgress((double) liczbaKrokow / cel);
                 progress.setMax(cel.toString() + " kroków");
-
             } catch (NumberFormatException e) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
                 alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+
+                // Style the error alert
+                DialogPane alertPane = alert.getDialogPane();
+                alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                alertPane.lookupButton(ButtonType.OK)
+                        .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                                "-fx-background-radius: 5; -fx-border-radius: 5;");
+
                 alert.showAndWait();
             }
         });
@@ -107,17 +186,99 @@ public class KrokiController {
 
     public void KrokiDodajRecznie(ActionEvent actionEvent) {
         TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Dodaj kroki");
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.setGraphic(null);
         dialog.setHeaderText(null);
-        dialog.setContentText("Wprowadź ile kroków przeszedłeś:");
+        dialog.setContentText("Ile wykonałeś kroków:");
+
+
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
+                "-fx-padding: 10; " +
+                "-fx-background-radius: 5; " +
+                "-fx-border-color: gray; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 1;" );
+        dialogPane.lookupButton(ButtonType.OK)
+                .setStyle("-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+        dialogPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+
+        dialog.getDialogPane().lookupButton(ButtonType.OK).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #4CAF50;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+        dialog.getDialogPane().lookupButton(ButtonType.OK).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #4CAF50;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setOnMouseEntered(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #f44336;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 10, 0, 0, 0);"
+                )
+        );
+
+        dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setOnMouseExited(e ->
+                ((Button)e.getSource()).setStyle(
+                        "-fx-background-color: #f44336;" +
+                                "-fx-text-fill: black;" +
+                                "-fx-font-weight: bold;" +
+                                "-fx-border-color: gray;" +
+                                "-fx-effect: null;"
+                )
+        );
 
         Optional<String> wynik = dialog.showAndWait();
         wynik.ifPresent(kroki -> {
-            liczbaKrokow += Integer.parseInt(kroki);
-            progress.setProgress((double) liczbaKrokow / cel);
-            progress.setMin(liczbaKrokow.toString());
+            try {
+                int poprzedniaLiczba = liczbaKrokow;
+                liczbaKrokow += Integer.parseInt(kroki);
+                progress.setProgress((double) liczbaKrokow / cel);
+                progress.setMin(liczbaKrokow.toString());
 
-            BazaKroki.zaktualizujDaneKroki(MementoMori.currentUser, liczbaKrokow, cel);
+                BazaKroki.zaktualizujDaneKroki(MementoMori.currentUser, liczbaKrokow, cel);
+
+                if (poprzedniaLiczba < cel && liczbaKrokow >= cel) {
+                    confettiPane.setVisible(true);
+                    confettiPane.startAnimation();
+                }
+            } catch (NumberFormatException e) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Błąd");
+                alert.setHeaderText(null);
+                alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+
+                // Style the error alert
+                DialogPane alertPane = alert.getDialogPane();
+                alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                alertPane.lookupButton(ButtonType.OK)
+                        .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                                "-fx-background-radius: 5; -fx-border-radius: 5;");
+
+                alert.showAndWait();
+            }
         });
     }
 
@@ -130,19 +291,21 @@ public class KrokiController {
     }
 
     private void updateWeekGrid(GridPane weekGrid, LocalDate weekStart) {
-        weekGrid.getChildren().clear();
-        LocalDate date = weekStart;
 
+        weekGrid.getChildren().clear();
+        weekGrid.setStyle("-fx-background-color: #a5f0bd;");
+
+        LocalDate date = weekStart;
         LocalDate today = LocalDate.now();
         Map<LocalDate, int[]> weeklyData = BazaKroki.pobierzKrokiICeleWTygodniu(currentUser, weekStart);
 
         for (int i = 0; i < 7; i++) {
             String dayDetails = String.format("%02d/%02d", date.getDayOfMonth(), date.getMonthValue());
             VBox dayBox = new VBox();
-            dayBox.setStyle("-fx-border-color: gray; -fx-padding: 1.3px; -fx-alignment: center;");
+            dayBox.setStyle("-fx-border-color: gray; -fx-padding: 1.3px; -fx-alignment: center; -fx-background-color: #a5f0bd");
 
             Label dayLabel = new Label(dayDetails);
-            dayLabel.setStyle("-fx-font-weight: bold;");
+            dayLabel.setStyle("-fx-font-weight: bold; -fx-background-color: #a5f0bd;");
             dayBox.getChildren().add(dayLabel);
 
             int[] data = weeklyData.getOrDefault(date, new int[]{0, cel});
