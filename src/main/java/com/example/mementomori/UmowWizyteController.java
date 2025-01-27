@@ -26,6 +26,9 @@ public class UmowWizyteController {
 
     @FXML
     public void initialize() {
+        doctorListView.setStyle("-fx-background-color: #a5f0bd; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: gray;");
+        cityComboBox.setStyle("-fx-background-color: #a5d8ff;");
+        specialistComboBox.setStyle("-fx-background-color: #a5d8ff;");
         doctorListView.setOnMouseClicked(this::onDoctorSelected);
     }
 

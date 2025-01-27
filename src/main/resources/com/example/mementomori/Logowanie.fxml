@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-pref-height: 926; -fx-pref-width: 428;" styleClass="main" stylesheets="@styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.LogowanieController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-pref-height: 926; -fx-pref-width: 428;" styleClass="main" stylesheets="@styles/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.LogowanieController">
    <top>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -32,8 +37,8 @@
             </Text>
             <TextField fx:id="Login" layoutX="102.0" layoutY="173.0" onAction="#zaloguj" prefHeight="25.0" prefWidth="215.0" />
             <PasswordField fx:id="haslo" layoutX="102.0" layoutY="245.0" onAction="#zaloguj" prefHeight="25.0" prefWidth="216.0" />
-            <Button fx:id="goMenu" layoutX="186.0" layoutY="339.0" mnemonicParsing="false" onAction="#zaloguj" stylesheets="@styles/style.css" text="Zaloguj" />
-            <Button fx:id="guzikUtworzKonto" layoutX="170.0" layoutY="423.0" mnemonicParsing="false" onAction="#stworzKonto" stylesheets="@styles/style.css" text="Utwórz konto" />
+            <Button fx:id="goMenu" layoutX="182.0" layoutY="300.0" mnemonicParsing="false" onAction="#zaloguj" prefHeight="20.0" prefWidth="65.0" stylesheets="@styles/style.css" text="Zaloguj" />
+            <Button fx:id="guzikUtworzKonto" layoutX="165.0" layoutY="365.0" mnemonicParsing="false" onAction="#stworzKonto" prefHeight="29.0" prefWidth="99.0" stylesheets="@styles/style.css" text="Utwórz konto" />
             <Text layoutX="101.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hasło:">
                <font>
                   <Font size="24.0" />

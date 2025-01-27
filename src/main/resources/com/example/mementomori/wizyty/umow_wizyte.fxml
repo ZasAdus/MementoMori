@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.collections.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.UmowWizyteController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.UmowWizyteController">
     <top>
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
@@ -33,37 +39,38 @@
         </HBox>
     </bottom>
     <center>
-        <VBox alignment="TOP_CENTER" fillWidth="true" spacing="10" style="-fx-font-size: 15">
-            <HBox alignment="CENTER" spacing="10">
-                <Label prefWidth="100" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" text="Miasto" />
-                <ComboBox fx:id="cityComboBox" prefHeight="25.0" prefWidth="143.0" promptText="Wybierz miasto" HBox.hgrow="ALWAYS">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Warszawa" />
-                            <String fx:value="Kraków" />
-                            <String fx:value="Wrocław" />
-                            <String fx:value="Gdańsk" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-            </HBox>
+        <VBox alignment="TOP_CENTER" fillWidth="true" spacing="10" styleClass="vbox">
+         <AnchorPane prefHeight="112.0" prefWidth="428.0">
+            <children>
+                   <ComboBox fx:id="cityComboBox" layoutX="184.0" layoutY="14.0" prefHeight="33.0" prefWidth="183.0" promptText="Wybierz miasto" styleClass="combo-box">
+                       <items>
+                           <FXCollections fx:factory="observableArrayList">
+                               <String fx:value="Warszawa" />
+                               <String fx:value="Kraków" />
+                               <String fx:value="Wrocław" />
+                               <String fx:value="Gdańsk" />
+                           </FXCollections>
+                       </items>
+                   </ComboBox>
+                   <Label layoutX="72.0" layoutY="14.0" prefHeight="37.0" prefWidth="100.0" style="-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 5; -fx-background-color:  #c5e3fa" text="Miasto:" />
+                   <Label layoutX="72.0" layoutY="53.0" prefHeight="38.0" prefWidth="100" style="-fx-border-color: gray; -fx-border-width: 1; -fx-padding: 5; -fx-background-color:  #c5e3fa;" text="Specjalista:" />
+                   <ComboBox fx:id="specialistComboBox" layoutX="184.0" layoutY="53.0" prefHeight="33.0" prefWidth="184.0" promptText="Wybierz specjalistę" styleClass="combo-box">
+                       <items>
+                           <FXCollections fx:factory="observableArrayList">
+                               <String fx:value="Lekarz rodzinny" />
+                               <String fx:value="Dermatolog" />
+                               <String fx:value="Kardiolog" />
+                               <String fx:value="Psychiatra" />
+                           </FXCollections>
+                       </items>
+                   </ComboBox>
+            </children>
+         </AnchorPane>
 
-            <!-- Drugi zestaw: Specjalista -->
-            <HBox alignment="CENTER" spacing="10">
-                <Label prefWidth="100" style="-fx-border-color: black; -fx-border-width: 1; -fx-padding: 5;" text="Specjalista" />
-                <ComboBox fx:id="specialistComboBox" promptText="Wybierz specjalistę" HBox.hgrow="ALWAYS">
-                    <items>
-                        <FXCollections fx:factory="observableArrayList">
-                            <String fx:value="Lekarz rodzinny" />
-                            <String fx:value="Dermatolog" />
-                            <String fx:value="Kardiolog" />
-                            <String fx:value="Psychiatra" />
-                        </FXCollections>
-                    </items>
-                </ComboBox>
-            </HBox>
-
-            <Button onAction="#searchAppointments" text="Szukaj" />
+            <Button onAction="#searchAppointments" prefHeight="43.0" prefWidth="81.0" styleClass="button" text="Szukaj">
+            <font>
+               <Font size="18.0" />
+            </font></Button>
 
             <ListView fx:id="doctorListView" maxHeight="200" prefHeight="200" VBox.vgrow="ALWAYS">
             </ListView>

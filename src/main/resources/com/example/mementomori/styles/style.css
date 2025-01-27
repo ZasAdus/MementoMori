@@ -141,3 +141,103 @@
     -fx-background-color: #c5e3fa;
     -fx-background-radius: 10px;
 }
+
+.combo-box {
+    -fx-background-color: #a5d8ff;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #7ab5e6;
+    -fx-border-width: 1;
+    -fx-font-size: 14px;
+}
+
+/* Arrow button styling */
+.combo-box .arrow-button {
+    -fx-background-color: #7ab5e6;
+    -fx-background-radius: 0 5 5 0;
+}
+
+.combo-box .arrow {
+    -fx-background-color: white;
+}
+
+/* Hover state */
+.combo-box:hover {
+    -fx-background-color: #b8e0ff;
+    -fx-cursor: hand;
+}
+
+/* Pressed state */
+.combo-box:pressed {
+    -fx-background-color: #89c4f7;
+}
+
+/* ListView styling (dropdown) */
+.combo-box .list-view {
+    -fx-background-color: #f0f8ff;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: #7ab5e6;
+}
+
+/* List cells styling */
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 8 12;
+}
+
+.combo-box .list-cell:hover {
+    -fx-background-color: #d4e9fc;
+}
+
+.combo-box .list-cell:selected {
+    -fx-background-color: #a5d8ff;
+}
+
+/* Focused state */
+.combo-box:focused {
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 1;
+}
+
+/* Prompt text styling */
+.combo-box .text-input {
+    -fx-prompt-text-fill: #757575;
+}
+
+/* Główne tło aplikacji */
+.main {
+    -fx-background-color: #e0f4e0;  /* Jasny zielony kolor tła */
+}
+
+/* Style dla ListView */
+.list-view {
+    -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
+    -fx-border-color: #a5d8ff;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.list-view .list-cell {
+    -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: #c5e8c5;  /* Ciemniejszy odcień przy najechaniu */
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #a5d8ff;  /* Kolor zaznaczenia */
+    -fx-text-fill: black;
+}
+
+/* Style dla VBox w centrum */
+.vbox {
+    -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
+}
+
+/* Label ze statusem wyboru lekarza */
+#selectedDoctorLabel {
+    -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
+    -fx-padding: 5;
+}

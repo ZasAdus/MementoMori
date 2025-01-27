@@ -13,6 +13,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SzczegolyWizytyController {
 
@@ -59,7 +60,7 @@ public class SzczegolyWizytyController {
                 String dateTime = parts[0];
                 int doctorId = Integer.parseInt(parts[1]);
                 String status = parts[2];
-
+                if (Objects.equals(status, "ANULOWANA"))continue;
                 String doctorDetails = BazaWizyty.getDoctorDetails(doctorId);
 
                 HBox appointmentBox = new HBox(10);
