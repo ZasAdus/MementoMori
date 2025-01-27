@@ -212,14 +212,14 @@
 
 /* Style dla ListView */
 .list-view {
-    -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
+    -fx-background-color: #a5f0bd;  /* Ten sam kolor co główne tło */
     -fx-border-color: #a5d8ff;
     -fx-border-radius: 5;
     -fx-background-radius: 5;
 }
 
 .list-view .list-cell {
-    -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
+    -fx-background-color: #a5f0bd;  /* Ten sam kolor co główne tło */
 }
 
 .list-view .list-cell:hover {

@@ -14,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.ScrollPane;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.DayOfWeek;
@@ -116,8 +117,10 @@ public class WizytyController {
         for (String appointment : appointments) {
             String[] parts = appointment.split("\\|");
             String dateTime = parts[0];
+            String status = parts[2];
             int doctorId = Integer.parseInt(parts[1]);
-
+            String color =  "#f39c12";
+            if(status.equals("POTWIERDZONA")) color = "#27ae60";
             LocalDateTime appointmentDateTime = parseAppointment(dateTime);
             if (!appointmentDateTime.toLocalDate().isBefore(startOfWeek) && !appointmentDateTime.toLocalDate().isAfter(endOfWeek)) {
                 int dayColumn = appointmentDateTime.getDayOfWeek().getValue(); // dzień tygodnia (1-7)
@@ -128,7 +131,7 @@ public class WizytyController {
 
                 Button button = new Button();
                 button.setStyle(
-                        "-fx-background-color: #27ae60; " +
+                        "-fx-background-color: "+ color + "; " +
                                 "-fx-background-radius: 50%; " +
                                 "-fx-min-width: 25px; " +
                                 "-fx-min-height: 25px; " +
@@ -138,9 +141,10 @@ public class WizytyController {
                 String doctorDetails = BazaWizyty.getDoctorDetails(doctorId);
 
                 String tooltipText = String.format(
-                        "Data wizyty: %s\nGodzina wizyty: %s\n%s",
-                        dateTime.substring(0, 10), dateTime.substring(11), doctorDetails
+                        "Data wizyty: %s\nGodzina wizyty: %s\n%s\n%s",
+                        dateTime.substring(0, 10), dateTime.substring(11), doctorDetails, "Status wizyty: " + status.toLowerCase()
                 );
+
                 Tooltip tooltip = new Tooltip(tooltipText);
                 tooltip.setShowDelay(Duration.millis(100));
                 Tooltip.install(button, tooltip);
