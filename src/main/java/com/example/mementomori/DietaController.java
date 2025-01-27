@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.time.LocalDate;
@@ -87,6 +88,12 @@ public class DietaController {
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź nowy cel:");
 
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.setOnShown(e -> {
+            dialogStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - dialogStage.getWidth()) / 2);
+            dialogStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - dialogStage.getHeight()) / 2);
+        });
+
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
                 "-fx-padding: 10; " +
@@ -119,11 +126,18 @@ public class DietaController {
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
                 alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+                alert.initStyle(StageStyle.UNDECORATED);
+                alert.setGraphic(null);
 
-                // Style the error alert
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.setOnShown(e2-> {
+                    alertStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - alertStage.getWidth()) / 2);
+                    alertStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - alertStage.getHeight()) / 2);
+                });
+
                 DialogPane alertPane = alert.getDialogPane();
                 alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
-                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-max-width: 300");
                 alertPane.lookupButton(ButtonType.OK)
                         .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
                                 "-fx-background-radius: 5; -fx-border-radius: 5;");
@@ -139,6 +153,12 @@ public class DietaController {
         dialog.setGraphic(null);
         dialog.setHeaderText(null);
         dialog.setContentText("Ile kcal spożyłeś:");
+
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.setOnShown(e -> {
+            dialogStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - dialogStage.getWidth()) / 2);
+            dialogStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - dialogStage.getHeight()) / 2);
+        });
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
@@ -172,11 +192,17 @@ public class DietaController {
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
                 alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+                alert.initStyle(StageStyle.UNDECORATED);
+                alert.setGraphic(null);
 
-                // Style the error alert
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.setOnShown(e2-> {
+                    alertStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - alertStage.getWidth()) / 2);
+                    alertStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - alertStage.getHeight()) / 2);
+                });
                 DialogPane alertPane = alert.getDialogPane();
                 alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
-                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-max-width: 300");
                 alertPane.lookupButton(ButtonType.OK)
                         .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
                                 "-fx-background-radius: 5; -fx-border-radius: 5;");

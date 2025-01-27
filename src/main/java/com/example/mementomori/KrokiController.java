@@ -99,6 +99,13 @@ public class KrokiController {
         dialog.setHeaderText(null);
         dialog.setContentText("Wprowadź nowy cel:");
 
+        // Centrowanie dialogu po pokazaniu
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.setOnShown(e -> {
+            dialogStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - dialogStage.getWidth()) / 2);
+            dialogStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - dialogStage.getHeight()) / 2);
+        });
+
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
                 "-fx-padding: 10; " +
@@ -170,11 +177,19 @@ public class KrokiController {
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
                 alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+                alert.initStyle(StageStyle.UNDECORATED);
+                alert.setGraphic(null);
 
-                // Style the error alert
+                // Centrowanie alertu po pokazaniu
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.setOnShown(e2-> {
+                    alertStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - alertStage.getWidth()) / 2);
+                    alertStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - alertStage.getHeight()) / 2);
+                });
+
                 DialogPane alertPane = alert.getDialogPane();
                 alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
-                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-max-width: 300");
                 alertPane.lookupButton(ButtonType.OK)
                         .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
                                 "-fx-background-radius: 5; -fx-border-radius: 5;");
@@ -191,6 +206,12 @@ public class KrokiController {
         dialog.setHeaderText(null);
         dialog.setContentText("Ile wykonałeś kroków:");
 
+        // Centrowanie dialogu po pokazaniu
+        Stage dialogStage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        dialogStage.setOnShown(e -> {
+            dialogStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - dialogStage.getWidth()) / 2);
+            dialogStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - dialogStage.getHeight()) / 2);
+        });
 
         DialogPane dialogPane = dialog.getDialogPane();
         dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
@@ -199,6 +220,7 @@ public class KrokiController {
                 "-fx-border-color: gray; " +
                 "-fx-border-radius: 5; " +
                 "-fx-border-width: 1;" );
+
         dialogPane.lookupButton(ButtonType.OK)
                 .setStyle("-fx-background-color: #4CAF50;" +
                         "-fx-text-fill: black;" +
@@ -268,11 +290,19 @@ public class KrokiController {
                 alert.setTitle("Błąd");
                 alert.setHeaderText(null);
                 alert.setContentText("Wprowadzono niepoprawną wartość. Podaj liczbę całkowitą.");
+                alert.initStyle(StageStyle.UNDECORATED);
+                alert.setGraphic(null);
 
-                // Style the error alert
+                // Centrowanie alertu po pokazaniu
+                Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+                alertStage.setOnShown(e2 -> {
+                    alertStage.setX(MementoMori.main_stage.getX() + (MementoMori.main_stage.getWidth() - alertStage.getWidth()) / 2);
+                    alertStage.setY(MementoMori.main_stage.getY() + (MementoMori.main_stage.getHeight() - alertStage.getHeight()) / 2);
+                });
+
                 DialogPane alertPane = alert.getDialogPane();
                 alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
-                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                        "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10; -fx-max-width: 300");
                 alertPane.lookupButton(ButtonType.OK)
                         .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
                                 "-fx-background-radius: 5; -fx-border-radius: 5;");
