@@ -122,7 +122,7 @@ public class MementoMori extends Application {
      * @param path nazwa pliku fxml
      */
     public static Scene load(String path) throws IOException {
-        Scene target = loadedScenes.get(path);
+        Scene target = !path.equals("Logowanie.fxml") ? loadedScenes.get(path) : null;
         if(target == null) {
             target = forceReload(path);
         }
