@@ -154,7 +154,7 @@ class LekiDialogController {
                 }
 
                 try {
-                    return new BazaLeki.LekiEntry(default_value.id(), controller.getName(), controller.getTime());
+                    return new BazaLeki.LekiEntry(-1, controller.getName(), controller.getTime());
                 }
                 catch (Exception e) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -192,7 +192,7 @@ public class LekiController {
     @FXML private VBox LekiContainer;
 
     public void initialize() {
-        var leki = BazaLeki.getAll();
+        var leki = BazaLeki.getAll(MementoMori.currentUser);
         var leki_children = LekiContainer.getChildren();
         for(BazaLeki.LekiEntry lek : leki) {
             leki_children.add(new LekElement(lek));
@@ -213,7 +213,7 @@ public class LekiController {
     public void addSchedule() {
         BazaLeki.LekiEntry result = LekiDialogController.show("Dodaj lek", null);
         if(result != null) {
-            BazaLeki.LekiEntry added = BazaLeki.add(result.name(), result.time());
+            BazaLeki.LekiEntry added = BazaLeki.add(MementoMori.currentUser, result.name(), result.time());
             LekiContainer.getChildren().add(new LekElement(added));
         }
     }
