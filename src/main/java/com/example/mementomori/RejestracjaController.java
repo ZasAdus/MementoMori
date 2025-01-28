@@ -82,7 +82,7 @@ public class RejestracjaController implements Initializable {
         String n = numer.getText();
 
         if (specjalizacja == null || m.isEmpty() || u.isEmpty() || n.isEmpty()) {
-            System.out.println("Proszę wypełnić wszystkie pola");
+            komunikaty.setText("Proszę wypełnić wszystkie pola");
             return;
         }
         tempSpecjalizacja = specjalizacja;
@@ -123,9 +123,19 @@ public class RejestracjaController implements Initializable {
 
     public void Zarejestruj(ActionEvent actionEvent) {
         if(Imie.getText().isEmpty() || Nazwisko.getText().isEmpty() || NrTelefonu.getText().isEmpty() || Email.getText().isEmpty()){
-            System.out.println("uzupełnij wszystkie pola");
+            komunikaty.setText("uzupełnij wszystkie pola");
             return;
         }
+        if(!NrTelefonu.getText().matches("\\d{9}")){
+            komunikaty.setText("nieoprawny nr. telefonu");
+            return;
+        }
+        if(!Email.getText().matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+            komunikaty.setText("niepoprawny adres email");
+            return;
+        }
+
+
         if(isDoctor){
             System.out.println(tempSpecjalizacja);
             BazaRejestracja.insertDaneZawodowe(login, tempSpecjalizacja, tempMiasto, tempUlica, tempNumer);

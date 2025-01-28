@@ -1,9 +1,6 @@
 package com.example.mementomori;
 
-import com.example.mementomori.bazyDanych.BazaDieta;
-import com.example.mementomori.bazyDanych.BazaKroki;
-import com.example.mementomori.bazyDanych.BazaLeki;
-import com.example.mementomori.bazyDanych.BazaRejestracja;
+import com.example.mementomori.bazyDanych.*;
 import javafx.application.Application;
 import javafx.css.Style;
 import javafx.fxml.FXMLLoader;
@@ -62,6 +59,7 @@ public class MementoMori extends Application {
         BazaRejestracja.initTable();
         BazaKroki.initTable();
         BazaDieta.initTable();
+        BazaSpanko.initTable();
 
         navigateTo("Logowanie.fxml");
         stage.show();
@@ -124,7 +122,7 @@ public class MementoMori extends Application {
      * @param path nazwa pliku fxml
      */
     public static Scene load(String path) throws IOException {
-        Scene target = loadedScenes.get(path);
+        Scene target = !path.equals("Logowanie.fxml") ? loadedScenes.get(path) : null;
         if(target == null) {
             target = forceReload(path);
         }

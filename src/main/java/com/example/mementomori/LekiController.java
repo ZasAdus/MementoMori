@@ -66,6 +66,20 @@ class LekElement extends HBox {
         ask.setHeaderText(null);
         ask.setContentText("czy na pewno chcesz usunąć ten lek?");
 
+        // Style the error alert
+        DialogPane alertPane = ask.getDialogPane();
+        alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+        alertPane.lookupButton(ButtonType.OK)
+                .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                        "-fx-background-radius: 5; -fx-border-radius: 5;");
+        alertPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+
+
         Optional<ButtonType> result = ask.showAndWait();
         if(result.isPresent() && result.get() == ButtonType.OK) {
             BazaLeki.delete(this.lek);
@@ -109,6 +123,25 @@ class LekiDialogController {
         LekiDialogController controller = new LekiDialogController();
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(Path));
         loader.setController(controller);
+        DialogPane dialogPane = dialog.getDialogPane();
+
+        dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
+                "-fx-padding: 10; " +
+                "-fx-background-radius: 5; " +
+                "-fx-border-color: gray; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 1;");
+
+        dialogPane.lookupButton(submitButtonType)
+                .setStyle("-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+        dialogPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
 
         try {
             dialog.getDialogPane().setContent(loader.load());
@@ -120,7 +153,27 @@ class LekiDialogController {
                     return null;
                 }
 
-                return new BazaLeki.LekiEntry(-1, controller.getName(), controller.getTime());
+                try {
+                    return new BazaLeki.LekiEntry(-1, controller.getName(), controller.getTime());
+                }
+                catch (Exception e) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wprowadzono niepoprawną godzinę.");
+
+                    // Style the error alert
+                    DialogPane alertPane = alert.getDialogPane();
+                    alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                            "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                    alertPane.lookupButton(ButtonType.OK)
+                            .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                                    "-fx-background-radius: 5; -fx-border-radius: 5;");
+
+                    alert.showAndWait();
+                    return null;
+                }
+
             });
 
             Optional<BazaLeki.LekiEntry> result = dialog.showAndWait();
@@ -139,7 +192,7 @@ public class LekiController {
     @FXML private VBox LekiContainer;
 
     public void initialize() {
-        var leki = BazaLeki.getAll();
+        var leki = BazaLeki.getAll(MementoMori.currentUser);
         var leki_children = LekiContainer.getChildren();
         for(BazaLeki.LekiEntry lek : leki) {
             leki_children.add(new LekElement(lek));
@@ -160,7 +213,7 @@ public class LekiController {
     public void addSchedule() {
         BazaLeki.LekiEntry result = LekiDialogController.show("Dodaj lek", null);
         if(result != null) {
-            BazaLeki.LekiEntry added = BazaLeki.add(result.name(), result.time());
+            BazaLeki.LekiEntry added = BazaLeki.add(MementoMori.currentUser, result.name(), result.time());
             LekiContainer.getChildren().add(new LekElement(added));
         }
     }

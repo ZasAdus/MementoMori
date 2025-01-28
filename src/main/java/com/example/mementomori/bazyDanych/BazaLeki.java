@@ -34,6 +34,7 @@ public class BazaLeki {
             PreparedStatement stmt = conn.prepareStatement("""
                 CREATE TABLE IF NOT EXISTS leki(
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    login TEXT NOT NULL,
                     nazwa TEXT NOT NULL,
                     godzina TIME NOT NULL
                 );
@@ -46,10 +47,11 @@ public class BazaLeki {
         }
     }
 
-    public static List<LekiEntry> getAll() {
+    public static List<LekiEntry> getAll(String login) {
         List<LekiEntry> results = new ArrayList<>();
         try(Connection conn = connect()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT id, nazwa, godzina FROM leki;");
+            PreparedStatement stmt = conn.prepareStatement("SELECT id, nazwa, godzina FROM leki where login = ?;");
+            stmt.setString(1, login);
 
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
@@ -62,11 +64,12 @@ public class BazaLeki {
         return results;
     }
 
-    public static LekiEntry add(String name, Time time) {
+    public static LekiEntry add(String login, String name, Time time) {
         try(Connection conn = connect()) {
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO leki(nazwa, godzina) VALUES (?, ?)");
-            stmt.setString(1, name);
-            stmt.setTime(2, time);
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO leki(login, nazwa, godzina) VALUES (?,?, ?)");
+            stmt.setString(1, login);
+            stmt.setString(2, name);
+            stmt.setTime(3, time);
             stmt.execute();
 
             stmt = conn.prepareStatement("SELECT last_insert_rowid();");
@@ -103,6 +106,4 @@ public class BazaLeki {
             err.printStackTrace();
         }
     }
-
-
 }

@@ -21,18 +21,18 @@
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
-            <BarChart alternativeColumnFillVisible="true" prefHeight="398.0" prefWidth="428.0" style="-fx-background-color: #d5f1de;">
+            <BarChart fx:id="eep" alternativeColumnFillVisible="true" legendVisible="false" prefHeight="398.0" prefWidth="428.0" style="-fx-background-color: #d5f1de;">
               <xAxis>
-                <CategoryAxis prefWidth="369.0" side="LEFT" />
+                <CategoryAxis label="typ snu" prefWidth="369.0" side="LEFT" />
               </xAxis>
               <yAxis>
-                <NumberAxis />
+                <NumberAxis autoRanging="false" label="\%" />
               </yAxis>
             </BarChart>
             <AnchorPane style="-fx-border-color: black;">
                <children>
                   <Label layoutX="14.0" layoutY="9.0" text="Efektywność" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label contentDisplay="RIGHT" layoutX="381.0" layoutY="9.0" text="95%" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="efektywnosc" contentDisplay="RIGHT" layoutX="381.0" layoutY="9.0" text="95%" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0" />
                </children>
                <VBox.margin>
                   <Insets left="20.0" right="20.0" />
@@ -44,7 +44,7 @@
             <AnchorPane style="-fx-border-color: black;">
                <children>
                   <Label layoutX="14.0" layoutY="9.0" text="Długość snu" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <Label contentDisplay="RIGHT" layoutX="381.0" layoutY="9.0" text="8h 12min" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0" />
+                  <Label fx:id="dlugosc" contentDisplay="RIGHT" layoutX="381.0" layoutY="9.0" text="8h 12min" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

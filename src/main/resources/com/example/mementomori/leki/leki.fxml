@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.LekiController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="926.0" prefWidth="428.0" styleClass="main" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mementomori.LekiController">
    <top>
       <HBox alignment="CENTER" prefHeight="102.0" prefWidth="428.0" BorderPane.alignment="CENTER">
          <children>
@@ -45,7 +41,7 @@
                   <Insets bottom="10.0" />
                </VBox.margin>
             </Text>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="457.0" prefWidth="408.0" style="-fx-background-color: white" VBox.vgrow="SOMETIMES">
+            <ScrollPane hbarPolicy="NEVER" prefHeight="457.0" prefWidth="408.0" VBox.vgrow="SOMETIMES">
                <content>
                   <VBox fx:id="LekiContainer" alignment="CENTER" prefWidth="398.0" spacing="20.0" />
                </content>

@@ -30,6 +30,10 @@
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 0);
 }
 
+.button.active {
+    -fx-background-color: #5eb8ff;
+}
+
 .button:pressed, .tab:pressed {
     -fx-background-color: #5eb8ff;
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.5), 15, 0, 0, 0);
@@ -240,4 +244,12 @@
 #selectedDoctorLabel {
     -fx-background-color: #e0f4e0;  /* Ten sam kolor co główne tło */
     -fx-padding: 5;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.default-color0.chart-bar {
+    -fx-bar-fill: #a5d8ff;
 }

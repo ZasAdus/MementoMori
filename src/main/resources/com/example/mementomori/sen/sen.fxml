@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -21,17 +21,20 @@
    <center>
       <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fitHeight="435.0" fitWidth="328.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="file:images/sen_wykres.png" />
-               </image>
-            </ImageView>
+            <BarChart fx:id="spankoWykres" animated="false">
+              <xAxis>
+                <CategoryAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis autoRanging="false" label="Liczba godzin" minorTickCount="1" minorTickLength="0.5" side="LEFT" tickLabelGap="5.0" tickUnit="0.5" upperBound="24.0" />
+              </yAxis>
+            </BarChart>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Button mnemonicParsing="false" text="Dzień" />
-                  <Button mnemonicParsing="false" text="Tydzień" />
-                  <Button mnemonicParsing="false" text="Miesiąc" />
-                  <Button mnemonicParsing="false" text="6 Miesięcy" />
+                  <Button fx:id="btnChartDay" mnemonicParsing="false" text="Dzień" />
+                  <Button fx:id="btnChartWeek" mnemonicParsing="false" text="Tydzień" />
+                  <Button fx:id="btnChartMonth" mnemonicParsing="false" text="Miesiąc" />
+                  <Button fx:id="btnChart6Months" mnemonicParsing="false" text="6 Miesięcy" />
                </children>
             </HBox>
             <BorderPane prefHeight="169.0" prefWidth="428.0">
