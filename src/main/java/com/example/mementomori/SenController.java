@@ -290,15 +290,35 @@ public class SenController {
     @FXML
     public void addEepyTime() {
         boolean substract_day = Integer.parseInt(start_hours.getText()) > Integer.parseInt(end_hours.getText());
-        Timestamp start = Timestamp.valueOf(
-            LocalDate.now()
-                     .minusDays(substract_day ? 1 : 0)
-                     .atTime(Integer.parseInt(start_hours.getText()), Integer.parseInt(start_minutes.getText()), 0)
-        );
-        Timestamp end = Timestamp.valueOf(
-            LocalDateTime.now()
-                         .withHour(Integer.parseInt(end_hours.getText())).withMinute(Integer.parseInt(end_minutes.getText()))
-        );
+        Timestamp start;
+        try {
+            start = Timestamp.valueOf(
+                    LocalDate.now()
+                            .minusDays(substract_day ? 1 : 0)
+                            .atTime(Integer.parseInt(start_hours.getText()), Integer.parseInt(start_minutes.getText()), 0)
+            );
+        }
+        catch (Exception err) {
+            start = Timestamp.valueOf(
+                LocalDate.now()
+                .minusDays(1)
+                .atTime(22,0)
+            );
+        }
+
+        Timestamp end;
+        try {
+            end = Timestamp.valueOf(
+                    LocalDate.now()
+                            .atTime(Integer.parseInt(end_hours.getText()), Integer.parseInt(end_minutes.getText()), 0)
+            );
+        }
+        catch (Exception err) {
+            end = Timestamp.valueOf(
+                LocalDate.now()
+                .atTime(6,0)
+            );
+        }
         EepyTimeDialogController.EepyTimeEntry default_values = new EepyTimeDialogController.EepyTimeEntry(
             start,
             end
