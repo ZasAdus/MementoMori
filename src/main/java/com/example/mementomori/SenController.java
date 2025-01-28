@@ -68,7 +68,26 @@ class EepyTimeDialogController {
         dialog.setHeaderText(null);
 
         ButtonType submitButtonType = new ButtonType("Zapisz", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(submitButtonType, ButtonType.CANCEL);
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getButtonTypes().addAll(submitButtonType, ButtonType.CANCEL);
+
+        dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
+                "-fx-padding: 10; " +
+                "-fx-background-radius: 5; " +
+                "-fx-border-color: gray; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 1;");
+
+        dialogPane.lookupButton(submitButtonType)
+                .setStyle("-fx-background-color: #4CAF50;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
+        dialogPane.lookupButton(ButtonType.CANCEL)
+                .setStyle("-fx-background-color: #f44336;" +
+                        "-fx-text-fill: black;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-border-color: gray;");
 
         EepyTimeDialogController controller = new EepyTimeDialogController();
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(Path));
@@ -84,7 +103,26 @@ class EepyTimeDialogController {
                     return null;
                 }
 
-                return new EepyTimeEntry(controller.getTimeStart(), controller.getTimeEnd());
+                try {
+                    return new EepyTimeEntry(controller.getTimeStart(), controller.getTimeEnd());
+                }
+                catch (Exception err) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Błąd");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wprowadzono niepoprawną godzinę.");
+
+                    // Style the error alert
+                    DialogPane alertPane = alert.getDialogPane();
+                    alertPane.setStyle("-fx-background-color: #a5f0bd; -fx-border-color: gray; " +
+                            "-fx-border-width: 1; -fx-border-radius: 10; -fx-background-radius: 10;");
+                    alertPane.lookupButton(ButtonType.OK)
+                            .setStyle("-fx-background-color: #2f9e44; -fx-text-fill: white; " +
+                                    "-fx-background-radius: 5; -fx-border-radius: 5;");
+
+                    alert.showAndWait();
+                }
+                return null;
             });
 
             Optional<EepyTimeEntry> result = dialog.showAndWait();
