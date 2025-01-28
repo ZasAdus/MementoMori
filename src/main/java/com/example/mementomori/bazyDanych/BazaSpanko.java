@@ -3,7 +3,7 @@ package com.example.mementomori.bazyDanych;
 import com.example.mementomori.MementoMori;
 
 import java.sql.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,14 +11,23 @@ import java.util.List;
 
 public class BazaSpanko {
     // struktura wpisu w bazie danych o pojedyńczym śnie
-    public record SpankoEntry(int id, Date start, Date stop) {
+    public record SpankoEntry(int id, Timestamp start, Timestamp stop) {
         public String getStartString() {
-            LocalDate lc = start.toLocalDate();
+            LocalDateTime lc = start.toLocalDateTime();
             return lc.format(DateTimeFormatter.ofPattern("HH:mm"));
         }
+
+        public double getStartHoursDouble() {
+            return start.toLocalDateTime().getHour() + start.toLocalDateTime().getMinute() / 60.0;
+        }
+
         public String getStopString() {
-            LocalDate lc = stop.toLocalDate();
+            LocalDateTime lc = stop.toLocalDateTime();
             return lc.format(DateTimeFormatter.ofPattern("HH:mm"));
+        }
+
+        public double getStopHoursDouble() {
+            return stop.toLocalDateTime().getHour() + stop.toLocalDateTime().getMinute() / 60.0;
         }
     }
 
@@ -110,7 +119,13 @@ public class BazaSpanko {
         }
     }
 
-    public static List<SpankoEntry> getSpanko(Date from, Date to) {
+    private static final DateTimeFormatter TimestampFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    private static Timestamp parseTimestamp(String str) {
+        return Timestamp.valueOf(LocalDateTime.parse(str, TimestampFormat));
+    }
+
+    public static List<SpankoEntry> getSpanko(Timestamp from_t, Timestamp to_t) {
         List<SpankoEntry> results = new ArrayList<>();
         try(Connection conn = connect()) {
 
@@ -119,6 +134,11 @@ public class BazaSpanko {
             // czyli jak w bazie jest spanie od 01-27 23:00 01-28 07:00
             // i wyszukujemy od 01-28 00:00 do 01-28 23:59
             // to wynik będzie 01-28 00:00 01-28 07:00
+            String from = from_t.toLocalDateTime().format(TimestampFormat);
+            String to = to_t.toLocalDateTime().format(TimestampFormat);
+            System.out.println("from: " + from);
+            System.out.println("to: " + to);
+            System.out.println("current user: " + MementoMori.currentUser);
             PreparedStatement stmt = conn.prepareStatement("""
                 select id, max(poczatek, ?), min(koniec, ?)
                 from spanko
@@ -127,17 +147,18 @@ public class BazaSpanko {
                         and (poczatek between ? and ?
                              or koniec between ? and ?);
             """);
-            stmt.setDate(1, from);
-            stmt.setDate(2, to);
+            stmt.setString(1, from);
+            stmt.setString(2, to);
             stmt.setString(3, MementoMori.currentUser);
-            stmt.setDate(4, from);
-            stmt.setDate(5, to);
-            stmt.setDate(6, from);
-            stmt.setDate(7, to);
+            stmt.setString(4, from);
+            stmt.setString(5, to);
+            stmt.setString(6, from);
+            stmt.setString(7, to);
+            System.out.println(stmt);
 
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                results.add(new SpankoEntry(rs.getInt(1), rs.getDate(2), rs.getDate(3)));
+                results.add(new SpankoEntry(rs.getInt(1), parseTimestamp(rs.getString(2)), parseTimestamp(rs.getString(3))));
             }
         }
         catch (SQLException e) {
@@ -146,7 +167,7 @@ public class BazaSpanko {
         return results;
     }
 
-    public static double getTotalSleepHours(Date from, Date to) {
+    public static double getTotalSleepHours(Timestamp from_t, Timestamp to_t) {
         try(Connection conn = connect()) {
             // dno mojego człowieczeństwa
             // zwraca sumaryczny czas snu w godzinach z danego przedziału czasowego
@@ -158,13 +179,15 @@ public class BazaSpanko {
                         and (poczatek between ? and ?
                              or koniec between ? and ?);
             """);
-            stmt.setDate(1, to);
-            stmt.setDate(2, from);
+            String from = from_t.toLocalDateTime().format(TimestampFormat);
+            String to = to_t.toLocalDateTime().format(TimestampFormat);
+            stmt.setString(1, to);
+            stmt.setString(2, from);
             stmt.setString(3, MementoMori.currentUser);
-            stmt.setDate(4, from);
-            stmt.setDate(5, to);
-            stmt.setDate(6, from);
-            stmt.setDate(7, to);
+            stmt.setString(4, from);
+            stmt.setString(5, to);
+            stmt.setString(6, from);
+            stmt.setString(7, to);
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -177,7 +200,7 @@ public class BazaSpanko {
         return 0;
     }
 
-    public static double getTotalFilledDays(Date from, Date to) {
+    public static double getTotalFilledDays(Timestamp from_t, Timestamp to_t) {
         try(Connection conn = connect()) {
             // XDDDDDDDDDDDDDDDD
             // ilość wypełnionych dni w bazie
@@ -202,19 +225,21 @@ public class BazaSpanko {
                                 or koniec between ? and ?)
                 );
             """);
+            String from = from_t.toLocalDateTime().format(TimestampFormat);
+            String to = to_t.toLocalDateTime().format(TimestampFormat);
             // boże wybacz, bo zgrzeszyłem
-            stmt.setDate(1, from);
+            stmt.setString(1, from);
             stmt.setString(2, MementoMori.currentUser);
-            stmt.setDate(3, from);
-            stmt.setDate(4, to);
-            stmt.setDate(5, from);
-            stmt.setDate(6, to);
-            stmt.setDate(7, from);
+            stmt.setString(3, from);
+            stmt.setString(4, to);
+            stmt.setString(5, from);
+            stmt.setString(6, to);
+            stmt.setString(7, from);
             stmt.setString(8, MementoMori.currentUser);
-            stmt.setDate(9, from);
-            stmt.setDate(10, to);
-            stmt.setDate(11, from);
-            stmt.setDate(12, to);
+            stmt.setString(9, from);
+            stmt.setString(10, to);
+            stmt.setString(11, from);
+            stmt.setString(12, to);
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
@@ -227,25 +252,28 @@ public class BazaSpanko {
         return 0;
     }
 
-    public static double getAverageSleepHours(Date from, Date to) {
+    public static double getAverageSleepHours(Timestamp from, Timestamp to) {
         double total_hours = getTotalSleepHours(from, to);
         double total_days = getTotalFilledDays(from, to);
         return total_hours / total_days;
     }
 
-    public static SpankoEntry addSpanko(Date start, Date stop) {
+    public static SpankoEntry addSpanko(Timestamp start, Timestamp stop) {
         try(Connection conn = connect()) {
-            List<SpankoEntry> colliding_entries = getSpanko(start, stop);
-            if (! colliding_entries.isEmpty()) {
-                throw new IllegalArgumentException("Spanie nie może się pokrywać z innym spaniem.");
-            }
+            // wyłączona ochorna ze względu na brak wykresu
+//            List<SpankoEntry> colliding_entries = getSpanko(start, stop);
+//            if (! colliding_entries.isEmpty()) {
+//                throw new IllegalArgumentException("Spanie nie może się pokrywać z innym spaniem.");
+//            }
 
             PreparedStatement stmt = conn.prepareStatement(
             "INSERT INTO spanko(login, poczatek, koniec) VALUES (?, ?, ?)"
             );
+            String start_str = start.toLocalDateTime().format(TimestampFormat);
+            String stop_str = stop.toLocalDateTime().format(TimestampFormat);
             stmt.setString(1, MementoMori.currentUser);
-            stmt.setDate(2, start);
-            stmt.setDate(3, stop);
+            stmt.setString(2, start_str);
+            stmt.setString(3, stop_str);
             stmt.execute();
 
             stmt = conn.prepareStatement("SELECT last_insert_rowid();");
