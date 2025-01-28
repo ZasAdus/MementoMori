@@ -4,19 +4,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="147.0" prefWidth="395.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="97.0" prefWidth="333.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <DatePicker fx:id="start_date" layoutX="147.0" layoutY="39.0" prefHeight="25.0" prefWidth="101.0" />
+      <DatePicker fx:id="start_date" layoutX="107.0" layoutY="14.0" prefHeight="25.0" prefWidth="101.0" />
 
-      <Label layoutX="45.0" layoutY="43.0" text="Początek snu:" />
-      <TextField fx:id="start_hours" layoutX="264.0" layoutY="39.0" prefHeight="25.0" prefWidth="35.0" text="00" />
-      <Text layoutX="305.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
-      <TextField fx:id="start_minutes" layoutX="314.0" layoutY="39.0" prefHeight="25.0" prefWidth="35.0" text="00" />
+      <Label layoutX="14.0" layoutY="18.0" text="Początek snu:" />
+      <TextField fx:id="start_hours" layoutX="223.0" layoutY="14.0" prefHeight="25.0" prefWidth="35.0" text="00" />
+      <Text layoutX="270.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
+      <TextField fx:id="start_minutes" layoutX="283.0" layoutY="14.0" prefHeight="25.0" prefWidth="35.0" text="00" />
 
-      <DatePicker fx:id="end_date" layoutX="147.0" layoutY="80.0" prefHeight="25.0" prefWidth="101.0" />
-      <Label layoutX="56.0" layoutY="84.0" text="Koniec snu:" />
-      <TextField fx:id="end_hours" layoutX="264.0" layoutY="80.0" prefHeight="25.0" prefWidth="35.0" text="00" />
-      <Text layoutX="306.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
-      <TextField fx:id="end_minutes" layoutX="315.0" layoutY="80.0" prefHeight="25.0" prefWidth="35.0" text="00" />
+      <DatePicker fx:id="end_date" layoutX="107.0" layoutY="55.0" prefHeight="25.0" prefWidth="101.0" />
+      <Label layoutX="25.0" layoutY="59.0" text="Koniec snu:" />
+      <TextField fx:id="end_hours" layoutX="223.0" layoutY="55.0" prefHeight="25.0" prefWidth="35.0" text="00" />
+      <Text layoutX="269.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":" />
+      <TextField fx:id="end_minutes" layoutX="284.0" layoutY="55.0" prefHeight="25.0" prefWidth="35.0" text="00" />
    </children>
 </AnchorPane>

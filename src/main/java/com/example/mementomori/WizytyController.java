@@ -42,16 +42,20 @@ public class WizytyController {
     private static WizytyController instance;
 
     private static int userId;
-
     @FXML
     public void initialize() {
-        String currentUser = MementoMori.currentUser;
-        User user = BazaMojeKonto.getUserData(currentUser);
-        userId = user.getId();
+        try {
+            String currentUser = MementoMori.currentUser;
+            User user = BazaMojeKonto.getUserData(currentUser);
+            userId = user.getId();
 
-        currentMonday = LocalDate.now().with(DayOfWeek.MONDAY);
-        instance = this;
-        updateCalendar(userId);
+            currentMonday = LocalDate.now().with(DayOfWeek.MONDAY);
+            instance = this;
+            updateCalendar(userId);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

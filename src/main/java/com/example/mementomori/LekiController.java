@@ -3,10 +3,15 @@ package com.example.mementomori;
 import com.example.mementomori.bazyDanych.BazaLeki;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Group;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
@@ -117,18 +122,19 @@ class LekiDialogController {
         Dialog<BazaLeki.LekiEntry> dialog = new Dialog<>();
         dialog.setTitle(dialog_title);
         dialog.setHeaderText(null);
-        dialog.initStyle(StageStyle.UNDECORATED);
+        //dialog.initStyle(StageStyle.UNDECORATED);
         dialog.setGraphic(null);
         dialog.setHeaderText(null);
+        dialog.setResizable(true);
 
         ButtonType submitButtonType = new ButtonType("Zapisz", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(submitButtonType, ButtonType.CANCEL);
+        ButtonType cancel = new ButtonType("Anuluj", ButtonBar.ButtonData.CANCEL_CLOSE);
+        dialog.getDialogPane().getButtonTypes().addAll(submitButtonType, cancel);
 
         LekiDialogController controller = new LekiDialogController();
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(Path));
         loader.setController(controller);
         DialogPane dialogPane = dialog.getDialogPane();
-
 
         dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
                 "-fx-padding: 10; " +
@@ -142,7 +148,7 @@ class LekiDialogController {
                         "-fx-text-fill: black;" +
                         "-fx-font-weight: bold;" +
                         "-fx-border-color: gray;");
-        dialogPane.lookupButton(ButtonType.CANCEL)
+        dialogPane.lookupButton(cancel)
                 .setStyle("-fx-background-color: #f44336;" +
                         "-fx-text-fill: black;" +
                         "-fx-font-weight: bold;" +

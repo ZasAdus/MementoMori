@@ -53,7 +53,7 @@
                <content>
                   <VBox alignment="CENTER">
                      <children>
-                        <Text fx:id="remindToFill" strokeType="OUTSIDE" strokeWidth="0.0" text="Wprowaź miasto i miejscoowść" textAlignment="CENTER" wrappingWidth="397.9830722808838" />
+                        <Text fx:id="remindToFill" strokeType="OUTSIDE" strokeWidth="0.0" text="Wprowaź nazwę leku i miejscoowść" textAlignment="CENTER" wrappingWidth="397.9830722808838" />
                         <VBox fx:id="aptekaContainer" spacing="10.0" VBox.vgrow="SOMETIMES" />
                      </children>
                   </VBox>
