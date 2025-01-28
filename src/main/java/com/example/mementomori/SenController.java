@@ -216,7 +216,6 @@ public class SenController {
             Timestamp upperBound = Timestamp.valueOf(end.plusDays(i));
 
             double sleep = BazaSpanko.getTotalSleepHours(lowerBound, upperBound);
-            System.out.println("od: " + lowerBound.toString() + " spanko: " + BazaSpanko.getTotalSleepHours(lowerBound, upperBound));
             series.getData().add(new XYChart.Data<>(Integer.toString(i), sleep));
         }
         spankoWykres.getData().add(series);
