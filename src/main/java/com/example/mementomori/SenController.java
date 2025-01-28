@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -65,6 +66,9 @@ class EepyTimeDialogController {
     public static EepyTimeEntry show(String dialog_title, EepyTimeEntry default_value) {
         Dialog<EepyTimeEntry> dialog = new Dialog<>();
         dialog.setTitle(dialog_title);
+        dialog.setHeaderText(null);
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.setGraphic(null);
         dialog.setHeaderText(null);
 
         ButtonType submitButtonType = new ButtonType("Zapisz", ButtonBar.ButtonData.OK_DONE);

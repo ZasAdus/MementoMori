@@ -63,6 +63,7 @@ public class MementoMori extends Application {
 
         navigateTo("Logowanie.fxml");
         stage.show();
+        stage.centerOnScreen();
     }
 
     private static final String HOME_PATH = "home.fxml";

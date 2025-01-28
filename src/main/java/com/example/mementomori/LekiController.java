@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.sql.Time;
@@ -116,6 +117,9 @@ class LekiDialogController {
         Dialog<BazaLeki.LekiEntry> dialog = new Dialog<>();
         dialog.setTitle(dialog_title);
         dialog.setHeaderText(null);
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.setGraphic(null);
+        dialog.setHeaderText(null);
 
         ButtonType submitButtonType = new ButtonType("Zapisz", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(submitButtonType, ButtonType.CANCEL);
@@ -124,6 +128,7 @@ class LekiDialogController {
         FXMLLoader loader = new FXMLLoader(MementoMori.class.getResource(Path));
         loader.setController(controller);
         DialogPane dialogPane = dialog.getDialogPane();
+
 
         dialogPane.setStyle("-fx-background-color: #a5f0bd; " +
                 "-fx-padding: 10; " +
